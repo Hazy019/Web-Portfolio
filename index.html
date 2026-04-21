@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAZY · Kyrell</title>
+    <meta name="description"
+        content="Portfolio of Kyrell Santillan (HAZY), CS graduate from the Philippines building government infrastructure, automation, and thoughtful systems.">
+
+    <!-- ✦ FAVICON — hazy-logo.png (replaces SVG favicon) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="hazy-logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="hazy-logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="hazy-logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Manrope:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="depth.css">
+</head>
+
+<body>
+
+    <!-- ════════════════════════════════════════
+         PRECISION RING LOADER (v6 redesign)
+         Concept: targeting reticle + circular progress ring
+         Exit: iris-out circle wipe
+    ════════════════════════════════════════ -->
+    <div id="loader">
+        <!-- Binary rain canvas (Phase 1) -->
+        <canvas id="rain-canvas"></canvas>
+
+        <!-- Center content -->
+        <div class="ld-center" id="ld-center">
+            <!-- Logo + targeting ring -->
+            <div class="ld-logo-wrap">
+                <svg class="ld-svg-ring" viewBox="0 0 200 200">
+                    <circle class="ld-ring-track" cx="100" cy="100" r="85" />
+                    <circle class="ld-ring-prog" cx="100" cy="100" r="85" id="ld-ring-prog" />
+                    <!-- Tick marks -->
+                    <line class="ld-tick" x1="100" y1="10" x2="100" y2="22" />
+                    <line class="ld-tick" x1="100" y1="178" x2="100" y2="190" />
+                    <line class="ld-tick" x1="10" y1="100" x2="22" y2="100" />
+                    <line class="ld-tick" x1="178" y1="100" x2="190" y2="100" />
+                </svg>
+                <!-- Dashed outer ring (CSS spin) -->
+                <div class="ld-outer-dash"></div>
+                <!-- Logo image -->
+                <div class="ld-logo-inner">
+                    <img src="hazy-logo.png" alt="HAZY" class="ld-logo-img">
+                </div>
+            </div>
+
+            <!-- Large 3-digit counter -->
+            <div class="ld-big-num"><span id="ld-num">000</span></div>
+
+            <!-- Terminal log -->
+            <div class="ld-terminal">
+                <span class="ld-prompt">›</span>
+                <span id="ld-msg">SYSTEM INIT</span>
+                <span class="ld-blink">█</span>
+            </div>
+        </div>
+
+        <!-- Corner brackets -->
+        <div class="lc tl"></div>
+        <div class="lc tr"></div>
+        <div class="lc bl"></div>
+        <div class="lc br"></div>
+
+        <!-- Iris wipe overlay (exit animation) -->
+        <div class="ld-iris" id="ld-iris"></div>
+    </div><!-- /#loader -->
+
+
+    <!-- Custom Cursor -->
+    <div id="theme-ripple"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <div class="wrap">
+
+        <!-- ════════════════════════════════════════
+             LEFT PANEL
+        ════════════════════════════════════════ -->
+        <aside id="left-panel">
+            <div class="lp-inner">
+
+                <div class="lp-top-row">
+                    <!-- ✦ FIXED: Logo now uses .lp-logo-block structure (CSS already defined it)
+                         mix-blend-mode: screen is applied in css-additions-v6.css
+                    -->
+                    <a href="#intro" class="lp-logo-block">
+                        <div class="lp-logo-cloud">
+                            <img src="hazy-logo.png" alt="HAZY" class="lp-logo-img">
+                            <!-- Rotating outer ring decorating the logo -->
+                            <div class="lp-logo-orbit"></div>
+                        </div>
+                        <div class="lp-logo-text">H<span>AZY</span></div>
+                    </a>
+                    <button class="theme-btn" id="theme-btn" aria-label="Toggle theme">
+                        <span class="tb-track">
+                            <span class="tb-thumb"></span>
+                        </span>
+                        <span class="tb-label tb-label--dark">DARK</span>
+                        <span class="tb-label tb-label--light">LIGHT</span>
+                    </button>
+                </div>
+
+                <div class="lp-identity">
+                    <div class="lp-status">
+                        <span class="status-dot"></span>
+                        Available for opportunities
+                    </div>
+                    <h1 class="lp-name">
+                        <span class="nm-row"><span class="nm-line">Kyrell</span></span>
+                        <span class="nm-row"><span class="nm-line">Santillan</span></span>
+                    </h1>
+                    <div class="lp-role">CS Graduate · Philippines</div>
+                </div>
+
+                <div class="lp-tagline">
+                    I build systems the way architects design buildings — <strong>failure modes first</strong>, elegance
+                    second.
+                </div>
+
+                <!-- ✦ nav-loaded class is added by JS when loader exits -->
+                <nav class="lp-nav" id="lp-nav">
+                    <a href="#intro" class="nav-item active" data-section="intro">
+                        <span class="nav-num">01</span><span class="nav-label">Intro</span>
+                    </a>
+                    <a href="#work" class="nav-item" data-section="work">
+                        <span class="nav-num">02</span><span class="nav-label">Work</span>
+                    </a>
+                    <a href="#about" class="nav-item" data-section="about">
+                        <span class="nav-num">03</span><span class="nav-label">About</span>
+                    </a>
+                    <a href="#stack" class="nav-item" data-section="stack">
+                        <span class="nav-num">04</span><span class="nav-label">Stack</span>
+                    </a>
+                    <a href="#contact" class="nav-item" data-section="contact">
+                        <span class="nav-num">05</span><span class="nav-label">Contact</span>
+                    </a>
+                </nav>
+
+                <div class="lp-bottom">
+                    <div id="ctx-panel" class="lp-context">
+                        <div class="ctx-label">Currently Viewing</div>
+                        <div class="ctx-num">—</div>
+                        <div class="ctx-type">Project Type</div>
+                        <div class="ctx-name">Project Title</div>
+                    </div>
+                    <a href="mailto:contact@hazy.dev" class="lp-cta">Available for work →</a>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- ════════════════════════════════════════
+             RIGHT PANEL
+        ════════════════════════════════════════ -->
+        <main id="right-panel">
+            <div class="noise-overlay"></div>
+            <div class="grid-overlay"></div>
+            <div class="hero-gradient-orb"></div>
+
+            <div class="sticky-section-num" id="sticky-num">
+                <span class="ssn-num">01</span>
+                <span class="ssn-line"></span>
+            </div>
+
+            <!-- Mobile Nav -->
+            <nav class="mobile-nav" id="mobile-nav">
+                <!-- ✦ FIXED: logo image gets mix-blend-mode: screen via CSS additions -->
+                <a href="#intro" class="mn-logo">
+                    <img src="hazy-logo.png" alt="" class="mn-logo-img" aria-hidden="true">
+                    <span>H<span>AZY</span></span>
+                </a>
+                <div class="mn-controls">
+                    <button class="theme-btn theme-btn--sm" id="theme-btn-mobile" aria-label="Toggle theme">
+                        <span class="tb-track">
+                            <span class="tb-thumb"></span>
+                        </span>
+                        <span class="tb-label tb-label--dark">DARK</span>
+                        <span class="tb-label tb-label--light">LIGHT</span>
+                    </button>
+                    <button class="mn-toggle" id="mn-toggle" aria-label="Menu">
+                        <span></span><span></span>
+                    </button>
+                </div>
+                <div class="mn-links" id="mn-links">
+                    <a href="#intro" class="mn-link" data-section="intro">01 Intro</a>
+                    <a href="#work" class="mn-link" data-section="work">02 Work</a>
+                    <a href="#about" class="mn-link" data-section="about">03 About</a>
+                    <a href="#stack" class="mn-link" data-section="stack">04 Stack</a>
+                    <a href="#contact" class="mn-link" data-section="contact">05 Contact</a>
+                    <div class="mn-cta-wrap">
+                        <a href="mailto:contact@hazy.dev" class="lp-cta">Available for work</a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- HERO -->
+            <section id="intro" class="hero">
+                <div class="section-flash" aria-hidden="true"></div>
+                <!-- Hero floating decorative elements -->
+                <div class="hero-nodes">
+                    <div class="hn hn--1"></div>
+                    <div class="hn hn--2"></div>
+                    <div class="hn hn--3"></div>
+                    <div class="hn hn--4"></div>
+                    <div class="hn hn--5"></div>
+                    <div class="hn hn--line hn--line-1"></div>
+                    <div class="hn hn--line hn--line-2"></div>
+                </div>
+                <div class="hero-bg-num">5</div>
+                <div class="hero-inner">
+                    <div class="h-eye rv rv--fade">
+                        <span class="eye-badge">Open</span> Open to Work · Philippines · UTC+8
+                    </div>
+                    <div class="h-words">
+                        <span class="hw-row"><span class="hw">Building</span></span>
+                        <span class="hw-row"><span class="hw italic-txt">Systems.</span></span>
+                        <span class="hw-row"><span class="hw outline-txt">Thoughtfully.</span></span>
+                    </div>
+                    <p class="h-desc rv rv--up">
+                        Five projects in production. Government infrastructure, academic platforms, AI assistants,
+                        automation pipelines, accessible interfaces. Each one built for <strong>real users solving a
+                            real problem</strong> — not for a portfolio.
+                    </p>
+                    <div class="h-ctas rv rv--fade">
+                        <a href="#work" class="btn-primary">Explore Work</a>
+                        <a href="#contact" class="btn-secondary">Let's Talk</a>
+                    </div>
+                    <div class="h-bar rv rv--up">
+                        <div class="hb-item">
+                            <span class="hb-value">2024</span>
+                            <span class="hb-label">LATEST RELEASE</span>
+                        </div>
+                        <div class="hb-item">
+                            <span class="hb-value">BSCS</span>
+                            <span class="hb-label">DEGREE ACQUIRED</span>
+                        </div>
+                        <div class="hb-item">
+                            <span class="hb-value">PHL</span>
+                            <span class="hb-label">LOCATION BASE</span>
+                        </div>
+                    </div>
+
+                    <!-- Impact Strip -->
+                    <div class="impact-strip">
+                        <div class="impact-item">
+                            <div class="impact-num" data-count="50">0</div>
+                            <div class="impact-label">CLIENT PROJECTS</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-num" data-count="12">0</div>
+                            <div class="impact-label">OPEN SOURCE</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-num" data-count="04">0</div>
+                            <div class="impact-label">YEARS EXP</div>
+                        </div>
+                        <div class="impact-item">
+                            <div class="impact-num" data-count="100">0</div>
+                            <div class="impact-label">SATISFACTION</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ✦ MARQUEE BAND — between hero and work
+                 Scrolls infinitely. Speed reacts to scroll velocity via JS.
+            -->
+            <!-- Marquee Text Strip -->
+            <div class="marquee-strip">
+                <div class="marquee-track">
+                    <div class="marquee-item">DEVELOPMENT</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">IDENTITY</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">MOTION</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">TECHNICAL</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">DEVELOPMENT</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">IDENTITY</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">MOTION</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">TECHNICAL</div>
+                </div>
+                <div class="marquee-track marquee-track--reverse">
+                    <div class="marquee-item">CRAFTED IN PH</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">AVAILABLE NOW</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">STAY HAZY</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">SOLVING DEPTH</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">CRAFTED IN PH</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">AVAILABLE NOW</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">STAY HAZY</div>
+                    <div class="marquee-sep">✦</div>
+                    <div class="marquee-item">SOLVING DEPTH</div>
+                </div>
+            </div>
+
+            <!-- WORK -->
+            <section id="work" class="work-sec">
+                <div class="section-flash" aria-hidden="true"></div>
+                <div class="s-eye rv rv--left">Selected Projects</div>
+                <h2 class="s-head rv rv--up">Selected<br><span class="accent-txt">Work.</span></h2>
+                <div class="proj-list">
+
+                    <div class="proj-item rv rv--up" data-num="01" data-type="Government Infrastructure"
+                        data-name="DTI Queue Management System" data-delay="0">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">01</span>
+                            <div class="pt-info">
+                                <div class="pt-type">Government Infrastructure</div>
+                                <div class="pt-title">DTI Queue Management System</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">The Department of Trade and Industry's regional branch was
+                                    processing walk-ins with paper slips and a whiteboard. I rebuilt that from scratch —
+                                    real-time WebSocket ticket generation, role-based inventory tracking, and a live
+                                    admin dashboard with full audit history. Deployed to production and used by actual
+                                    government staff daily.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Queue
+                                    throughput increased, paper records eliminated. Now the branch's primary operational
+                                    system.</div>
+                                <div class="proj-stack"><span class="chip">Python</span><span
+                                        class="chip">Django</span><span class="chip">PostgreSQL</span><span
+                                        class="chip">WebSockets</span><span class="chip">Bootstrap</span></div>
+                                <a href="#" class="proj-link">View Documentation →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proj-item rv rv--up" data-num="02" data-type="Academic Platform"
+                        data-name="Polycon — Faculty Consultation System" data-delay="60">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">02</span>
+                            <div class="pt-info">
+                                <div class="pt-type">Academic Platform</div>
+                                <div class="pt-title">Polycon — Faculty Consultation System</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">Faculty-student consultations had no digital record —
+                                    appointments lived in text messages, sessions undocumented. Polycon: full-stack
+                                    platform with real-time scheduling, push notifications, per-session docs, and
+                                    separate portals for students and faculty.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Zero missed
+                                    appointments since launch. Session documentation rate: near zero → 100%.</div>
+                                <div class="proj-stack"><span class="chip">Django</span><span
+                                        class="chip">React</span><span class="chip">PostgreSQL</span><span
+                                        class="chip">REST API</span><span class="chip">WebSockets</span></div>
+                                <a href="#" class="proj-link">View Documentation →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proj-item rv rv--up" data-num="03" data-type="Automation Engineering"
+                        data-name="YouTube Automation Suite" data-delay="120">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">03</span>
+                            <div class="pt-info">
+                                <div class="pt-type">Automation Engineering</div>
+                                <div class="pt-title">YouTube Automation Suite</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">A production automation pipeline for YouTube:
+                                    script-to-short-video engine using FFmpeg and TTS, combined with a Selenium
+                                    engagement bot for comment responses. Runs scheduled jobs unattended once
+                                    configured.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Hours of
+                                    daily manual work now runs completely unattended.</div>
+                                <div class="proj-stack"><span class="chip">Python</span><span
+                                        class="chip">Selenium</span><span class="chip">YouTube Data API v3</span><span
+                                        class="chip">FFmpeg</span><span class="chip">APScheduler</span></div>
+                                <a href="#" class="proj-link">View Case Study →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proj-item rv rv--up" data-num="04" data-type="Voice AI System"
+                        data-name="Jarvis — Offline Personal Assistant" data-delay="180">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">04</span>
+                            <div class="pt-info">
+                                <div class="pt-type">Voice AI System</div>
+                                <div class="pt-title">Jarvis — Offline Personal Assistant</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">Privacy-first voice AI built entirely in Python: no API calls,
+                                    no cloud. NLP intent classification routes to a modular plugin system — system
+                                    controls, file management, reminders. Extensible: new capabilities without touching
+                                    core logic.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> 12 distinct
+                                    capability modules. Fully offline voice assistant with zero cloud dependency.</div>
+                                <div class="proj-stack"><span class="chip">Python</span><span
+                                        class="chip">SpeechRecognition</span><span class="chip">PyAudio</span><span
+                                        class="chip">NLP</span><span class="chip">Plugin Architecture</span></div>
+                                <a href="#" class="proj-link">View Case Study →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="proj-item rv rv--up" data-num="05" data-type="UX Engineering"
+                        data-name="Kiosk Spell Gate" data-delay="240">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">05</span>
+                            <div class="pt-info">
+                                <div class="pt-type">UX Engineering</div>
+                                <div class="pt-title">Kiosk Spell Gate</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">A walk-up kiosk for non-technical users: content is gated
+                                    behind a real-time spell-check validation layer. Built in Tkinter for direct
+                                    hardware
+                                    deployment, configurable admin panel for content and gate rules. Zero staff
+                                    assistance required.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Input error
+                                    rate dropped significantly. Users complete tasks unassisted.</div>
+                                <div class="proj-stack"><span class="chip">Python</span><span
+                                        class="chip">Tkinter</span><span class="chip">pyspellchecker</span><span
+                                        class="chip">Custom UI</span></div>
+                                <a href="#" class="proj-link">View Case Study →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ABOUT -->
+            <!-- Mega Quote Wall -->
+            <div class="quote-wall rv" id="quote-wall">
+                <div class="qw-trace qw-trace--tl"></div>
+                <div class="qw-trace qw-trace--tr"></div>
+                <div class="qw-trace qw-trace--bl"></div>
+                <div class="qw-trace qw-trace--br"></div>
+
+                <div class="qw-inner">
+                    <div class="qw-kicker">TECHNICAL PHILOSOPHY</div>
+                    <blockquote class="qw-text">
+                        "DESIGN IS NOT JUST WHAT IT LOOKS LIKE AND FEELS LIKE. DESIGN IS HOW IT WORKS."
+                    </blockquote>
+                    <div class="qw-attr">— STEVE JOBS (INSPIRATION)</div>
+                </div>
+            </div>
+
+            <section id="about" class="about-sec">
+                <div class="section-flash" aria-hidden="true"></div>
+                <div class="about-grid">
+                    <div class="ab-left">
+                        <div class="s-eye rv rv--left">About Me</div>
+                        <div class="ab-head rv rv--up">I build systems the way architects design buildings — failure
+                            modes first, elegance second.</div>
+                        <div class="ab-body rv rv--blur" data-delay="100">
+                            <p>Currently finishing my CS degree in the Philippines, with production deployments already
+                                in the field. I gravitate toward problems with real consequences — government systems
+                                people depend on, tools that run unattended, interfaces used by people who never asked
+                                for them.</p>
+                            <p>Security mindset first: every input hostile, every permission a liability, every data
+                                store a target. <em>Pursuing Google's Professional Cybersecurity cert</em> alongside UX
+                                design — because understanding how systems fail and how people think are the two most
+                                useful things a developer can know.</p>
+                        </div>
+                    </div>
+                    <div class="ab-right">
+                        <!-- ✦ rv--pop for scale-up entrance on testimonial -->
+                        <div class="testi-card rv rv--pop">
+                            <div class="tq">"Kyrell builds like someone who has already thought about what happens when
+                                things go wrong. His systems are defensible and his interfaces are genuinely considered
+                                — a combination that's rarer than it should be."</div>
+                            <div class="ta">— Research Adviser, CS Department</div>
+                        </div>
+                        <div class="certs-list">
+                            <!-- ✦ Alternate left/right for certification rows -->
+                            <div class="cert-row rv rv--right" data-delay="0">
+                                <div class="cert-pip done"></div>
+                                <div class="cert-info">
+                                    <div class="cert-name">Foundation in Cybersecurity</div>
+                                    <div class="cert-org">Google · Coursera</div>
+                                </div>
+                                <div class="cert-badge certified">CERTIFIED</div>
+                            </div>
+                            <div class="cert-row rv rv--left" data-delay="60">
+                                <div class="cert-pip done"></div>
+                                <div class="cert-info">
+                                    <div class="cert-name">Responsive Web Design V8</div>
+                                    <div class="cert-org">Codecamp</div>
+                                </div>
+                                <div class="cert-badge certified">CERTIFIED</div>
+                            </div>
+                            <div class="cert-row rv rv--right" data-delay="120">
+                                <div class="cert-pip wip"></div>
+                                <div class="cert-info">
+                                    <div class="cert-name">Professional Cybersecurity</div>
+                                    <div class="cert-org">Google · Coursera</div>
+                                </div>
+                                <div class="cert-badge active">IN PROGRESS</div>
+                            </div>
+                            <div class="cert-row rv rv--left" data-delay="180">
+                                <div class="cert-pip wip"></div>
+                                <div class="cert-info">
+                                    <div class="cert-name">UX Design Certificate</div>
+                                    <div class="cert-org">Google · Coursera</div>
+                                </div>
+                                <div class="cert-badge active">IN PROGRESS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STACK -->
+            <section id="stack" class="stack-sec">
+                <div class="section-flash" aria-hidden="true"></div>
+                <div class="s-eye rv rv--left">The Arsenal</div>
+                <h2 class="s-head rv rv--up">Technical<br><span class="accent-txt">Stack.</span></h2>
+                <div class="sk-list">
+                    <!-- ✦ Pills animate in waves via JS pillRowObs -->
+                    <div class="sk-row rv rv--up" data-delay="0">
+                        <div class="sk-category">Frontend</div>
+                        <div class="sk-pills"><span class="pill">Next.js</span><span class="pill">React</span><span
+                                class="pill">Flutter</span><span class="pill">Figma</span><span
+                                class="pill">HTML5/CSS</span><span class="pill">JavaScript</span></div>
+                    </div>
+                    <div class="sk-row rv rv--up" data-delay="80">
+                        <div class="sk-category">Backend</div>
+                        <div class="sk-pills"><span class="pill">Python</span><span class="pill">Django</span><span
+                                class="pill">Flask</span><span class="pill">PostgreSQL</span><span class="pill">REST
+                                APIs</span><span class="pill">WebSockets</span></div>
+                    </div>
+                    <div class="sk-row rv rv--up" data-delay="160">
+                        <div class="sk-category">Security</div>
+                        <div class="sk-pills"><span class="pill">Cybersecurity Fundamentals</span><span
+                                class="pill">Secure Coding</span><span class="pill">Network Security</span><span
+                                class="pill">Linux</span><span class="pill">Git</span></div>
+                    </div>
+                    <div class="sk-row rv rv--up" data-delay="240">
+                        <div class="sk-category">Automation</div>
+                        <div class="sk-pills"><span class="pill">Python Automation</span><span
+                                class="pill">Selenium</span><span class="pill">NLP</span><span class="pill">Voice
+                                AI</span><span class="pill">Bot Systems</span><span class="pill">Kiosk Dev</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT -->
+            <section id="contact" class="contact-sec">
+                <div class="section-flash" aria-hidden="true"></div>
+                <div class="ct-grid">
+                    <div class="ct-left">
+                        <!-- ✦ "something" wrapped in rotating text component -->
+                        <h2 class="ct-head rv rv--up">
+                            Let's build
+                            <span class="rw-track">
+                                <span class="rw accent-txt" id="rotating-word">something.</span>
+                            </span>
+                        </h2>
+                        <p class="ct-desc rv rv--blur" data-delay="80">Open to full-time, contract, and research
+                            opportunities. Based in the Philippines (UTC+8) and available remotely. I respond to every
+                            message.</p>
+                        <div class="ct-links">
+                            <a href="mailto:kyrell@example.com" class="ct-link rv rv--left" data-delay="0"><span
+                                    class="ctl-label">Email</span><span class="ctl-value">kyrell@example.com</span><span
+                                    class="ctl-arr">→</span></a>
+                            <a href="https://github.com/hazy-dev" target="_blank" class="ct-link rv rv--left"
+                                data-delay="80"><span class="ctl-label">GitHub</span><span
+                                    class="ctl-value">@hazy-dev</span><span class="ctl-arr">→</span></a>
+                            <a href="https://linkedin.com/in/kyrell-santillan" target="_blank"
+                                class="ct-link rv rv--left" data-delay="160"><span
+                                    class="ctl-label">LinkedIn</span><span class="ctl-value">Kyrell
+                                    Santillan</span><span class="ctl-arr">→</span></a>
+                        </div>
+                    </div>
+                    <div class="ct-right">
+                        <!-- ✦ rv--right for form slide in -->
+                        <form class="contact-form rv rv--right">
+                            <div class="fg">
+                                <label class="fl">Name</label>
+                                <input type="text" placeholder="John Doe">
+                            </div>
+                            <div class="fg">
+                                <label class="fl">Email</label>
+                                <input type="email" placeholder="john@example.com">
+                            </div>
+                            <div class="fg">
+                                <label class="fl">Message</label>
+                                <textarea rows="4" placeholder="How can I help?"></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div>H<span class="accent-txt">AZY</span></div>
+                <div class="f-copy">© 2026 Kyrell Santillan · Built with obsession 🇵🇭</div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

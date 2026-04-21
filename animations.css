@@ -1,0 +1,365 @@
+/*
+  HAZY PORTFOLIO — animations.css
+  Load AFTER index.css
+
+  Unique animations per UI zone:
+  01. Sidebar panel entrance  (.panel-loaded on #left-panel)
+  02. Status dot pop
+  03. Pill stagger (scroll-triggered via JS)
+  04. Footer slide + char reveal (scroll-triggered via JS)
+  05. Contact form field cascade (scroll-triggered via JS)
+  06. Submit button spring pop
+  07. Cert pip & badge scroll reveals
+  08. Testimonial card ambient glow loop
+  09. Hero bg-num slow drift loop
+  10. Section s-eye underline grow
+  11. Mobile nav entrance + link stagger
+  12. Project accordion body + chip stagger
+*/
+
+/* ══════════════════════════════════════════════════
+   01. SIDEBAR PANEL ENTRANCE
+   Triggered by .panel-loaded added to #left-panel after loader exits.
+   Every element has its own distinct motion personality.
+══════════════════════════════════════════════════ */
+
+/* Initial hidden states — loader covers these so flash is invisible */
+#left-panel .lp-top-row { opacity: 0; }
+#left-panel .lp-status  { opacity: 0; }
+#left-panel .lp-role    { opacity: 0; }
+#left-panel .lp-tagline { opacity: 0; }
+#left-panel .lp-bottom  { opacity: 0; }
+
+/* ── 01a. Top row: drops straight down from above ── */
+#left-panel.panel-loaded .lp-top-row {
+    animation: pnlTopRow .65s .05s var(--easing) both;
+}
+@keyframes pnlTopRow {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 01b. Status pill: elastic rubber-band from left ── */
+/* (unique easing: spring-like overshoot) */
+#left-panel.panel-loaded .lp-status {
+    animation: pnlStatus .72s .24s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes pnlStatus {
+    from { opacity: 0; transform: translateX(-30px) scaleX(0.85); }
+    to   { opacity: 1; transform: translateX(0) scaleX(1); }
+}
+
+/* ── 01c. Role text: letter-spacing blooms from wide to normal ── */
+/* (unique motion: typographic expansion) */
+#left-panel.panel-loaded .lp-role {
+    animation: pnlRole .85s .50s var(--easing) both;
+}
+@keyframes pnlRole {
+    from { opacity: 0; letter-spacing: .55em; transform: translateY(8px); }
+    to   { opacity: 1; letter-spacing: .2em;  transform: translateY(0); }
+}
+
+/* ── 01d. Tagline: clip-path typewriter wipe from left ── */
+/* (unique motion: reveal like a curtain being drawn) */
+#left-panel.panel-loaded .lp-tagline {
+    animation:
+        pnlTagline   .88s .72s var(--easing)    both,
+        taglinePulse  5s  2.2s ease-in-out infinite;
+}
+@keyframes pnlTagline {
+    from { opacity: 0; clip-path: inset(0 100% 0 0); transform: translateX(-10px); }
+    to   { opacity: 1; clip-path: inset(0 0%   0 0); transform: translateX(0);     }
+}
+/* Accent border breathes after entrance */
+@keyframes taglinePulse {
+    0%,  100% { border-left-color: var(--accent); }
+    50%        { border-left-color: rgba(170, 255, 94, .32); }
+}
+
+/* ── 01e. Bottom section: rises up from below ── */
+#left-panel.panel-loaded .lp-bottom {
+    animation: pnlBottom .75s 1.05s var(--easing) both;
+}
+@keyframes pnlBottom {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 01f. CTA button: scaleY unfolds from bottom edge → glows ── */
+/* (unique: vertical unfold origin-bottom + ambient pulse) */
+#left-panel.panel-loaded .lp-cta {
+    animation:
+        pnlCTA  .62s 1.32s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+        ctaGlow  4s  2.6s  ease-in-out infinite;
+}
+@keyframes pnlCTA {
+    from { opacity: 0; transform: scaleY(0.05); transform-origin: bottom center; }
+    to   { opacity: 1; transform: scaleY(1);    transform-origin: bottom center; }
+}
+@keyframes ctaGlow {
+    0%,  100% { box-shadow: 0 4px 20px rgba(170, 255, 94, .22); }
+    50%        { box-shadow: 0 6px 42px rgba(170, 255, 94, .52); }
+}
+
+
+/* ══════════════════════════════════════════════════
+   02. STATUS DOT — spring pop-in after sidebar loads
+══════════════════════════════════════════════════ */
+.status-dot {
+    transform: scale(0);
+}
+#left-panel.panel-loaded .status-dot {
+    animation:
+        dotPop    .48s .28s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+        statusPulse 2s 1.2s infinite;
+}
+@keyframes dotPop {
+    from { transform: scale(0) rotate(-90deg); }
+    to   { transform: scale(1) rotate(0deg);   }
+}
+
+
+/* ══════════════════════════════════════════════════
+   03. PILL STAGGER — bubble up on scroll (JS adds .pill-on per pill)
+   Unique: scale + vertical rise, like bubbles surfacing
+══════════════════════════════════════════════════ */
+.sk-row .pill {
+    /* Start hidden; animation kicks in when .pill-on is added by JS */
+    opacity: 0;
+    animation: pillBubble .5s var(--easing) both;
+    animation-play-state: paused;
+}
+.sk-row .pill.pill-on {
+    animation-play-state: running;
+}
+@keyframes pillBubble {
+    0%   { opacity: 0; transform: scale(0.55) translateY(18px); }
+    70%  { transform: scale(1.06) translateY(-2px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+/* Preserve hover behaviour after entrance */
+.sk-row .pill.pill-on:hover {
+    transform: translateY(-2px) !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   04. FOOTER — slide up from below + char stagger (JS handles timing)
+   Unique: whole footer glides up; logo letters rotate in one by one
+══════════════════════════════════════════════════ */
+footer {
+    opacity: 0;
+    transform: translateY(28px);
+    /* Override global transition for controlled entrance */
+    transition: opacity .85s var(--easing), transform .85s var(--easing) !important;
+}
+footer.footer-on {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Individual logo characters (rebuilt by JS) */
+footer .f-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px) rotate(-8deg);
+    transition: opacity .45s var(--easing), transform .45s var(--easing);
+}
+footer .f-char.ch-on {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+
+
+/* ══════════════════════════════════════════════════
+   05. CONTACT FORM FIELD CASCADE
+   Fields slide down with stagger (JS handles timing)
+   Unique: downward cascade — not the typical upward reveal
+══════════════════════════════════════════════════ */
+.contact-form .fg {
+    opacity: 0;
+    transform: translateY(-18px) scaleY(0.95);
+    transition: opacity .65s var(--easing), transform .65s var(--easing);
+}
+.contact-form .fg.fg-on {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+}
+
+
+/* ══════════════════════════════════════════════════
+   06. SUBMIT BUTTON — spring scale pop (JS adds .btn-on)
+   Unique: bouncy scale-in from small, different from all other buttons
+══════════════════════════════════════════════════ */
+.btn-submit {
+    opacity: 0;
+}
+.btn-submit.btn-on {
+    animation: btnPop .65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes btnPop {
+    from { opacity: 0; transform: scale(0.72) translateY(10px); }
+    60%  { transform: scale(1.05); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+
+/* ══════════════════════════════════════════════════
+   07. CERT PIP + BADGE — scroll reveal spring
+   Pip: spring scale pop (diamond or circle pops in)
+   Badge: slides in from right
+   Unique: pips and badges arrive separately with delay offset
+══════════════════════════════════════════════════ */
+.cert-pip {
+    transform: scale(0);
+    transition: transform .45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.cert-row.on .cert-pip        { transform: scale(1); transition-delay: .05s; }
+.cert-row:nth-child(2).on .cert-pip { transition-delay: .12s; }
+.cert-row:nth-child(3).on .cert-pip { transition-delay: .19s; }
+.cert-row:nth-child(4).on .cert-pip { transition-delay: .26s; }
+
+.cert-badge {
+    opacity: 0;
+    transform: translateX(12px);
+    transition: opacity .4s var(--easing), transform .4s var(--easing),
+                color .2s, border-color .2s;
+}
+.cert-row.on .cert-badge        { opacity: 1; transform: translateX(0); transition-delay: .15s; }
+.cert-row:nth-child(2).on .cert-badge { transition-delay: .22s; }
+.cert-row:nth-child(3).on .cert-badge { transition-delay: .29s; }
+.cert-row:nth-child(4).on .cert-badge { transition-delay: .36s; }
+
+
+/* ══════════════════════════════════════════════════
+   08. TESTIMONIAL CARD — ambient glow pulse after reveal
+   Unique: looping box-shadow bloom (no transform conflict with rv--right)
+══════════════════════════════════════════════════ */
+.testi-card.on {
+    animation: testiGlow 7s 1.4s ease-in-out infinite;
+}
+@keyframes testiGlow {
+    0%,  100% { box-shadow: 0 2px 16px rgba(0, 0, 0, .08); }
+    50%        { box-shadow: 0 8px 36px rgba(170, 255, 94, .1), 0 2px 16px rgba(0, 0, 0, .08); }
+}
+
+
+/* ══════════════════════════════════════════════════
+   09. HERO BG-NUM — slow drift + scale loop
+   Unique: breathing parallax layer, very slow for subtlety
+══════════════════════════════════════════════════ */
+.hero-bg-num {
+    animation: bgNumDrift 20s ease-in-out infinite;
+}
+@keyframes bgNumDrift {
+    0%,  100% { transform: scale(1)    rotate(-0.8deg); }
+    50%        { transform: scale(1.07) rotate( 0.8deg); }
+}
+/* Override by JS parallax (JS uses direct transform on scroll, so this only runs at rest) */
+
+
+/* ══════════════════════════════════════════════════
+   10. SECTION s-eye LABELS — accent underline grows after scroll reveal
+   Unique: horizontal line draws from left after the element is visible
+══════════════════════════════════════════════════ */
+.s-eye {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.s-eye.on::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    animation: eyeLine .7s .2s var(--easing) both;
+}
+@keyframes eyeLine {
+    from { width: 0;    opacity: 0; }
+    to   { width: 100%; opacity: 1; }
+}
+
+
+/* ══════════════════════════════════════════════════
+   11. MOBILE NAV — slide down + link stagger on open
+   Unique: nav itself slides down from top; links stagger when menu opens
+══════════════════════════════════════════════════ */
+.mobile-nav {
+    animation: mNavIn .55s .05s var(--easing) both;
+}
+@keyframes mNavIn {
+    from { opacity: 0; transform: translateY(-100%); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Links inside dropdown stagger in when menu opens */
+.mn-links.open .mn-link {
+    animation: mnLinkDrop .38s var(--easing) both;
+}
+.mn-links.open .mn-link:nth-child(1) { animation-delay: .04s; }
+.mn-links.open .mn-link:nth-child(2) { animation-delay: .08s; }
+.mn-links.open .mn-link:nth-child(3) { animation-delay: .12s; }
+.mn-links.open .mn-link:nth-child(4) { animation-delay: .16s; }
+.mn-links.open .mn-link:nth-child(5) { animation-delay: .20s; }
+@keyframes mnLinkDrop {
+    from { opacity: 0; transform: translateY(-12px) skewX(-3deg); }
+    to   { opacity: 1; transform: translateY(0) skewX(0); }
+}
+
+
+/* ══════════════════════════════════════════════════
+   12. PROJECT ACCORDION — body + chip stagger on open
+   Unique: body content lifts up; chips pop in one by one
+══════════════════════════════════════════════════ */
+.proj-item.open .proj-body-inner {
+    animation: projBodyLift .48s var(--easing) both;
+}
+@keyframes projBodyLift {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Project narrative fades in */
+.proj-item.open .proj-narrative {
+    animation: projFade .5s .08s var(--easing) both;
+}
+@keyframes projFade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Outcome + link slide in from left */
+.proj-item.open .proj-outcome,
+.proj-item.open .proj-link {
+    animation: projOutcome .45s .15s var(--easing) both;
+}
+@keyframes projOutcome {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Chips bubble in from scale */
+.proj-item.open .proj-stack .chip {
+    animation: chipBurst .42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.proj-item.open .proj-stack .chip:nth-child(1) { animation-delay: .14s; }
+.proj-item.open .proj-stack .chip:nth-child(2) { animation-delay: .19s; }
+.proj-item.open .proj-stack .chip:nth-child(3) { animation-delay: .24s; }
+.proj-item.open .proj-stack .chip:nth-child(4) { animation-delay: .29s; }
+.proj-item.open .proj-stack .chip:nth-child(5) { animation-delay: .34s; }
+@keyframes chipBurst {
+    from { opacity: 0; transform: scale(0.6) translateY(10px); }
+    60%  { transform: scale(1.08); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Project number flips when row opens */
+.proj-item.open .pt-num {
+    animation: ptFlip .38s var(--easing) both;
+}
+@keyframes ptFlip {
+    from { opacity: 0; transform: rotateX(-80deg) translateY(-6px); }
+    to   { opacity: 1; transform: rotateX(0) translateY(0); }
+}
