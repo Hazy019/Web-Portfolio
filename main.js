@@ -1,99 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* ═══════════════════════════════════════════
-       0. PRECISION BINARY LOADER (v3)
+       0. LOADER — skipped (hidden via CSS)
+          Fire all init functions immediately
     ═══════════════════════════════════════════ */
-    const loader      = document.getElementById('loader');
-    const rainCanvas  = document.getElementById('rain-canvas');
-    const rainCtx     = rainCanvas.getContext('2d');
-    const ldRingProg  = document.getElementById('ld-ring-prog');
-    const ldNumEl     = document.getElementById('ld-num');
-    const ldMsgEl     = document.getElementById('ld-msg');
-    const ldIris      = document.getElementById('ld-iris');
-
-    let rainWidth, rainHeight, columns;
-    const fontSize = 14;
-    const chars    = "01010101010101010101";
-    let drops      = [];
-
-    function initRain() {
-        rainWidth  = rainCanvas.width  = window.innerWidth;
-        rainHeight = rainCanvas.height = window.innerHeight;
-        columns    = Math.floor(rainWidth / fontSize);
-        drops      = Array(columns).fill(1);
-    }
-    initRain();
-    window.addEventListener('resize', initRain);
-
-    function drawRain() {
-        rainCtx.fillStyle = 'rgba(5, 7, 16, 0.15)';
-        rainCtx.fillRect(0, 0, rainWidth, rainHeight);
-        rainCtx.fillStyle = '#AAFF5E';
-        rainCtx.font      = `${fontSize}px monospace`;
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            rainCtx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > rainHeight && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-    let rainInterval = setInterval(drawRain, 33);
-
-    const loaderMsgs = [
-        "SYSTEM INIT", "KERNEL BOOT", "MAPPING DEPTH", 
-        "LINKING ASSETS", "STABILIZING UI", "ACCESS GRANTED"
-    ];
-    let ldProgress = 0;
-    const ldRingCirc = 534; // 2 * PI * 85 approx
-
-    const ldTimer = setInterval(() => {
-        ldProgress += Math.random() * 2.5 + 0.5;
-        if (ldProgress >= 100) {
-            ldProgress = 100;
-            clearInterval(ldTimer);
-            finishLoader();
-        }
-
-        // Update ring
-        if (ldRingProg) {
-            ldRingProg.style.strokeDashoffset = ldRingCirc - (ldProgress / 100) * ldRingCirc;
-        }
-        // Update number
-        if (ldNumEl) {
-            ldNumEl.textContent = String(Math.floor(ldProgress)).padStart(3, '0');
-        }
-        // Update message
-        const msgIdx = Math.min(Math.floor((ldProgress / 100) * loaderMsgs.length), loaderMsgs.length - 1);
-        if (ldMsgEl) ldMsgEl.textContent = loaderMsgs[msgIdx];
-    }, 45);
+    const loader = document.getElementById('loader');
+    if (loader) loader.style.display = 'none';
 
     function finishLoader() {
-        setTimeout(() => {
-            clearInterval(rainInterval);
-            loader.classList.add('exit');
-            ldIris.classList.add('open');
-
-            // Fire Main Entrance
-            document.getElementById('left-panel')?.classList.add('panel-loaded');
-            document.querySelector('.lp-nav')?.classList.add('nav-loaded');
-            runHeroEntrance();
-
-            setTimeout(() => {
-                loader.style.display = 'none';
-                initScrollObservers();
-                initWordSplitReveal();
-                initFooterAnimation();
-                initRotatingText();
-                initStickySection();
-                initImpactStats();
-                initSectionFlashes();
-                initQuoteParallax();
-            }, 950);
-        }, 600);
+        document.getElementById('left-panel')?.classList.add('panel-loaded');
+        document.querySelector('.lp-nav')?.classList.add('nav-loaded');
+        runHeroEntrance();
+        initScrollObservers();
+        initWordSplitReveal();
+        initFooterAnimation();
+        initRotatingText();
+        initStickySection();
+        initImpactStats();
+        initSectionFlashes();
+        initQuoteParallax();
+        initDocModal();
     }
+
+    finishLoader();
 
 
     /* ═══════════════════════════════════════════
@@ -781,7 +710,245 @@ document.addEventListener('DOMContentLoaded', () => {
         ).join(' ');
         
         quoteWall.dataset.splitDone = "true";
-        // No scroll listener — words stay locked once revealed
+    }
+
+
+    /* ═══════════════════════════════════════════
+       20. DOCUMENTATION MODAL
+    ═══════════════════════════════════════════ */
+    function initDocModal() {
+
+        /* ── Project data (sourced from actual project READMEs & codebases) ── */
+        const projectData = {
+            'yt-shorts': {
+                num: '01',
+                type: 'Automation Engineering',
+                title: 'YouTube Shorts Automator',
+                status: 'Live',
+                role: 'Solo Developer',
+                timeline: '2024',
+                problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels (Hazy Insight and Hazy US) was unsustainable and would require a full production team.',
+                solution: 'Hazy Content Factory — an enterprise-grade, cloud-native automated video production pipeline. It uses LLMs to generate structured "Viral Package" scripts, neural TTS for voiceover, programmatic video rendering via Remotion on AWS Lambda, and parallel upload to YouTube, TikTok, and Meta. A Supabase-backed recovery system auto-resumes failed renders so no job is ever lost.',
+                steps: [
+                    'Gemini Flash synthesizes a structured Viral Package JSON from topic input — script, title, description, tags, hook',
+                    'Microsoft Edge-TTS generates neural speech audio with word-boundary timestamps for caption sync',
+                    'Pexels / Pixabay / AI archive sourced B-roll is matched to script segments hierarchically',
+                    'Remotion (React) renders the video programmatically with Ken Burns zoom/drift and word-level karaoke captions — dispatched to AWS Lambda',
+                    'Finished render is uploaded in parallel to YouTube, TikTok, and Meta with platform-specific metadata',
+                    'Discord webhook fires a telemetry alert with performance metrics per completed run'
+                ],
+                specs: [
+                    { label: 'Channels', value: 'Hazy Insight + Hazy US' },
+                    { label: 'Rendering', value: 'AWS Lambda / S3 (Serverless)' },
+                    { label: 'State Management', value: 'Supabase (PostgreSQL)' },
+                    { label: 'Output', value: 'YouTube · TikTok · Meta' }
+                ],
+                stack: ['Python 3.12', 'Google Gemini Flash', 'Microsoft Edge-TTS', 'Remotion (React)', 'AWS Lambda', 'AWS S3', 'Supabase', 'PostgreSQL', 'Pexels API', 'Discord Webhooks'],
+                devnotes: 'The hardest engineering problem was word-level caption sync. Edge-TTS returns word boundary events with millisecond precision — I built a mapper that converts those timestamps into Remotion frame numbers so every word highlights exactly as it is spoken. The self-healing recovery system was built after a Lambda timeout cascade lost an entire batch; Supabase now tracks job state at every stage and a recovery script re-queues any failed renders on the next run without human intervention.',
+                outcome: 'Two fully independent content channels run on complete autopilot. The pipeline scales from 1 to 100 videos per run without any local hardware — AWS Lambda handles parallel rendering across chunks. Anti-AI-slop prompt engineering was introduced after early content sounded robotic; specialized prompts now eliminate repetitive hooks and generic vocabulary, meaningfully improving viewer retention.'
+            },
+            'dti-queue': {
+                num: '02',
+                type: 'Government Infrastructure',
+                title: 'DTI Queue System',
+                status: 'Production',
+                role: 'Lead Developer',
+                timeline: '2024',
+                problem: 'The DTI Payment Office managed walk-in client flow with paper ticket slips, a whiteboard, and verbal call-outs. There was no audit trail, no way to measure wait times, no mechanism to handle multiple service lanes simultaneously, and no visibility for clients on where they stood in the queue. During peak hours, the system broke down entirely.',
+                solution: 'A self-hosted, LAN-based smart queue management system with four purpose-built interfaces: a customer Kiosk for ticket issuance, a Cashier dashboard for queue management, a public Monitor display, and an Admin panel for lane configuration and analytics. No internet required — runs on a single office PC and serves all devices over the office LAN.',
+                steps: [
+                    'Customer walks up to the Kiosk (/kiosk), selects service type, and receives a printed thermal ticket (80mm format)',
+                    'Socket.io broadcasts the new ticket to all connected dashboards in real time — cashier sees it instantly',
+                    'Cashier (/cashier) calls the next ticket, marking each transaction as called, serving, or done via their dashboard',
+                    'Public Monitor (/monitor) displays the live now-serving number on a TV screen in the waiting area',
+                    'Admin (/admin) configures lanes, manages cashier accounts, and views daily queue analytics — tickets auto-reset at midnight via node-cron'
+                ],
+                specs: [
+                    { label: 'Deployment', value: 'Self-Hosted LAN (No Internet)' },
+                    { label: 'Interfaces', value: 'Kiosk · Cashier · Monitor · Admin' },
+                    { label: 'Database', value: 'SQLite via Prisma ORM' },
+                    { label: 'Printer', value: '80mm Thermal (Auto-Print)' }
+                ],
+                stack: ['Node.js', 'Express.js', 'Socket.io', 'Prisma ORM', 'SQLite', 'React (Vite)', 'JWT', 'bcryptjs', 'Helmet', 'node-cron'],
+                devnotes: 'The biggest constraint was reliability on aging office hardware with no IT staff on-site. I chose SQLite over PostgreSQL specifically because it requires zero server setup — a single .db file, no service to manage, no credentials to lose. Prisma handles migrations cleanly. The Socket.io reconnection logic was the most critical piece: office routers drop connections intermittently, so every client implements exponential backoff with a persistent connection state indicator so staff always know if they are live.',
+                outcome: 'Paper slips were eliminated on day one. All four interfaces deployed across the office LAN on existing hardware — the kiosk PC, cashier stations, and a public monitor TV — with no configuration required from office staff. The system has been in daily production use with zero reported failures. A batch script handles startup so any staff member can launch the full system.'
+            },
+            'polycon': {
+                num: '03',
+                type: 'Academic Platform',
+                title: 'Polycon — A Consultation System',
+                status: 'Live',
+                role: 'Full-Stack Developer',
+                timeline: '2023–2024',
+                problem: 'Faculty-student consultations at the polytechnic were entirely unstructured. Bookings were made via text message, sessions were undocumented, grade improvement was unmeasured, and there was no way to determine whether consultations were actually helping students. Faculty had no visibility into their own schedule, and administrators had no data on consultation effectiveness.',
+                solution: 'Polycon — a full-stack educational consultation and learning management system. Students book sessions through a scheduling interface, faculty manage availability and session notes, and an analytics engine (the POLYCON Analysis) statistically measures the effect of consultation frequency on grade improvement across Prelim, Midterm, Pre-Final, and Final periods. Sessions can be audio-recorded and auto-transcribed via AssemblyAI.',
+                steps: [
+                    'Student authenticates via JWT and views real-time faculty availability through the booking calendar',
+                    'Booking request triggers a Flask-SocketIO event — faculty receives an instant notification',
+                    'Faculty accepts or reschedules; APScheduler sends reminder emails before the session',
+                    'During or after the session, faculty fills a structured consultation form; audio recordings are transcribed by AssemblyAI and AI-sentiment-analyzed via Google Generative AI',
+                    'Admin dashboard runs POLYCON Analysis — a statistical report correlating consultation count with grade delta across academic periods — exportable as a PDF'
+                ],
+                specs: [
+                    { label: 'Analytics', value: 'POLYCON Analysis (Grade vs Consultation)' },
+                    { label: 'Transcription', value: 'AssemblyAI (Audio-to-Text)' },
+                    { label: 'Deployment', value: 'Render.com + Docker' },
+                    { label: 'Access Control', value: 'Student · Faculty · Admin (JWT)' }
+                ],
+                stack: ['Flask (Python 3.11)', 'React 18', 'PostgreSQL', 'Flask-SocketIO', 'SQLAlchemy', 'JWT', 'APScheduler', 'AssemblyAI', 'Google Generative AI', 'Chart.js', 'Tailwind CSS', 'Framer Motion', 'Docker'],
+                devnotes: 'The POLYCON Analysis module was the most research-heavy part — I had to define a statistically meaningful way to measure consultation effectiveness on grades. I landed on computing the grade delta per student (pre vs post consultation period) and correlating it with session count. The AI sentiment analysis on transcribed sessions was added to give faculty qualitative feedback on session quality, not just attendance. Deploying on Render with Docker meant designing the app to be fully environment-agnostic from day one.',
+                outcome: 'Zero missed appointments since deployment — all session history is now searchable and timestamped. The POLYCON Analysis has produced actual academic reports used by faculty to justify consultation scheduling policies. Audio transcription means no consultation is ever lost to memory. The backup SQL export contains real session data from production use.'
+            },
+            'spell-gate': {
+                num: '04',
+                type: 'UX Engineering',
+                title: 'Spell Gate',
+                status: 'Deployed',
+                role: 'Solo Developer',
+                timeline: '2023',
+                problem: 'A public-facing kiosk deployed for non-technical walk-up users had a data quality problem: users submitted free-text entries with misspellings that corrupted downstream records and required manual correction by staff daily. The device ran air-gapped on a local network with no internet access, ruling out cloud-based spell-check APIs. Staff time spent fixing bad inputs was significant.',
+                solution: 'Spell Gate — a Tkinter-based kiosk application with a real-time offline spell-check validation layer built directly into the input flow. Every text field validates tokens against a local dictionary as the user types. Misspelled words surface an inline suggestion interface. The submit action is hard-locked behind a validation pass — users cannot proceed until input is confirmed correct. An admin panel lets non-technical staff configure the vocabulary whitelist and gate strictness without developer involvement.',
+                steps: [
+                    'User approaches the kiosk and begins typing into any text field',
+                    'pyspellchecker tokenizes the input in real time and checks each word against the local dictionary',
+                    'Misspelled tokens are underlined and a correction suggestion appears inline without blocking the cursor',
+                    'The submit button remains disabled until all fields pass validation — the gate',
+                    'Confirmed submissions are written to SQLite; the admin panel allows whitelisting domain-specific terms and adjusting gate rules'
+                ],
+                specs: [
+                    { label: 'Deployment', value: 'Air-Gapped Hardware Kiosk' },
+                    { label: 'Validation', value: 'Offline / Local Dictionary' },
+                    { label: 'Interface', value: 'Tkinter + Custom Canvas Layer' },
+                    { label: 'Admin Panel', value: 'Vocab Whitelist + Gate Config' }
+                ],
+                stack: ['Python 3', 'Tkinter', 'pyspellchecker', 'SQLite', 'Custom UI Canvas Engine'],
+                devnotes: 'Tkinter\'s widget model is not designed for dynamic inline overlays — the standard Entry widget has no native support for per-token styling. I built a custom canvas layer that sits over the entry widget, renders underline markers on misspelled token positions, and intercepts click events on suggestions without interfering with normal typing. The admin vocab whitelist feature was a post-deployment addition requested by staff who needed to whitelist proper nouns specific to their context — I\'m glad the architecture was clean enough to support it with minimal changes.',
+                outcome: 'Input error rate dropped to near-zero after deployment. Staff reported that the manual correction workload — which had been a daily task — was eliminated entirely. Users complete the kiosk flow fully unassisted. The admin vocab whitelist has been updated by non-technical staff on their own, validating the design decision to make configuration accessible without code changes.'
+            },
+            'streamer-shorts': {
+                num: '05',
+                type: 'Content Automation',
+                title: 'Streamer Shorts Automator',
+                status: 'Beta',
+                role: 'Solo Developer',
+                timeline: '2024',
+                problem: 'Streamers produce hours of VOD content daily, but extracting viral short-form clips requires watching recordings, identifying high-engagement moments, trimming, reformatting to vertical 9:16, adding captions, and uploading — a process that takes 2–4 hours per clip. Cloud-based solutions were blocked by platform anti-scraping measures at datacenter IP ranges, making server-based automation unreliable.',
+                solution: 'A local-residential-hardware pipeline that solves the cloud IP reputation problem. The frontend dashboard (Next.js 14, hosted on Vercel) injects clip jobs into a local SQLite database. A local worker (FastAPI + yt-dlp) runs on home hardware with residential IP reputation, bypassing YouTube\'s datacenter firewall. Gemini 2.5 Flash brainstorms the best clip segments, FFmpeg v11 handles the filtergraph rendering with GPU acceleration (NVENC/AMF), and finished clips are queued for upload.',
+                steps: [
+                    'Operator submits a VOD URL through the Next.js dashboard on Vercel — job is written to local SQLite via the bridge',
+                    'The local worker (FastAPI) picks up the job; yt-dlp downloads the VOD from the residential IP, bypassing cloud scraping blocks',
+                    'Gemini 2.5 Flash analyzes the transcript and brainstorms the highest-retention clip segments with rationale',
+                    'FFmpeg v11 filtergraph crops to 9:16, applies NVENC/AMF GPU encoding for 5–10x faster rendering than cloud CPU',
+                    'Clip is captioned and added to the upload review queue; operator approves and clips are sent to YouTube'
+                ],
+                specs: [
+                    { label: 'Architecture', value: 'Vercel Dashboard + Local Worker Bridge' },
+                    { label: 'Rendering', value: 'Local GPU (NVENC/AMF) · 5–10x faster' },
+                    { label: 'Clip Intelligence', value: 'Gemini 2.5 Flash Brainstorming' },
+                    { label: 'Platform', value: 'Docker · Hugging Face Spaces' }
+                ],
+                stack: ['Next.js 14', 'FastAPI', 'SQLite (WAL Mode)', 'yt-dlp', 'Google Gemini 2.5 Flash', 'FFmpeg v11', 'Docker', 'Vercel', 'Hugging Face Spaces'],
+                devnotes: 'The core architectural decision — moving the download worker to local residential hardware — was forced by YouTube\'s aggressive datacenter IP blocking. Cobalt API and AllOrigins, which we initially used as proxies, were clustered with malicious bot traffic by YouTube\'s abuse mitigation and blocked. Home Wi-Fi bypasses this completely. The SQLite WAL (Write-Ahead Logging) mode was chosen specifically so the Vercel edge function and the local worker can read and write the database concurrently without locking — critical for a reliable job queue.',
+                outcome: 'Clip processing time dropped from 2–4 hours of manual work to under 5 minutes per clip. GPU rendering (NVENC on local hardware) is 5–10x faster than the previous AWS Lambda CPU approach. The local IP strategy has a 100% download success rate where the cloud approach was consistently blocked. The system is currently in active beta with real streamer VOD content.'
+            }
+        };
+
+        /* ── DOM refs ── */
+        const modal        = document.getElementById('doc-modal');
+        const backdrop     = modal?.querySelector('.doc-modal-backdrop');
+        const closeBtn     = document.getElementById('doc-modal-close');
+        const elNum        = document.getElementById('doc-modal-num');
+        const elType       = document.getElementById('doc-modal-type');
+        const elTitle      = document.getElementById('doc-modal-title');
+        const elStatus     = document.getElementById('doc-badge-status');
+        const elRole       = document.getElementById('doc-badge-role');
+        const elTimeline   = document.getElementById('doc-badge-timeline');
+        const elProblem    = document.getElementById('doc-problem');
+        const elSolution   = document.getElementById('doc-solution');
+        const elSteps      = document.getElementById('doc-steps');
+        const elSpecsGrid  = document.getElementById('doc-specs-grid');
+        const elChips      = document.getElementById('doc-chips');
+        const elDevnotes   = document.getElementById('doc-devnotes');
+        const elOutcome    = document.getElementById('doc-outcome');
+
+        if (!modal) return;
+
+        /* ── Open modal ── */
+        function openModal(projectId) {
+            const data = projectData[projectId];
+            if (!data) return;
+
+            /* Populate fields */
+            elNum.textContent      = data.num;
+            elType.textContent     = data.type;
+            elTitle.textContent    = data.title;
+            elStatus.textContent   = data.status;
+            elRole.textContent     = data.role;
+            elTimeline.textContent = data.timeline;
+            elProblem.textContent  = data.problem;
+            elSolution.textContent = data.solution;
+            elDevnotes.textContent = data.devnotes;
+            elOutcome.textContent  = data.outcome;
+
+            /* Steps */
+            elSteps.innerHTML = data.steps
+                .map((s, i) => `<li><span class="doc-step-num">${String(i+1).padStart(2,'0')}</span><span>${s}</span></li>`)
+                .join('');
+
+            /* Spec cards */
+            elSpecsGrid.innerHTML = data.specs
+                .map(s => `<div class="doc-spec-card"><div class="doc-spec-label">${s.label}</div><div class="doc-spec-value">${s.value}</div></div>`)
+                .join('');
+
+            /* Tech chips */
+            elChips.innerHTML = data.stack
+                .map(t => `<span class="doc-chip">${t}</span>`)
+                .join('');
+
+            /* Status badge color */
+            elStatus.dataset.status = data.status.toLowerCase();
+
+            /* Show */
+            modal.classList.add('open');
+            document.body.classList.add('modal-open');
+
+            /* Scroll modal body to top */
+            const panel = modal.querySelector('.doc-modal-panel');
+            if (panel) panel.scrollTop = 0;
+
+            /* Stagger-animate sections in */
+            const sections = modal.querySelectorAll('.doc-section, .doc-specs-grid');
+            sections.forEach((sec, i) => {
+                sec.style.opacity   = '0';
+                sec.style.transform = 'translateY(22px)';
+                setTimeout(() => {
+                    sec.style.transition = `opacity .55s ${i * 70}ms ease, transform .55s ${i * 70}ms cubic-bezier(.16,1,.3,1)`;
+                    sec.style.opacity   = '1';
+                    sec.style.transform = 'translateY(0)';
+                }, 80 + i * 70);
+            });
+        }
+
+        /* ── Close modal ── */
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.classList.remove('modal-open');
+        }
+
+        /* ── Triggers ── */
+        document.querySelectorAll('.doc-trigger').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                openModal(link.dataset.project);
+            });
+        });
+
+        closeBtn?.addEventListener('click', closeModal);
+        backdrop?.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+        });
     }
 
 });

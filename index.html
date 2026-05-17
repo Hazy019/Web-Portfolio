@@ -30,38 +30,20 @@
          Exit: iris-out circle wipe
     ════════════════════════════════════════ -->
     <div id="loader">
-        <!-- Binary rain canvas (Phase 1) -->
-        <canvas id="rain-canvas"></canvas>
-
-        <!-- Center content -->
-        <div class="ld-center" id="ld-center">
-            <!-- Logo + targeting ring -->
-            <div class="ld-logo-wrap">
-                <svg class="ld-svg-ring" viewBox="0 0 200 200">
-                    <circle class="ld-ring-track" cx="100" cy="100" r="85" />
-                    <circle class="ld-ring-prog" cx="100" cy="100" r="85" id="ld-ring-prog" />
-                    <!-- Tick marks -->
-                    <line class="ld-tick" x1="100" y1="10" x2="100" y2="22" />
-                    <line class="ld-tick" x1="100" y1="178" x2="100" y2="190" />
-                    <line class="ld-tick" x1="10" y1="100" x2="22" y2="100" />
-                    <line class="ld-tick" x1="178" y1="100" x2="190" y2="100" />
-                </svg>
-                <!-- Dashed outer ring (CSS spin) -->
-                <div class="ld-outer-dash"></div>
-                <!-- Logo image -->
-                <div class="ld-logo-inner">
-                    <img src="hazy-logo.png" alt="HAZY" class="ld-logo-img">
+        <div class="ld-stack">
+            <div class="ld-img-wrap">
+                <img src="hazy-logo.png" alt="HAZY" class="ld-logo-img">
+                <div class="ld-halo"></div>
+            </div>
+            <div class="ld-name">H<span>AZY</span></div>
+            <div class="ld-bar-wrap">
+                <div class="ld-bar-fill" id="ld-bar-fill">
+                    <div class="ld-bar-dot"></div>
                 </div>
             </div>
-
-            <!-- Large 3-digit counter -->
-            <div class="ld-big-num"><span id="ld-num">000</span></div>
-
-            <!-- Terminal log -->
-            <div class="ld-terminal">
-                <span class="ld-prompt">›</span>
-                <span id="ld-msg">SYSTEM INIT</span>
-                <span class="ld-blink">█</span>
+            <div class="ld-info">
+                <div class="ld-status" id="ld-status">INIT</div>
+                <div class="ld-pct" id="ld-pct">0%</div>
             </div>
         </div>
 
@@ -70,9 +52,6 @@
         <div class="lc tr"></div>
         <div class="lc bl"></div>
         <div class="lc br"></div>
-
-        <!-- Iris wipe overlay (exit animation) -->
-        <div class="ld-iris" id="ld-iris"></div>
     </div><!-- /#loader -->
 
 
@@ -94,11 +73,6 @@
                          mix-blend-mode: screen is applied in css-additions-v6.css
                     -->
                     <a href="#intro" class="lp-logo-block">
-                        <div class="lp-logo-cloud">
-                            <img src="hazy-logo.png" alt="HAZY" class="lp-logo-img">
-                            <!-- Rotating outer ring decorating the logo -->
-                            <div class="lp-logo-orbit"></div>
-                        </div>
                         <div class="lp-logo-text">H<span>AZY</span></div>
                     </a>
                     <button class="theme-btn" id="theme-btn" aria-label="Toggle theme">
@@ -176,7 +150,6 @@
             <nav class="mobile-nav" id="mobile-nav">
                 <!-- ✦ FIXED: logo image gets mix-blend-mode: screen via CSS additions -->
                 <a href="#intro" class="mn-logo">
-                    <img src="hazy-logo.png" alt="" class="mn-logo-img" aria-hidden="true">
                     <span>H<span>AZY</span></span>
                 </a>
                 <div class="mn-controls">
@@ -320,135 +293,135 @@
                 <h2 class="s-head rv rv--up">Selected<br><span class="accent-txt">Work.</span></h2>
                 <div class="proj-list">
 
-                    <div class="proj-item rv rv--up" data-num="01" data-type="Government Infrastructure"
-                        data-name="DTI Queue Management System" data-delay="0">
-                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                    <!-- PROJECT 01: YouTube Shorts Automator -->
+                    <div class="proj-item rv rv--up" data-num="01" data-type="Automation Engineering"
+                        data-name="YouTube Shorts Automator" data-delay="0">
+                        <div class="proj-trigger" data-type-ghost="AUTOMATION">
                             <span class="pt-num">01</span>
                             <div class="pt-info">
+                                <div class="pt-type">Automation Engineering</div>
+                                <div class="pt-title">YouTube Shorts Automator</div>
+                            </div>
+                            <div class="pt-arr">→</div>
+                        </div>
+                        <div class="proj-body">
+                            <div class="proj-body-inner">
+                                <p class="proj-narrative">A fully unattended pipeline that converts raw scripts into
+                                    polished YouTube Shorts — TTS narration, dynamic subtitles, and B-roll stitching
+                                    via FFmpeg. Scheduled jobs run nightly with zero human input after initial
+                                    configuration.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> 3–5 hours
+                                    of daily manual editing eliminated. Content pipeline now runs on autopilot.</div>
+                                <div class="proj-stack"><span class="chip">Python</span><span
+                                        class="chip">FFmpeg</span><span class="chip">TTS Engine</span><span
+                                        class="chip">YouTube Data API v3</span><span class="chip">APScheduler</span></div>
+                                <a href="#" class="proj-link doc-trigger" data-project="yt-shorts">View Documentation →</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROJECT 02: DTI Queue System -->
+                    <div class="proj-item rv rv--up" data-num="02" data-type="Government Infrastructure"
+                        data-name="DTI Queue System" data-delay="60">
+                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                            <span class="pt-num">02</span>
+                            <div class="pt-info">
                                 <div class="pt-type">Government Infrastructure</div>
-                                <div class="pt-title">DTI Queue Management System</div>
+                                <div class="pt-title">DTI Queue System</div>
                             </div>
                             <div class="pt-arr">→</div>
                         </div>
                         <div class="proj-body">
                             <div class="proj-body-inner">
                                 <p class="proj-narrative">The Department of Trade and Industry's regional branch was
-                                    processing walk-ins with paper slips and a whiteboard. I rebuilt that from scratch —
-                                    real-time WebSocket ticket generation, role-based inventory tracking, and a live
-                                    admin dashboard with full audit history. Deployed to production and used by actual
-                                    government staff daily.</p>
+                                    processing walk-ins with paper slips and a whiteboard. Rebuilt from scratch —
+                                    real-time WebSocket ticket generation, role-based access, and a live admin
+                                    dashboard with full audit history. Deployed to production and used daily by
+                                    government staff.</p>
                                 <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Queue
-                                    throughput increased, paper records eliminated. Now the branch's primary operational
-                                    system.</div>
+                                    throughput increased, paper records eliminated. Now the branch's primary
+                                    operational system.</div>
                                 <div class="proj-stack"><span class="chip">Python</span><span
                                         class="chip">Django</span><span class="chip">PostgreSQL</span><span
                                         class="chip">WebSockets</span><span class="chip">Bootstrap</span></div>
-                                <a href="#" class="proj-link">View Documentation →</a>
+                                <a href="#" class="proj-link doc-trigger" data-project="dti-queue">View Documentation →</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="proj-item rv rv--up" data-num="02" data-type="Academic Platform"
-                        data-name="Polycon — Faculty Consultation System" data-delay="60">
-                        <div class="proj-trigger" data-type-ghost="WEBSITE">
-                            <span class="pt-num">02</span>
-                            <div class="pt-info">
-                                <div class="pt-type">Academic Platform</div>
-                                <div class="pt-title">Polycon — Faculty Consultation System</div>
-                            </div>
-                            <div class="pt-arr">→</div>
-                        </div>
-                        <div class="proj-body">
-                            <div class="proj-body-inner">
-                                <p class="proj-narrative">Faculty-student consultations had no digital record —
-                                    appointments lived in text messages, sessions undocumented. Polycon: full-stack
-                                    platform with real-time scheduling, push notifications, per-session docs, and
-                                    separate portals for students and faculty.</p>
-                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Zero missed
-                                    appointments since launch. Session documentation rate: near zero → 100%.</div>
-                                <div class="proj-stack"><span class="chip">Django</span><span
-                                        class="chip">React</span><span class="chip">PostgreSQL</span><span
-                                        class="chip">REST API</span><span class="chip">WebSockets</span></div>
-                                <a href="#" class="proj-link">View Documentation →</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="proj-item rv rv--up" data-num="03" data-type="Automation Engineering"
-                        data-name="YouTube Automation Suite" data-delay="120">
+                    <!-- PROJECT 03: Polycon -->
+                    <div class="proj-item rv rv--up" data-num="03" data-type="Academic Platform"
+                        data-name="Polycon — A Consultation System" data-delay="120">
                         <div class="proj-trigger" data-type-ghost="WEBSITE">
                             <span class="pt-num">03</span>
                             <div class="pt-info">
-                                <div class="pt-type">Automation Engineering</div>
-                                <div class="pt-title">YouTube Automation Suite</div>
+                                <div class="pt-type">Academic Platform</div>
+                                <div class="pt-title">Polycon — A Consultation System</div>
                             </div>
                             <div class="pt-arr">→</div>
                         </div>
                         <div class="proj-body">
                             <div class="proj-body-inner">
-                                <p class="proj-narrative">A production automation pipeline for YouTube:
-                                    script-to-short-video engine using FFmpeg and TTS, combined with a Selenium
-                                    engagement bot for comment responses. Runs scheduled jobs unattended once
-                                    configured.</p>
-                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Hours of
-                                    daily manual work now runs completely unattended.</div>
-                                <div class="proj-stack"><span class="chip">Python</span><span
-                                        class="chip">Selenium</span><span class="chip">YouTube Data API v3</span><span
-                                        class="chip">FFmpeg</span><span class="chip">APScheduler</span></div>
-                                <a href="#" class="proj-link">View Case Study →</a>
+                                <p class="proj-narrative">Faculty-student consultations at the polytechnic had no digital infrastructure. Bookings happened over text, sessions were undocumented, and there was no way to measure whether consultations improved grades. Polycon is a full-stack LMS with real-time scheduling, AI-powered session transcription via AssemblyAI, POLYCON Analysis for grade-improvement tracking, and separate portals for students, faculty, and admins.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Zero missed appointments since launch. Session documentation rate went from near-zero to 100%. Academic reports now produced from real consultation data.</div>
+                                <div class="proj-stack"><span class="chip">Flask</span><span
+                                        class="chip">React 18</span><span class="chip">PostgreSQL</span><span
+                                        class="chip">AssemblyAI</span><span class="chip">Docker</span></div>
+                                <a href="#" class="proj-link doc-trigger" data-project="polycon">View Documentation →</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="proj-item rv rv--up" data-num="04" data-type="Voice AI System"
-                        data-name="Jarvis — Offline Personal Assistant" data-delay="180">
-                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                    <!-- PROJECT 04: Spell Gate -->
+                    <div class="proj-item rv rv--up" data-num="04" data-type="UX Engineering"
+                        data-name="Spell Gate" data-delay="180">
+                        <div class="proj-trigger" data-type-ghost="KIOSK">
                             <span class="pt-num">04</span>
                             <div class="pt-info">
-                                <div class="pt-type">Voice AI System</div>
-                                <div class="pt-title">Jarvis — Offline Personal Assistant</div>
+                                <div class="pt-type">UX Engineering</div>
+                                <div class="pt-title">Spell Gate</div>
                             </div>
                             <div class="pt-arr">→</div>
                         </div>
                         <div class="proj-body">
                             <div class="proj-body-inner">
-                                <p class="proj-narrative">Privacy-first voice AI built entirely in Python: no API calls,
-                                    no cloud. NLP intent classification routes to a modular plugin system — system
-                                    controls, file management, reminders. Extensible: new capabilities without touching
-                                    core logic.</p>
-                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> 12 distinct
-                                    capability modules. Fully offline voice assistant with zero cloud dependency.</div>
+                                <p class="proj-narrative">A walk-up kiosk for non-technical users: access is gated
+                                    behind a real-time spell-check validation layer before content is unlocked.
+                                    Built in Tkinter for direct hardware deployment with a configurable admin
+                                    panel. Zero staff assistance required post-deployment.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Input
+                                    error rate dropped significantly. Users complete tasks unassisted.</div>
                                 <div class="proj-stack"><span class="chip">Python</span><span
-                                        class="chip">SpeechRecognition</span><span class="chip">PyAudio</span><span
-                                        class="chip">NLP</span><span class="chip">Plugin Architecture</span></div>
-                                <a href="#" class="proj-link">View Case Study →</a>
+                                        class="chip">Tkinter</span><span class="chip">pyspellchecker</span><span
+                                        class="chip">Custom UI Engine</span></div>
+                                <a href="#" class="proj-link doc-trigger" data-project="spell-gate">View Documentation →</a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="proj-item rv rv--up" data-num="05" data-type="UX Engineering"
-                        data-name="Kiosk Spell Gate" data-delay="240">
-                        <div class="proj-trigger" data-type-ghost="WEBSITE">
+                    <!-- PROJECT 05: Streamer Shorts Automator -->
+                    <div class="proj-item rv rv--up" data-num="05" data-type="Content Automation"
+                        data-name="Streamer Shorts Automator" data-delay="240">
+                        <div class="proj-trigger" data-type-ghost="AUTOMATION">
                             <span class="pt-num">05</span>
                             <div class="pt-info">
-                                <div class="pt-type">UX Engineering</div>
-                                <div class="pt-title">Kiosk Spell Gate</div>
+                                <div class="pt-type">Content Automation</div>
+                                <div class="pt-title">Streamer Shorts Automator</div>
                             </div>
                             <div class="pt-arr">→</div>
                         </div>
                         <div class="proj-body">
                             <div class="proj-body-inner">
-                                <p class="proj-narrative">A walk-up kiosk for non-technical users: content is gated
-                                    behind a real-time spell-check validation layer. Built in Tkinter for direct
-                                    hardware
-                                    deployment, configurable admin panel for content and gate rules. Zero staff
-                                    assistance required.</p>
-                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Input error
-                                    rate dropped significantly. Users complete tasks unassisted.</div>
+                                <p class="proj-narrative">Clips live-stream VODs into viral-ready Shorts
+                                    automatically — detects high-engagement moments via chat velocity analysis,
+                                    trims and formats them to 9:16, adds animated captions, and queues for
+                                    upload. Built for Twitch and YouTube streamers wanting passive clip growth.</p>
+                                <div class="proj-outcome"><span class="accent-txt font-bold">Outcome:</span> Clip
+                                    turnaround time from hours to under 5 minutes. Fully passive clip pipeline.</div>
                                 <div class="proj-stack"><span class="chip">Python</span><span
-                                        class="chip">Tkinter</span><span class="chip">pyspellchecker</span><span
-                                        class="chip">Custom UI</span></div>
-                                <a href="#" class="proj-link">View Case Study →</a>
+                                        class="chip">FFmpeg</span><span class="chip">Twitch API</span><span
+                                        class="chip">YouTube Data API</span><span class="chip">NLP / Sentiment</span></div>
+                                <a href="#" class="proj-link doc-trigger" data-project="streamer-shorts">View Documentation →</a>
                             </div>
                         </div>
                     </div>
@@ -588,12 +561,13 @@
                             opportunities. Based in the Philippines (UTC+8) and available remotely. I respond to every
                             message.</p>
                         <div class="ct-links">
-                            <a href="mailto:kyrell@example.com" class="ct-link rv rv--left" data-delay="0"><span
-                                    class="ctl-label">Email</span><span class="ctl-value">kyrell@example.com</span><span
+                            <a href="mailto:santillankyrell@gmail.com" class="ct-link rv rv--left" data-delay="0"><span
+                                    class="ctl-label">Email</span><span
+                                    class="ctl-value">santillankyrell@gmail.com.com</span><span
                                     class="ctl-arr">→</span></a>
-                            <a href="https://github.com/hazy-dev" target="_blank" class="ct-link rv rv--left"
+                            <a href="https://github.com/Hazy019" target="_blank" class="ct-link rv rv--left"
                                 data-delay="80"><span class="ctl-label">GitHub</span><span
-                                    class="ctl-value">@hazy-dev</span><span class="ctl-arr">→</span></a>
+                                    class="ctl-value">@hazy019</span><span class="ctl-arr">→</span></a>
                             <a href="https://linkedin.com/in/kyrell-santillan" target="_blank"
                                 class="ct-link rv rv--left" data-delay="160"><span
                                     class="ctl-label">LinkedIn</span><span class="ctl-value">Kyrell
@@ -628,6 +602,77 @@
 
         </main>
     </div>
+
+    <!-- ════════════════════════════════════════
+         DOCUMENTATION MODAL
+    ════════════════════════════════════════ -->
+    <div id="doc-modal" class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="doc-modal-title">
+        <div class="doc-modal-backdrop"></div>
+        <div class="doc-modal-panel">
+            <!-- Close button -->
+            <button class="doc-modal-close" id="doc-modal-close" aria-label="Close documentation">
+                <span></span><span></span>
+            </button>
+
+            <!-- Header -->
+            <div class="doc-modal-header">
+                <div class="doc-modal-meta">
+                    <span class="doc-modal-num" id="doc-modal-num">01</span>
+                    <span class="doc-modal-type" id="doc-modal-type">Type</span>
+                </div>
+                <h2 class="doc-modal-title" id="doc-modal-title">Project Name</h2>
+                <div class="doc-modal-badges">
+                    <span class="doc-badge doc-badge--status" id="doc-badge-status">Live</span>
+                    <span class="doc-badge doc-badge--role" id="doc-badge-role">Solo Developer</span>
+                    <span class="doc-badge doc-badge--timeline" id="doc-badge-timeline">2024</span>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="doc-modal-body">
+
+                <!-- Problem -->
+                <div class="doc-section" id="doc-sec-problem">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--problem"></span>The Problem</div>
+                    <p class="doc-section-content" id="doc-problem"></p>
+                </div>
+
+                <!-- Solution -->
+                <div class="doc-section" id="doc-sec-solution">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--solution"></span>The Solution</div>
+                    <p class="doc-section-content" id="doc-solution"></p>
+                </div>
+
+                <!-- Architecture -->
+                <div class="doc-section" id="doc-sec-arch">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--arch"></span>How It Works</div>
+                    <ol class="doc-steps" id="doc-steps"></ol>
+                </div>
+
+                <!-- Spec Cards -->
+                <div class="doc-specs-grid" id="doc-specs-grid"></div>
+
+                <!-- Stack -->
+                <div class="doc-section" id="doc-sec-stack">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--stack"></span>Tech Stack</div>
+                    <div class="doc-chips" id="doc-chips"></div>
+                </div>
+
+                <!-- Dev Notes -->
+                <div class="doc-section doc-section--note" id="doc-sec-notes">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--notes"></span>Developer Notes</div>
+                    <p class="doc-section-content" id="doc-devnotes"></p>
+                </div>
+
+                <!-- Outcome -->
+                <div class="doc-section doc-section--outcome" id="doc-sec-outcome">
+                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--outcome"></span>Results & Impact</div>
+                    <p class="doc-section-content" id="doc-outcome"></p>
+                </div>
+
+            </div><!-- /.doc-modal-body -->
+        </div><!-- /.doc-modal-panel -->
+    </div><!-- /#doc-modal -->
 
     <script src="main.js"></script>
 </body>
