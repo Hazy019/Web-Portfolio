@@ -50,7 +50,7 @@
 [data-theme="dark"] .proj-narrative,
 [data-theme="dark"] .ab-body p,
 [data-theme="dark"] .ct-desc {
-    color: #556070;
+    color: #8DA0B8;
 }
 
 [data-theme="dark"] .pt-title,
@@ -98,6 +98,12 @@
 [data-theme="dark"] .h-bar           { border-top-color: rgba(170,255,94,.08); }
 [data-theme="dark"] .hb-item+.hb-item { border-left-color: rgba(170,255,94,.08); }
 
+/* Dark mode button hover */
+[data-theme="dark"] .btn-primary:hover {
+    background: rgba(170, 255, 94, .1);
+    color: var(--accent);
+}
+
 /* Dark mode project rows */
 [data-theme="dark"] .proj-item       { border-top-color: rgba(170,255,94,.07); }
 [data-theme="dark"] .proj-trigger:hover { background: rgba(170,255,94,.04); }
@@ -114,9 +120,10 @@
     --fg-content:     #0F172A;
     --fg-muted:       #64748B;
     --border-content: rgba(15, 23, 42, .07);
-    --hero-grad:      radial-gradient(ellipse 80% 60% at 50% -15%, rgba(170,255,94,.14) 0%, transparent 55%);
+    --hero-grad:      radial-gradient(ellipse 80% 60% at 50% -15%, rgba(118,251,0,.14) 0%, transparent 55%);
     --grid-color:     rgba(15, 23, 42, .038);
     --noise-opacity:  .022;
+    --accent:         #76fb00;
 }
 
 /* Light mode text corrections — HIGH CONTRAST */
