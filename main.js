@@ -25,6 +25,23 @@ document.addEventListener('DOMContentLoaded', () => {
     finishLoader();
 
 
+    /* Helper functions for safe localstorage access */
+    function getThemeSafe() {
+        try {
+            return localStorage.getItem('hazy-theme') || 'dark';
+        } catch (e) {
+            return 'dark';
+        }
+    }
+
+    function setThemeSafe(theme) {
+        try {
+            localStorage.setItem('hazy-theme', theme);
+        } catch (e) {
+            // ignore sandboxed error
+        }
+    }
+
     /* ═══════════════════════════════════════════
        1. THEME RIPPLE TOGGLE
     ═══════════════════════════════════════════ */
@@ -32,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeBtns = document.querySelectorAll('#theme-btn, #theme-btn-mobile');
     const ripple    = document.getElementById('theme-ripple');
     
-    html.setAttribute('data-theme', localStorage.getItem('hazy-theme') || 'dark');
+    html.setAttribute('data-theme', getThemeSafe());
 
     themeBtns.forEach(btn => btn.addEventListener('click', (e) => {
         const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -50,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             html.setAttribute('data-theme', next);
-            localStorage.setItem('hazy-theme', next);
+            setThemeSafe(next);
         }, 350);
     }));
 
@@ -64,15 +81,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('mousemove', e => {
         mx = e.clientX; my = e.clientY;
-        dot.style.left = `${mx}px`;
-        dot.style.top  = `${my}px`;
+        if (dot) {
+            dot.style.left = `${mx}px`;
+            dot.style.top  = `${my}px`;
+        }
     });
 
     (function trackRing() {
         rx += (mx - rx) * .14;
         ry += (my - ry) * .14;
-        ring.style.left = `${rx}px`;
-        ring.style.top  = `${ry}px`;
+        if (ring) {
+            ring.style.left = `${rx}px`;
+            ring.style.top  = `${ry}px`;
+        }
         requestAnimationFrame(trackRing);
     })();
 
@@ -451,7 +472,8 @@ document.addEventListener('DOMContentLoaded', () => {
         function wrapWords(el) {
             /* Preserve accent-txt spans by working with childNodes */
             const processed = [];
-            el.childNodes.forEach(node => {
+            const nodes = Array.from(el.childNodes);
+            nodes.forEach(node => {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const words = node.textContent.split(' ');
                     words.forEach((w, i) => {
@@ -695,6 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sections.forEach(s => flashObs.observe(s));
     }
+
     /* ═══════════════════════════════════════════
        19. QUOTE WORD SPLIT REVEAL
     ═══════════════════════════════════════════ */
@@ -712,7 +735,6 @@ document.addEventListener('DOMContentLoaded', () => {
         quoteWall.dataset.splitDone = "true";
     }
 
-
     /* ═══════════════════════════════════════════
        20. DOCUMENTATION MODAL
     ═══════════════════════════════════════════ */
@@ -727,6 +749,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: 'Live',
                 role: 'Solo Developer',
                 timeline: '2024',
+                repoUrl: 'https://github.com/Hazy019/yt-shorts-automator',
                 problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels (Hazy Insight and Hazy US) was unsustainable and would require a full production team.',
                 solution: 'Hazy Content Factory — an enterprise-grade, cloud-native automated video production pipeline. It uses LLMs to generate structured "Viral Package" scripts, neural TTS for voiceover, programmatic video rendering via Remotion on AWS Lambda, and parallel upload to YouTube, TikTok, and Meta. A Supabase-backed recovery system auto-resumes failed renders so no job is ever lost.',
                 steps: [
@@ -754,6 +777,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: 'Production',
                 role: 'Lead Developer',
                 timeline: '2024',
+                repoUrl: 'https://github.com/Hazy019/dti-queue-system',
                 problem: 'The DTI Payment Office managed walk-in client flow with paper ticket slips, a whiteboard, and verbal call-outs. There was no audit trail, no way to measure wait times, no mechanism to handle multiple service lanes simultaneously, and no visibility for clients on where they stood in the queue. During peak hours, the system broke down entirely.',
                 solution: 'A self-hosted, LAN-based smart queue management system with four purpose-built interfaces: a customer Kiosk for ticket issuance, a Cashier dashboard for queue management, a public Monitor display, and an Admin panel for lane configuration and analytics. No internet required — runs on a single office PC and serves all devices over the office LAN.',
                 steps: [
@@ -780,6 +804,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: 'Live',
                 role: 'Full-Stack Developer',
                 timeline: '2023–2024',
+                repoUrl: 'https://github.com/Hazy019/polycon',
+                liveUrl: 'https://polycon-lms.demo',
                 problem: 'Faculty-student consultations at the polytechnic were entirely unstructured. Bookings were made via text message, sessions were undocumented, grade improvement was unmeasured, and there was no way to determine whether consultations were actually helping students. Faculty had no visibility into their own schedule, and administrators had no data on consultation effectiveness.',
                 solution: 'Polycon — a full-stack educational consultation and learning management system. Students book sessions through a scheduling interface, faculty manage availability and session notes, and an analytics engine (the POLYCON Analysis) statistically measures the effect of consultation frequency on grade improvement across Prelim, Midterm, Pre-Final, and Final periods. Sessions can be audio-recorded and auto-transcribed via AssemblyAI.',
                 steps: [
@@ -806,6 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: 'Deployed',
                 role: 'Solo Developer',
                 timeline: '2023',
+                repoUrl: 'https://github.com/Hazy019/spell-gate',
                 problem: 'A public-facing kiosk deployed for non-technical walk-up users had a data quality problem: users submitted free-text entries with misspellings that corrupted downstream records and required manual correction by staff daily. The device ran air-gapped on a local network with no internet access, ruling out cloud-based spell-check APIs. Staff time spent fixing bad inputs was significant.',
                 solution: 'Spell Gate — a Tkinter-based kiosk application with a real-time offline spell-check validation layer built directly into the input flow. Every text field validates tokens against a local dictionary as the user types. Misspelled words surface an inline suggestion interface. The submit action is hard-locked behind a validation pass — users cannot proceed until input is confirmed correct. An admin panel lets non-technical staff configure the vocabulary whitelist and gate strictness without developer involvement.',
                 steps: [
@@ -832,7 +859,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 status: 'Beta',
                 role: 'Solo Developer',
                 timeline: '2024',
-                problem: 'Streamers produce hours of VOD content daily, but extracting viral short-form clips requires watching recordings, identifying high-engagement moments, trimming, reformatting to vertical 9:16, adding captions, and uploading — a process that takes 2–4 hours per clip. Cloud-based solutions were blocked by platform anti-scraping measures at datacenter IP ranges, making server-based automation unreliable.',
+                repoUrl: 'https://github.com/Hazy019/streamer-shorts-automator',
+                problem: 'Streamers produce hours of VOD content daily, but extracting viral short-form clips requires watching recordings, identifying high-engagement moments, trims, reformats to vertical 9:16, adding captions, and uploading — a process that takes 2–4 hours per clip. Cloud-based solutions were blocked by platform anti-scraping measures at datacenter IP ranges, making server-based automation unreliable.',
                 solution: 'A local-residential-hardware pipeline that solves the cloud IP reputation problem. The frontend dashboard (Next.js 14, hosted on Vercel) injects clip jobs into a local SQLite database. A local worker (FastAPI + yt-dlp) runs on home hardware with residential IP reputation, bypassing YouTube\'s datacenter firewall. Gemini 2.5 Flash brainstorms the best clip segments, FFmpeg v11 handles the filtergraph rendering with GPU acceleration (NVENC/AMF), and finished clips are queued for upload.',
                 steps: [
                     'Operator submits a VOD URL through the Next.js dashboard on Vercel — job is written to local SQLite via the bridge',
@@ -854,22 +882,30 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         /* ── DOM refs ── */
-        const modal        = document.getElementById('doc-modal');
-        const backdrop     = modal?.querySelector('.doc-modal-backdrop');
-        const closeBtn     = document.getElementById('doc-modal-close');
-        const elNum        = document.getElementById('doc-modal-num');
-        const elType       = document.getElementById('doc-modal-type');
-        const elTitle      = document.getElementById('doc-modal-title');
-        const elStatus     = document.getElementById('doc-badge-status');
-        const elRole       = document.getElementById('doc-badge-role');
-        const elTimeline   = document.getElementById('doc-badge-timeline');
-        const elProblem    = document.getElementById('doc-problem');
-        const elSolution   = document.getElementById('doc-solution');
-        const elSteps      = document.getElementById('doc-steps');
-        const elSpecsGrid  = document.getElementById('doc-specs-grid');
-        const elChips      = document.getElementById('doc-chips');
-        const elDevnotes   = document.getElementById('doc-devnotes');
-        const elOutcome    = document.getElementById('doc-outcome');
+        const modal         = document.getElementById('doc-modal');
+        const backdrop      = modal?.querySelector('.doc-modal-backdrop');
+        const closeBtn      = document.getElementById('doc-modal-close');
+        const elNum         = document.getElementById('doc-modal-num');
+        const elType        = document.getElementById('doc-modal-type');
+        const elTitle       = document.getElementById('doc-modal-title');
+        const elStatus      = document.getElementById('doc-badge-status');
+        const elRole        = document.getElementById('doc-badge-role');
+        const elTimeline    = document.getElementById('doc-badge-timeline');
+        const elProblem     = document.getElementById('doc-problem');
+        const elSolution    = document.getElementById('doc-solution');
+        const elSteps       = document.getElementById('doc-steps');
+        const elSpecsGrid   = document.getElementById('doc-specs-grid');
+        const elChips       = document.getElementById('doc-chips');
+        const elDevnotes    = document.getElementById('doc-devnotes');
+        const elOutcome     = document.getElementById('doc-outcome');
+
+        // Progress, Actions, Footer elements
+        const elProgressBar = document.getElementById('doc-modal-progress');
+        const elActions     = document.getElementById('doc-modal-actions');
+        const elPrevBtn     = document.getElementById('doc-prev-btn');
+        const elNextBtn     = document.getElementById('doc-next-btn');
+        const elPrevTitle   = document.getElementById('doc-prev-title');
+        const elNextTitle   = document.getElementById('doc-next-title');
 
         if (!modal) return;
 
@@ -908,16 +944,51 @@ document.addEventListener('DOMContentLoaded', () => {
             /* Status badge color */
             elStatus.dataset.status = data.status.toLowerCase();
 
+            /* Project Action CTAs (Live Demo / Code Source) */
+            if (elActions) {
+                elActions.innerHTML = '';
+                if (data.liveUrl) {
+                    elActions.innerHTML += `
+                        <a href="${data.liveUrl}" target="_blank" class="doc-action-btn doc-action-btn--live">
+                            <span>Visit Live Demo</span>
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                    `;
+                }
+                if (data.repoUrl) {
+                    elActions.innerHTML += `
+                        <a href="${data.repoUrl}" target="_blank" class="doc-action-btn doc-action-btn--code">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                            <span>Source Code</span>
+                        </a>
+                    `;
+                }
+            }
+
+            /* Previous / Next Navigation */
+            const keys = Object.keys(projectData);
+            const idx = keys.indexOf(projectId);
+            const prevKey = keys[(idx - 1 + keys.length) % keys.length];
+            const nextKey = keys[(idx + 1) % keys.length];
+
+            if (elPrevTitle) elPrevTitle.textContent = projectData[prevKey].title;
+            if (elNextTitle) elNextTitle.textContent = projectData[nextKey].title;
+            if (elPrevBtn) elPrevBtn.dataset.project = prevKey;
+            if (elNextBtn) elNextBtn.dataset.project = nextKey;
+
             /* Show */
             modal.classList.add('open');
             document.body.classList.add('modal-open');
 
-            /* Scroll modal body to top */
+            /* Scroll modal body to top & Reset progress */
             const panel = modal.querySelector('.doc-modal-panel');
-            if (panel) panel.scrollTop = 0;
+            if (panel) {
+                panel.scrollTop = 0;
+                if (elProgressBar) elProgressBar.style.width = '0%';
+            }
 
             /* Stagger-animate sections in */
-            const sections = modal.querySelectorAll('.doc-section, .doc-specs-grid');
+            const sections = modal.querySelectorAll('.doc-section, .doc-specs-grid, .doc-modal-actions, .doc-modal-footer');
             sections.forEach((sec, i) => {
                 sec.style.opacity   = '0';
                 sec.style.transform = 'translateY(22px)';
@@ -949,6 +1020,37 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
         });
-    }
 
+        /* ── Footer Prev/Next Click Switch ── */
+        [elPrevBtn, elNextBtn].forEach(btn => {
+            btn?.addEventListener('click', () => {
+                const targetProject = btn.dataset.project;
+                if (!targetProject) return;
+
+                const panel = modal.querySelector('.doc-modal-panel');
+                if (panel) {
+                    panel.style.opacity = '0';
+                    panel.style.transform = 'translateX(20px)';
+                    setTimeout(() => {
+                        openModal(targetProject);
+                        panel.style.transition = 'opacity .4s ease, transform .4s var(--easing)';
+                        panel.style.opacity = '1';
+                        panel.style.transform = 'translateX(0)';
+                    }, 220);
+                } else {
+                    openModal(targetProject);
+                }
+            });
+        });
+
+        /* ── Scroll Reading Progress Bar ── */
+        const panel = modal.querySelector('.doc-modal-panel');
+        if (panel && elProgressBar) {
+            panel.addEventListener('scroll', () => {
+                const maxScroll = panel.scrollHeight - panel.clientHeight;
+                const pct = maxScroll > 0 ? (panel.scrollTop / maxScroll) * 100 : 0;
+                elProgressBar.style.width = `${pct}%`;
+            });
+        }
+    }
 });

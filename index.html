@@ -635,6 +635,9 @@
     <div id="doc-modal" class="doc-modal" role="dialog" aria-modal="true" aria-labelledby="doc-modal-title">
         <div class="doc-modal-backdrop"></div>
         <div class="doc-modal-panel">
+            <!-- Reading Progress Bar -->
+            <div class="doc-modal-progress" id="doc-modal-progress"></div>
+
             <!-- Close button -->
             <button class="doc-modal-close" id="doc-modal-close" aria-label="Close documentation">
                 <span></span><span></span>
@@ -652,55 +655,84 @@
                     <span class="doc-badge doc-badge--role" id="doc-badge-role">Solo Developer</span>
                     <span class="doc-badge doc-badge--timeline" id="doc-badge-timeline">2024</span>
                 </div>
+                
+                <!-- Project Actions (Live Demo / Code Source) -->
+                <div class="doc-modal-actions" id="doc-modal-actions"></div>
             </div>
 
             <!-- Body -->
             <div class="doc-modal-body">
+                <div class="doc-layout-grid">
+                    
+                    <!-- Narrative Details -->
+                    <div class="doc-main-col">
+                        <!-- Problem -->
+                        <div class="doc-section" id="doc-sec-problem">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--problem"></span>The Problem</div>
+                            <p class="doc-section-content" id="doc-problem"></p>
+                        </div>
 
-                <!-- Problem -->
-                <div class="doc-section" id="doc-sec-problem">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--problem"></span>The Problem</div>
-                    <p class="doc-section-content" id="doc-problem"></p>
+                        <!-- Solution -->
+                        <div class="doc-section" id="doc-sec-solution">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--solution"></span>The Solution</div>
+                            <p class="doc-section-content" id="doc-solution"></p>
+                        </div>
+
+                        <!-- Architecture -->
+                        <div class="doc-section" id="doc-sec-arch">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--arch"></span>How It Works</div>
+                            <ol class="doc-steps" id="doc-steps"></ol>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Metadata & Impact -->
+                    <div class="doc-side-col">
+                        <!-- Spec Cards -->
+                        <div class="doc-specs-grid" id="doc-specs-grid"></div>
+
+                        <!-- Stack -->
+                        <div class="doc-section" id="doc-sec-stack">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--stack"></span>Tech Stack</div>
+                            <div class="doc-chips" id="doc-chips"></div>
+                        </div>
+
+                        <!-- Dev Notes -->
+                        <div class="doc-section doc-section--note" id="doc-sec-notes">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--notes"></span>Developer Notes</div>
+                            <p class="doc-section-content" id="doc-devnotes"></p>
+                        </div>
+
+                        <!-- Outcome -->
+                        <div class="doc-section doc-section--outcome" id="doc-sec-outcome">
+                            <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--outcome"></span>Results & Impact</div>
+                            <p class="doc-section-content" id="doc-outcome"></p>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Solution -->
-                <div class="doc-section" id="doc-sec-solution">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--solution"></span>The Solution</div>
-                    <p class="doc-section-content" id="doc-solution"></p>
-                </div>
-
-                <!-- Architecture -->
-                <div class="doc-section" id="doc-sec-arch">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--arch"></span>How It Works</div>
-                    <ol class="doc-steps" id="doc-steps"></ol>
-                </div>
-
-                <!-- Spec Cards -->
-                <div class="doc-specs-grid" id="doc-specs-grid"></div>
-
-                <!-- Stack -->
-                <div class="doc-section" id="doc-sec-stack">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--stack"></span>Tech Stack</div>
-                    <div class="doc-chips" id="doc-chips"></div>
-                </div>
-
-                <!-- Dev Notes -->
-                <div class="doc-section doc-section--note" id="doc-sec-notes">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--notes"></span>Developer Notes</div>
-                    <p class="doc-section-content" id="doc-devnotes"></p>
-                </div>
-
-                <!-- Outcome -->
-                <div class="doc-section doc-section--outcome" id="doc-sec-outcome">
-                    <div class="doc-section-label"><span class="doc-label-mark doc-label-mark--outcome"></span>Results & Impact</div>
-                    <p class="doc-section-content" id="doc-outcome"></p>
-                </div>
-
             </div><!-- /.doc-modal-body -->
+
+            <!-- Modal Navigation Footer -->
+            <div class="doc-modal-footer">
+                <button class="doc-footer-btn doc-footer-btn--prev" id="doc-prev-btn">
+                    <span class="df-arrow">←</span>
+                    <div class="df-meta">
+                        <span class="df-label">PREVIOUS PROJECT</span>
+                        <span class="df-title" id="doc-prev-title">Project Name</span>
+                    </div>
+                </button>
+                <button class="doc-footer-btn doc-footer-btn--next" id="doc-next-btn">
+                    <div class="df-meta">
+                        <span class="df-label">NEXT PROJECT</span>
+                        <span class="df-title" id="doc-next-title">Project Name</span>
+                    </div>
+                    <span class="df-arrow">→</span>
+                </button>
+            </div>
         </div><!-- /.doc-modal-panel -->
     </div><!-- /#doc-modal -->
 
-    <script src="main.js"></script>
+    <script src="main.js?v=2.1"></script>
 </body>
 
 </html>
