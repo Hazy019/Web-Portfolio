@@ -63,6 +63,22 @@
     --border-content: rgba(15, 17, 23, .1);
     --logo-tint: drop-shadow(0 0 14px rgba(170, 255, 94, .25));
     --logo-cloud: brightness(1.05) saturate(1) hue-rotate(180deg) sepia(.2) saturate(2.5) hue-rotate(-50deg);
+
+    /* High-contrast Gold/Bronze accent in Light Mode right panel */
+    --accent: #854d0e;
+    --accent2: rgba(133, 77, 14, .08);
+    --accent3: rgba(133, 77, 14, .04);
+    --accent-glow: rgba(133, 77, 14, .15);
+}
+
+/* Restore the neon green accent inside Light Mode for the dark panels */
+[data-theme="light"] #left-panel,
+[data-theme="light"] .mobile-nav,
+[data-theme="light"] #loader {
+    --accent: #AAFF5E;
+    --accent2: rgba(170, 255, 94, .12);
+    --accent3: rgba(170, 255, 94, .06);
+    --accent-glow: rgba(170, 255, 94, .25);
 }
 
 /* Global transition (colors only) */
@@ -97,7 +113,7 @@ body {
     font-family: 'Manrope', sans-serif;
     font-weight: 400;
     line-height: 1.85;
-    cursor: none;
+    cursor: auto;
     overflow-x: hidden;
 }
 
@@ -302,6 +318,7 @@ button {
    CURSOR
 ══════════════════════════════════════ */
 #cursor-dot {
+    display: none;
     width: 7px;
     height: 7px;
     background: var(--accent);
@@ -313,6 +330,7 @@ button {
 }
 
 #cursor-ring {
+    display: none;
     width: 34px;
     height: 34px;
     border: 1.5px solid rgba(170, 255, 94, .4);
@@ -322,6 +340,16 @@ button {
     z-index: 9998;
     transform: translate(-50%, -50%);
     transition: width .25s, height .25s, border-color .25s;
+}
+
+@media (any-hover: hover) {
+    body {
+        cursor: none;
+    }
+    #cursor-dot,
+    #cursor-ring {
+        display: block;
+    }
 }
 
 body.hovering #cursor-dot {
@@ -924,6 +952,26 @@ body.hovering #cursor-ring {
     background: var(--fg-panel);
     transform: translateY(-2px);
     box-shadow: 0 8px 28px rgba(170, 255, 94, .35);
+}
+
+.lp-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp2);
+}
+
+.lp-cta--secondary {
+    background: transparent !important;
+    color: var(--fg-panel) !important;
+    border: 1px solid var(--border-panel);
+    box-shadow: none !important;
+}
+
+.lp-cta--secondary:hover {
+    background: rgba(216, 228, 242, 0.05) !important;
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 4px 15px var(--accent-glow) !important;
 }
 
 
@@ -2022,6 +2070,9 @@ footer {
 
     .mn-cta-wrap {
         margin-top: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp2);
     }
 
     .proj-body-inner {

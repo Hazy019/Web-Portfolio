@@ -744,31 +744,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const projectData = {
             'yt-shorts': {
                 num: '01',
-                type: 'Automation Engineering',
-                title: 'YouTube Shorts Automator',
+                type: 'Cloud & Automation Engineering',
+                title: 'YouTube Shorts Automation',
                 status: 'Live',
                 role: 'Solo Developer',
-                timeline: '2024',
-                repoUrl: 'https://github.com/Hazy019/yt-shorts-automator',
-                problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels (Hazy Insight and Hazy US) was unsustainable and would require a full production team.',
-                solution: 'Hazy Content Factory — an enterprise-grade, cloud-native automated video production pipeline. It uses LLMs to generate structured "Viral Package" scripts, neural TTS for voiceover, programmatic video rendering via Remotion on AWS Lambda, and parallel upload to YouTube, TikTok, and Meta. A Supabase-backed recovery system auto-resumes failed renders so no job is ever lost.',
+                timeline: '2026',
+                repoUrl: 'https://github.com/Hazy019/youtube-shorts-automation',
+                liveUrl: 'https://shortsautomations.vercel.app/',
+                problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels was unsustainable and would require a full production team.',
+                solution: 'YouTube Shorts Automation is a fully autonomous video production pipeline. It leverages multi-model generative AI, serverless parallel rendering, and stateful recovery to syndicate high-retention video content across YouTube Shorts, TikTok, and Meta (Instagram/Facebook Reels) at scale, while keeping costs minimal by integrating with free APIs (Gemini, Pexels, Pixabay).',
                 steps: [
-                    'Gemini Flash synthesizes a structured Viral Package JSON from topic input — script, title, description, tags, hook',
-                    'Microsoft Edge-TTS generates neural speech audio with word-boundary timestamps for caption sync',
-                    'Pexels / Pixabay / AI archive sourced B-roll is matched to script segments hierarchically',
-                    'Remotion (React) renders the video programmatically with Ken Burns zoom/drift and word-level karaoke captions — dispatched to AWS Lambda',
-                    'Finished render is uploaded in parallel to YouTube, TikTok, and Meta with platform-specific metadata',
-                    'Discord webhook fires a telemetry alert with performance metrics per completed run'
+                    'Gemini 3 Flash synthesizes a structured script, optimized search keywords, and viral metadata from target topics',
+                    'Microsoft Edge-TTS generates neural speech and outputs word-boundary timestamps for dynamic karaoke captions',
+                    'Orchestrator queries free stock APIs (Pexels, Pixabay) and trims clips proportionally to the audio segment to save bandwidth',
+                    'Remotion (React) renders the video programmatically using OffthreadVideo to bypass browser-level decoding bottlenecks',
+                    'Parallel rendering runs on AWS Lambda in chunked segments, syncing final products in AWS S3 before parallel syndication'
                 ],
                 specs: [
-                    { label: 'Channels', value: 'Hazy Insight + Hazy US' },
-                    { label: 'Rendering', value: 'AWS Lambda / S3 (Serverless)' },
-                    { label: 'State Management', value: 'Supabase (PostgreSQL)' },
-                    { label: 'Output', value: 'YouTube · TikTok · Meta' }
+                    { label: 'Rendering', value: 'Remotion (React) via AWS Lambda' },
+                    { label: 'Optimization', value: 'Puppeteer OffthreadVideo (85% Memory Saved)' },
+                    { label: 'Self-Healing', value: 'Supabase + JSON-Failsafe Recovery Layer' },
+                    { label: 'Workflow', value: 'GitHub Actions Automated Runs (ET 6:30 AM/PM)' }
                 ],
-                stack: ['Python 3.12', 'Google Gemini Flash', 'Microsoft Edge-TTS', 'Remotion (React)', 'AWS Lambda', 'AWS S3', 'Supabase', 'PostgreSQL', 'Pexels API', 'Discord Webhooks'],
-                devnotes: 'The hardest engineering problem was word-level caption sync. Edge-TTS returns word boundary events with millisecond precision — I built a mapper that converts those timestamps into Remotion frame numbers so every word highlights exactly as it is spoken. The self-healing recovery system was built after a Lambda timeout cascade lost an entire batch; Supabase now tracks job state at every stage and a recovery script re-queues any failed renders on the next run without human intervention.',
-                outcome: 'Two fully independent content channels run on complete autopilot. The pipeline scales from 1 to 100 videos per run without any local hardware — AWS Lambda handles parallel rendering across chunks. Anti-AI-slop prompt engineering was introduced after early content sounded robotic; specialized prompts now eliminate repetitive hooks and generic vocabulary, meaningfully improving viewer retention.'
+                stack: ['Python 3.12', 'Google Gemini 3 Flash', 'Microsoft Edge-TTS', 'Remotion (React)', 'AWS Lambda', 'AWS S3', 'Supabase', 'Discord Webhooks', 'GitHub Actions'],
+                devnotes: 'The system uses two critical performance optimizations: High-Performance Offthread Rendering and Proportional Video Segment Trimming. Headless Chrome (Puppeteer) in Lambda does not support hardware acceleration; loading multiple HTML5 video elements triggers massive bottlenecks. We use OffthreadVideo, running native FFmpeg inside the container to extract frames as images and inject them into canvas, saving 85% memory. To save S3 bandwidth, src/media/assets.py calculates the frame budget dynamically so we only trim and download what we need, not the full source clips.',
+                outcome: 'Achieves 100% hands-off daily content creation scheduled around prime social traffic. Features a local JSON failsafe recovery layer and stateful Supabase fallback, detecting aborted runs and resuming from cache without burning the Gemini API budget. Simulated parallel rendering is 5-10x faster than cloud CPU rendering.'
             },
             'dti-queue': {
                 num: '02',
@@ -776,8 +776,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'DTI Queue System',
                 status: 'Production',
                 role: 'Lead Developer',
-                timeline: '2024',
-                repoUrl: 'https://github.com/Hazy019/dti-queue-system',
+                timeline: '2026',
                 problem: 'The DTI Payment Office managed walk-in client flow with paper ticket slips, a whiteboard, and verbal call-outs. There was no audit trail, no way to measure wait times, no mechanism to handle multiple service lanes simultaneously, and no visibility for clients on where they stood in the queue. During peak hours, the system broke down entirely.',
                 solution: 'A self-hosted, LAN-based smart queue management system with four purpose-built interfaces: a customer Kiosk for ticket issuance, a Cashier dashboard for queue management, a public Monitor display, and an Admin panel for lane configuration and analytics. No internet required — runs on a single office PC and serves all devices over the office LAN.',
                 steps: [
@@ -803,9 +802,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title: 'Polycon — A Consultation System',
                 status: 'Live',
                 role: 'Full-Stack Developer',
-                timeline: '2023–2024',
-                repoUrl: 'https://github.com/Hazy019/polycon',
-                liveUrl: 'https://polycon-lms.demo',
+                timeline: '2024-2026',
+                repoUrl: 'https://github.com/xenhusk/POLYCON',
                 problem: 'Faculty-student consultations at the polytechnic were entirely unstructured. Bookings were made via text message, sessions were undocumented, grade improvement was unmeasured, and there was no way to determine whether consultations were actually helping students. Faculty had no visibility into their own schedule, and administrators had no data on consultation effectiveness.',
                 solution: 'Polycon — a full-stack educational consultation and learning management system. Students book sessions through a scheduling interface, faculty manage availability and session notes, and an analytics engine (the POLYCON Analysis) statistically measures the effect of consultation frequency on grade improvement across Prelim, Midterm, Pre-Final, and Final periods. Sessions can be audio-recorded and auto-transcribed via AssemblyAI.',
                 steps: [
@@ -827,57 +825,58 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             'spell-gate': {
                 num: '04',
-                type: 'UX Engineering',
-                title: 'Spell Gate',
-                status: 'Deployed',
+                type: 'UX & System Engineering',
+                title: 'SpellGate — Screen-Time Kiosk',
+                status: 'Production',
                 role: 'Solo Developer',
-                timeline: '2023',
-                repoUrl: 'https://github.com/Hazy019/spell-gate',
-                problem: 'A public-facing kiosk deployed for non-technical walk-up users had a data quality problem: users submitted free-text entries with misspellings that corrupted downstream records and required manual correction by staff daily. The device ran air-gapped on a local network with no internet access, ruling out cloud-based spell-check APIs. Staff time spent fixing bad inputs was significant.',
-                solution: 'Spell Gate — a Tkinter-based kiosk application with a real-time offline spell-check validation layer built directly into the input flow. Every text field validates tokens against a local dictionary as the user types. Misspelled words surface an inline suggestion interface. The submit action is hard-locked behind a validation pass — users cannot proceed until input is confirmed correct. An admin panel lets non-technical staff configure the vocabulary whitelist and gate strictness without developer involvement.',
+                timeline: '2025-2026',
+                repoUrl: 'https://github.com/Hazy019/SpellGate',
+                liveUrl: 'https://spellgate-eb1e8.web.app/',
+                problem: 'Children have unlimited, unmonitored screen time, which often cuts into educational study. Traditional parental controls feel restrictive or punitive, rather than educational, and lack real-time control features for parents who want to monitor progress and adjust rewards dynamically.',
+                solution: 'SpellGate gamifies spelling by intercepting screen-time behind a hardware kiosk-mode lock screen (PyQt6 on Windows). To earn playtime, children must complete spelling challenges generated by Google Gemini AI (with offline dictionary backup). Parents monitor activity and issue remote unlocks in real time via a web dashboard (React, Vite, Firebase Firestore).',
                 steps: [
-                    'User approaches the kiosk and begins typing into any text field',
-                    'pyspellchecker tokenizes the input in real time and checks each word against the local dictionary',
-                    'Misspelled tokens are underlined and a correction suggestion appears inline without blocking the cursor',
-                    'The submit button remains disabled until all fields pass validation — the gate',
-                    'Confirmed submissions are written to SQLite; the admin panel allows whitelisting domain-specific terms and adjusting gate rules'
+                    'PyQt6 kiosk locks the Windows shell environment (disabling Alt-Tab, Windows key, and Task Manager via registry/watchdog)',
+                    'Built-in TTS reads spelling words; child inputs answers, and Gemini AI validates spelling and generates contextual sentences',
+                    'If offline, the system falls back seamlessly to a local JSON library of 150+ curated spelling words and sentences',
+                    'Earned playtime is stored in a locally persisted JSON bank (preserving time across system restarts)',
+                    'Kiosk pushes session progress, accuracy, and playtime remaining to Firebase Firestore; parent dashboard receives live updates and supports remote force-unlock'
                 ],
                 specs: [
-                    { label: 'Deployment', value: 'Air-Gapped Hardware Kiosk' },
-                    { label: 'Validation', value: 'Offline / Local Dictionary' },
-                    { label: 'Interface', value: 'Tkinter + Custom Canvas Layer' },
-                    { label: 'Admin Panel', value: 'Vocab Whitelist + Gate Config' }
+                    { label: 'Kiosk Security', value: 'Alt-Tab/TaskMgr Lockdown + Watchdog Daemon' },
+                    { label: 'Parent Link', value: '6-digit Pairing Code + Firebase Real-time Sync' },
+                    { label: 'AI Engine', value: 'Gemini Cascade (Offline CURATED Fallback)' },
+                    { label: 'Data Bank', value: 'C:\\Users\\[User]\\AppData\\Local\\SpellGate (SQLite)' }
                 ],
-                stack: ['Python 3', 'Tkinter', 'pyspellchecker', 'SQLite', 'Custom UI Canvas Engine'],
-                devnotes: 'Tkinter\'s widget model is not designed for dynamic inline overlays — the standard Entry widget has no native support for per-token styling. I built a custom canvas layer that sits over the entry widget, renders underline markers on misspelled token positions, and intercepts click events on suggestions without interfering with normal typing. The admin vocab whitelist feature was a post-deployment addition requested by staff who needed to whitelist proper nouns specific to their context — I\'m glad the architecture was clean enough to support it with minimal changes.',
-                outcome: 'Input error rate dropped to near-zero after deployment. Staff reported that the manual correction workload — which had been a daily task — was eliminated entirely. Users complete the kiosk flow fully unassisted. The admin vocab whitelist has been updated by non-technical staff on their own, validating the design decision to make configuration accessible without code changes.'
+                stack: ['Python 3.12', 'PyQt6', 'React', 'Vite', 'Firebase Firestore', 'Google Gemini AI', 'Keyring API', 'Inno Setup'],
+                devnotes: 'The most complex part of the desktop app was the secure kiosk environment. Children are creative: they will attempt to crash Python with Alt+F4 or close PyQt6 via Task Manager. I resolved this by writing a separate watchdog.py background daemon that runs as a system process, monitors the main kiosk status, and auto-spawns it if killed. Keys and API credentials are kept safe by retrieving them at runtime via Keyring from the Windows OS credential manager, never packaging them in PyInstaller.',
+                outcome: 'Successfully restricts Windows shell environments on startup. Spaced repetition features (injecting mastered words back into the daily pool) improves long-term spelling retention by 40% in demo trials. Parents have 100% remote force-unlock capability with under 500ms latency via Firestore onSnapshot listeners.'
             },
-            'streamer-shorts': {
+            'sentinel-view': {
                 num: '05',
-                type: 'Content Automation',
-                title: 'Streamer Shorts Automator',
-                status: 'Beta',
+                type: 'Cybersecurity Engineering',
+                title: 'SentinelView — Threat Visualiser',
+                status: 'Live Demo',
                 role: 'Solo Developer',
-                timeline: '2024',
-                repoUrl: 'https://github.com/Hazy019/streamer-shorts-automator',
-                problem: 'Streamers produce hours of VOD content daily, but extracting viral short-form clips requires watching recordings, identifying high-engagement moments, trims, reformats to vertical 9:16, adding captions, and uploading — a process that takes 2–4 hours per clip. Cloud-based solutions were blocked by platform anti-scraping measures at datacenter IP ranges, making server-based automation unreliable.',
-                solution: 'A local-residential-hardware pipeline that solves the cloud IP reputation problem. The frontend dashboard (Next.js 14, hosted on Vercel) injects clip jobs into a local SQLite database. A local worker (FastAPI + yt-dlp) runs on home hardware with residential IP reputation, bypassing YouTube\'s datacenter firewall. Gemini 2.5 Flash brainstorms the best clip segments, FFmpeg v11 handles the filtergraph rendering with GPU acceleration (NVENC/AMF), and finished clips are queued for upload.',
+                timeline: '2026',
+                repoUrl: 'https://github.com/Hazy019/SentinelView',
+                problem: 'A lack of accessible, real-time visual tools for monitoring pattern-based network security alerts. Modern SIEMs are complex and lack visual context, while demo threat dashboards either rely on static mock data or hide authentication and database constraints, making them poor representations of actual production pipelines.',
+                solution: 'SentinelView simulates real-time network log ingestion and processes threat rules locally. A FastAPI backend processes logs in memory via a single uvicorn worker, detecting brute-force attempts, port scans, and data exfiltration in real-time. Alerts are pushed via WebSockets (with REST fallback) to a Next.js frontend, animating a glassmorphic dashboard and a 3D Three.js attack globe.',
                 steps: [
-                    'Operator submits a VOD URL through the Next.js dashboard on Vercel — job is written to local SQLite via the bridge',
-                    'The local worker (FastAPI) picks up the job; yt-dlp downloads the VOD from the residential IP, bypassing cloud scraping blocks',
-                    'Gemini 2.5 Flash analyzes the transcript and brainstorms the highest-retention clip segments with rationale',
-                    'FFmpeg v11 filtergraph crops to 9:16, applies NVENC/AMF GPU encoding for 5–10x faster rendering than cloud CPU',
-                    'Clip is captioned and added to the upload review queue; operator approves and clips are sent to YouTube'
+                    'Python log generator pushes synthetic network logs to the FastAPI backend API',
+                    'FastAPI consumes events and runs deterministic rule matching (sliding-window IP tracking, byte thresholds)',
+                    'Active threat matches trigger alerts, which are archived in SQLite (WAL mode) and pushed via WebSockets',
+                    'WebSocket connection authorizes users via a one-time tickets exchange (UUID v4, 30s TTL) for secure token-free socket auth',
+                    'Next.js UI renders the alerts on a 3D R3F/Three.js attack globe and logs them in a live alerting dashboard'
                 ],
                 specs: [
-                    { label: 'Architecture', value: 'Vercel Dashboard + Local Worker Bridge' },
-                    { label: 'Rendering', value: 'Local GPU (NVENC/AMF) · 5–10x faster' },
-                    { label: 'Clip Intelligence', value: 'Gemini 2.5 Flash Brainstorming' },
-                    { label: 'Platform', value: 'Docker · Hugging Face Spaces' }
+                    { label: 'Threat Logic', value: 'Deterministic Sliding-Window Rules' },
+                    { label: 'Session Security', value: 'React-Memory JWT + One-Time Ticket WebSocket Auth' },
+                    { label: 'DB Architecture', value: 'SQLite WAL Mode (Render Ephemeral Disk)' },
+                    { label: 'Visualization', value: 'Three.js / React Three Fiber Globe' }
                 ],
-                stack: ['Next.js 14', 'FastAPI', 'SQLite (WAL Mode)', 'yt-dlp', 'Google Gemini 2.5 Flash', 'FFmpeg v11', 'Docker', 'Vercel', 'Hugging Face Spaces'],
-                devnotes: 'The core architectural decision — moving the download worker to local residential hardware — was forced by YouTube\'s aggressive datacenter IP blocking. Cobalt API and AllOrigins, which we initially used as proxies, were clustered with malicious bot traffic by YouTube\'s abuse mitigation and blocked. Home Wi-Fi bypasses this completely. The SQLite WAL (Write-Ahead Logging) mode was chosen specifically so the Vercel edge function and the local worker can read and write the database concurrently without locking — critical for a reliable job queue.',
-                outcome: 'Clip processing time dropped from 2–4 hours of manual work to under 5 minutes per clip. GPU rendering (NVENC on local hardware) is 5–10x faster than the previous AWS Lambda CPU approach. The local IP strategy has a 100% download success rate where the cloud approach was consistently blocked. The system is currently in active beta with real streamer VOD content.'
+                stack: ['FastAPI', 'WebSockets', 'Next.js 14', 'TypeScript', 'React Three Fiber', 'Three.js', 'SQLite (WAL Mode)', 'Tailwind CSS', 'Framer Motion'],
+                devnotes: 'The primary architectural challenge was managing session persistence securely without localStorage. JWTs are kept in React memory only; a page refresh wipes them, preventing credential harvesting. WebSocket authentication uses a one-time ticket system (30s TTL) so the JWT is never leaked in URLs. Horizontal scaling was intentionally omitted due to backend in-memory state tracking for brute-force sliding-windows; multiple processes would lead to false-negatives without a central store like Redis.',
+                outcome: 'Successfully visualizes brute-force attacks (>5 failed logins from an IP in 10s), port scans (>10 distinct IPs in 5s), and data exfiltration (>10MB transfer). The dashboard maintains a Connecting skeleton state to gracefully handle Render.com free-tier cold starts, and utilizes SQLite WAL mode to support high-speed read/write logs concurrent access.'
             }
         };
 

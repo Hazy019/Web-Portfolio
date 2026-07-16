@@ -38,8 +38,8 @@ The portfolio highlights 5 core production projects:
    - *Academic Platform* | A full-stack LMS with real-time scheduling and AI-powered session transcription via AssemblyAI.
 4. **Spell Gate**
    - *UX Engineering* | A walk-up kiosk system for non-technical users, gating access behind a real-time spell-check validation layer.
-5. **Streamer Shorts Automator**
-   - *Content Automation* | Automatically clips live-stream VODs into viral-ready Shorts using chat velocity analysis and NLP.
+5. **SentinelView**
+   - *Cybersecurity Engineering* | A real-time cybersecurity threat visualiser simulating network log ingestion, threat pattern rules matching, and WebSocket live alert rendering on a 3D attack globe.
 
 ## ✦ The Arsenal (Tech Stack)
 
