@@ -1,0 +1,935 @@
+/*
+  HAZY PORTFOLIO — design-elevation.css
+  World-Class UI/UX Upgrade System
+  Loads AFTER depth.css — Overrides and Elevates.
+
+  DESIGN PILLARS IMPLEMENTED:
+  01. Typography — Plus Jakarta Sans body / Syne display
+  02. Scroll-Stopping Hero — Ambient aurora, kinetic text glow
+  03. Visual Rhyming — Signature ✦ markers, reticle crosshairs, frosted pills
+  04. Tangible Depth — Glassmorphism cards, 3D tilt, ambient shadows
+  05. Opacity Hierarchy — 4-tier contrast token system
+  06. Equity & Accessibility — WCAG-compliant focus rings
+  07. Screen Preloader — Animated iris-wipe reveal
+*/
+
+
+/* ══════════════════════════════════════════════════
+   01. TYPOGRAPHY & FONT SYSTEM
+══════════════════════════════════════════════════ */
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3,
+.s-head, .ab-head, .ct-head,
+.hw, .lp-name,
+.ld-name, .qw-text {
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    line-height: 1.05;
+}
+
+/* Tracked uppercase micro-labels — Visual Rhyming */
+.s-eye, .h-eye,
+.pt-type, .sk-category,
+.hb-label, .impact-label,
+.ctx-label, .ctx-type,
+.ctl-label, .doc-section-label,
+.marquee-item, .lp-status,
+.cert-org, .exp-date, .fl {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+/* Body paragraphs — crisp and readable */
+.h-desc, .proj-narrative,
+.ab-body p, .ct-desc,
+.lp-tagline, .exp-list li {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.85;
+}
+
+
+/* ══════════════════════════════════════════════════
+   02. OPACITY HIERARCHY SYSTEM (4 Tiers)
+══════════════════════════════════════════════════ */
+
+/* TIER 1 — 100% Primary (headings, active navigation) */
+[data-theme="dark"] .s-head,
+[data-theme="dark"] .ab-head,
+[data-theme="dark"] .ct-head,
+[data-theme="dark"] .hw,
+[data-theme="dark"] .lp-name,
+[data-theme="dark"] .pt-title,
+[data-theme="dark"] .qw-text,
+[data-theme="dark"] .hb-value,
+[data-theme="dark"] .impact-num {
+    color: #F0F2F8 !important;
+}
+
+/* TIER 2 — 78% Secondary (body text, descriptions) */
+[data-theme="dark"] .h-desc,
+[data-theme="dark"] .proj-narrative,
+[data-theme="dark"] .ab-body p,
+[data-theme="dark"] .ct-desc,
+[data-theme="dark"] .lp-tagline,
+[data-theme="dark"] .exp-list li,
+[data-theme="dark"] .tq {
+    color: rgba(240, 242, 248, 0.78) !important;
+}
+
+/* TIER 3 — 48% Tertiary (meta, labels, tags) */
+[data-theme="dark"] .s-eye,
+[data-theme="dark"] .pt-type,
+[data-theme="dark"] .hb-label,
+[data-theme="dark"] .impact-label,
+[data-theme="dark"] .sk-category,
+[data-theme="dark"] .ctx-label,
+[data-theme="dark"] .ctx-type,
+[data-theme="dark"] .fl,
+[data-theme="dark"] .cert-org,
+[data-theme="dark"] .exp-date,
+[data-theme="dark"] .ta {
+    color: rgba(240, 242, 248, 0.48) !important;
+}
+
+/* TIER 4 — 12% Glass borders (ambient) — applied via border tokens */
+[data-theme="dark"] {
+    --glass-border: rgba(255, 255, 255, 0.09);
+    --glass-top: rgba(255, 255, 255, 0.18);
+    --glass-bg: rgba(10, 12, 22, 0.72);
+    --glass-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+    --glass-glow: 0 0 40px rgba(170, 255, 94, 0.10);
+}
+
+[data-theme="light"] {
+    --glass-border: rgba(15, 23, 42, 0.08);
+    --glass-top: rgba(255, 255, 255, 0.65);
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-shadow: 0 24px 56px rgba(15, 23, 42, 0.12);
+    --glass-glow: 0 0 40px rgba(118, 251, 0, 0.08);
+}
+
+
+/* ══════════════════════════════════════════════════
+   03. SCROLL-STOPPING HERO — STAR OF THE SHOW
+══════════════════════════════════════════════════ */
+
+/* Hero canvas — the reactive particle field */
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+#hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.9;
+    mix-blend-mode: screen;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ambient aurora gradient orb behind hero text — scoped strictly to hero section */
+.hero-gradient-orb {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 65% 55% at 70% 35%,
+        rgba(170, 255, 94, 0.12) 0%,
+        rgba(170, 255, 94, 0.03) 45%,
+        transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+    animation: orbPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes orbPulse {
+    0%   { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 1.0; transform: scale(1.05); }
+}
+
+/* Hero CTA container alignment */
+.h-ctas {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+}
+
+/* Premium CTA Button — Perfectly Centered Text */
+.btn-primary,
+.btn-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    min-height: 52px !important;
+    height: 52px !important;
+    padding: 0 2.2rem !important;
+    font-family: 'Syne', sans-serif !important;
+    font-size: 0.85rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.14em !important;
+    text-indent: 0.14em !important; /* Optical centering for letter-spaced text */
+    text-transform: uppercase !important;
+    position: relative !important;
+    overflow: hidden !important;
+    clip-path: none !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+}
+
+.btn-primary {
+    background: transparent !important;
+    border: 1.5px solid var(--accent) !important;
+    color: var(--accent) !important;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 0 20px rgba(170, 255, 94, 0.15), inset 0 0 0 0 rgba(170, 255, 94, 0) !important;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+}
+
+.btn-primary:hover::before {
+    transform: scaleX(1);
+}
+
+.btn-primary:hover {
+    color: #050710 !important;
+    box-shadow: 0 0 30px rgba(170, 255, 94, 0.4) !important;
+    transform: translateY(-3px) !important;
+}
+
+.btn-secondary {
+    border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+    color: rgba(240, 242, 248, 0.78) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease !important;
+}
+
+.btn-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.45) !important;
+    color: #F0F2F8 !important;
+    background: rgba(255, 255, 255, 0.09) !important;
+    transform: translateY(-3px) !important;
+}
+
+/* Hero headline glow on accent word */
+[data-theme="dark"] .hw.italic-txt {
+    text-shadow: 0 0 60px rgba(170, 255, 94, 0.2);
+}
+[data-theme="dark"] .outline-txt {
+    -webkit-text-stroke: 1.5px rgba(170, 255, 94, 0.4) !important;
+    color: transparent !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   04. VISUAL RHYMING MOTIF SYSTEM
+   Signature details that repeat across every section
+══════════════════════════════════════════════════ */
+
+/* ─ Motif 1: ✦ Section divider accent lines ─ */
+.s-eye,
+.h-eye {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    color: var(--accent) !important;
+}
+
+.s-eye::before,
+.h-eye::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+}
+
+/* ─ Motif 2: Reticle crosshair (+) on interactive cards ─ */
+.proj-item {
+    position: relative;
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    margin-bottom: 1rem !important;
+    border-radius: 12px !important;
+    overflow: visible !important;
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--glass-border) !important;
+    border-top: 1px solid var(--glass-top) !important;
+    box-shadow: var(--glass-shadow), var(--glass-glow);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease !important;
+    transform-style: preserve-3d;
+}
+
+.proj-item:last-child {
+    border-bottom: 1px solid var(--glass-top) !important;
+}
+
+/* Remove the old left accent bar pseudo-element by overriding with reticle + */
+.proj-item::before {
+    content: '+' !important;
+    position: absolute !important;
+    top: 10px !important;
+    left: 14px !important;
+    width: auto !important;
+    height: auto !important;
+    bottom: auto !important;
+    background: none !important;
+    transform: none !important;
+    transform-origin: unset !important;
+    font-family: 'Syne', monospace !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    color: var(--accent) !important;
+    opacity: 0.35 !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+}
+
+.proj-item::after {
+    content: '+';
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-family: 'Syne', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.35;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.proj-item:hover::before,
+.proj-item:hover::after {
+    opacity: 1 !important;
+    transform: scale(1.3) !important;
+}
+
+.proj-item:hover {
+    border-color: rgba(170, 255, 94, 0.3) !important;
+    border-top-color: rgba(170, 255, 94, 0.5) !important;
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(170, 255, 94, 0.15),
+        0 0 40px rgba(170, 255, 94, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+.proj-list {
+    gap: 0;
+}
+
+/* ─ Motif 3: Frosted glass pill / chip badges ─ */
+.pill, .chip,
+.eye-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-top-color: rgba(255, 255, 255, 0.25) !important;
+    color: rgba(240, 242, 248, 0.88) !important;
+    border-radius: 9999px !important;
+    padding: 0.3rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: 0.02em !important;
+    transition: all 0.25s ease !important;
+}
+
+.pill:hover, .chip:hover {
+    background: rgba(170, 255, 94, 0.12) !important;
+    border-color: var(--accent) !important;
+    border-top-color: var(--accent) !important;
+    color: var(--accent) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(170, 255, 94, 0.18) !important;
+}
+
+.eye-badge {
+    background: rgba(170, 255, 94, 0.12) !important;
+    border-color: rgba(170, 255, 94, 0.4) !important;
+    color: var(--accent) !important;
+    font-size: 0.7rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+}
+
+/* ─ Motif 4: Pulsing ambient glow on status indicators ─ */
+.status-dot {
+    position: relative;
+    width: 7px !important;
+    height: 7px !important;
+    background: #4ADE80 !important;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: none !important;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5);
+    animation: statusGlow 2.5s ease-in-out infinite !important;
+}
+
+@keyframes statusGlow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.6), 0 0 8px rgba(74, 222, 128, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(74, 222, 128, 0), 0 0 12px rgba(74, 222, 128, 0.15);
+    }
+}
+
+/* ─ Motif 5: Cert row markers  ─ */
+.cert-pip.done {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 8px rgba(170, 255, 94, 0.4);
+}
+.cert-pip.done::after {
+    background: var(--accent) !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   05. TANGIBLE GLASS DEPTH — NOT COMPETING WITH HERO
+══════════════════════════════════════════════════ */
+
+/* Testimonial Card */
+.testi-card {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border) !important;
+    border-top: 1px solid var(--glass-top) !important;
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow), var(--glass-glow);
+    padding: 2rem !important;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+}
+
+.testi-card:hover {
+    box-shadow: var(--glass-shadow), 0 0 50px rgba(170, 255, 94, 0.1);
+}
+
+/* Contact Form Glass */
+.contact-form {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border) !important;
+    border-top: 1px solid var(--glass-top) !important;
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    padding: 2rem !important;
+}
+
+/* Stack rows glass hover */
+.sk-row {
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.sk-row:hover {
+    background: rgba(170, 255, 94, 0.04);
+    border-color: rgba(170, 255, 94, 0.12);
+}
+
+/* Cert rows depth */
+.cert-row {
+    padding: 0.85rem 1.2rem !important;
+    border-radius: 10px;
+    border: 1px solid transparent !important;
+    margin-bottom: 0.5rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.cert-row:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: var(--glass-border) !important;
+}
+
+/* Quote Wall — subtle glass card treatment */
+.quote-wall {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-top: 1px solid var(--glass-top) !important;
+}
+
+/* Section background variation — subtle rhythm */
+.work-sec {
+    background: rgba(170, 255, 94, 0.012) !important;
+}
+.about-sec {
+    background: rgba(255, 255, 255, 0.008) !important;
+}
+.stack-sec {
+    background: rgba(170, 255, 94, 0.015) !important;
+}
+.contact-sec {
+    background: rgba(255, 255, 255, 0.006) !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   06. GITHUB LOGO IN LEFT PANEL
+══════════════════════════════════════════════════ */
+
+.lp-logo-block {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+}
+
+.lp-logo-img {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1.5px solid rgba(170, 255, 94, 0.45) !important;
+    box-shadow:
+        0 0 12px rgba(170, 255, 94, 0.25),
+        0 0 1px rgba(170, 255, 94, 0.6) inset !important;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s ease !important;
+    flex-shrink: 0;
+    animation: logoSpin 0s linear; /* no spin by default */
+}
+
+.lp-logo-block:hover .lp-logo-img {
+    transform: rotate(12deg) scale(1.1) !important;
+    box-shadow:
+        0 0 22px rgba(170, 255, 94, 0.55),
+        0 0 2px rgba(170, 255, 94, 0.8) inset !important;
+}
+
+/* Loader logo — same image now  */
+.ld-logo-img {
+    width: 80px !important;
+    height: 80px !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    border: 1.5px solid rgba(170, 255, 94, 0.35) !important;
+    box-shadow:
+        0 0 30px rgba(170, 255, 94, 0.3),
+        0 0 60px rgba(170, 255, 94, 0.1) !important;
+    animation: ldFloat 3.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes ldFloat {
+    0% { transform: translateY(0); filter: brightness(1); }
+    100% { transform: translateY(-8px); filter: brightness(1.15); }
+}
+
+.ld-status-log {
+    margin-top: 1rem;
+    font-family: monospace;
+    font-size: 0.68rem;
+    color: rgba(170, 255, 94, 0.8);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    min-height: 1.2em;
+}
+
+
+/* ══════════════════════════════════════════════════
+   07. PRELOADER IRIS-WIPE EXIT
+══════════════════════════════════════════════════ */
+
+#loader {
+    clip-path: circle(150% at 50% 50%);
+    transition: clip-path 0.6s cubic-bezier(0.7, 0, 0.84, 0),
+                opacity 0.3s ease;
+}
+
+#loader.exit {
+    clip-path: circle(0% at 50% 50%) !important;
+    opacity: 1 !important;
+    pointer-events: none;
+}
+
+#loader.exit .ld-stack {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+
+/* ══════════════════════════════════════════════════
+   08. LEFT PANEL SIDEBAR ELEVATION
+══════════════════════════════════════════════════ */
+
+/* Nav item active glow */
+.nav-item.active .nav-label {
+    color: var(--fg-panel) !important;
+    font-weight: 700;
+}
+
+.nav-item .nav-num {
+    color: rgba(240, 242, 248, 0.32) !important;
+    font-size: 0.68rem;
+    font-family: monospace;
+}
+
+.nav-item.active .nav-num {
+    color: var(--accent) !important;
+}
+
+/* Left panel border — animated accent line */
+#left-panel::after {
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(170, 255, 94, 0.5) 30%,
+        rgba(170, 255, 94, 0.9) 50%,
+        rgba(170, 255, 94, 0.5) 70%,
+        transparent 100%) !important;
+    background-size: 100% 300% !important;
+    animation: borderFlow 4s linear infinite !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   09. SECTION HEADINGS — EDITORIAL SCALE
+══════════════════════════════════════════════════ */
+
+.s-head {
+    font-size: clamp(3rem, 7vw, 6rem) !important;
+    line-height: 1 !important;
+    margin-bottom: 2.5rem !important;
+}
+
+.s-head .accent-txt {
+    display: block;
+    background: linear-gradient(135deg, var(--accent) 0%, rgba(170, 255, 94, 0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.h-words {
+    margin-bottom: 2.5rem;
+}
+
+.hw {
+    font-size: clamp(3.5rem, 8vw, 7rem) !important;
+    line-height: 1 !important;
+    display: block !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   10. PROJECT TRIGGER REFINEMENT
+══════════════════════════════════════════════════ */
+
+.proj-trigger {
+    border-radius: 12px 12px 0 0;
+    padding: 1.6rem 1.5rem 1.6rem 2rem !important;
+    transition: background 0.25s ease, padding-left 0.3s ease !important;
+}
+
+.proj-trigger:hover {
+    background: rgba(170, 255, 94, 0.03) !important;
+    padding-left: 2rem !important;
+}
+
+.proj-item.open .proj-trigger {
+    background: rgba(170, 255, 94, 0.04);
+}
+
+/* Project number — readable as monospace glyph */
+.pt-num {
+    font-family: monospace !important;
+    font-size: 0.85rem !important;
+    font-weight: 400 !important;
+    color: rgba(170, 255, 94, 0.45) !important;
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+}
+
+.proj-item.open .pt-num,
+.proj-item:hover .pt-num {
+    color: var(--accent) !important;
+}
+
+.pt-title {
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    font-family: 'Syne', sans-serif !important;
+    color: rgba(240, 242, 248, 0.92) !important;
+    letter-spacing: -0.02em;
+    transition: color 0.3s;
+}
+
+.proj-item:hover .pt-title,
+.proj-item.open .pt-title {
+    color: #F0F2F8 !important;
+}
+
+.pt-arr {
+    color: rgba(170, 255, 94, 0.6) !important;
+    font-size: 1.2rem !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s !important;
+}
+
+.proj-item:hover .pt-arr {
+    color: var(--accent) !important;
+    transform: translateX(4px) !important;
+}
+
+.proj-body-inner {
+    padding: 0 1.5rem 1.5rem 2rem !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   11. CONTACT SECTION REFINEMENT
+══════════════════════════════════════════════════ */
+
+.ct-link {
+    padding: 1.1rem 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    transition: all 0.3s ease !important;
+    border-radius: 8px;
+}
+
+.ct-link:hover {
+    background: rgba(170, 255, 94, 0.04) !important;
+    padding-left: 0.5rem !important;
+}
+
+.ctl-value {
+    font-weight: 600;
+    color: rgba(240, 242, 248, 0.88) !important;
+}
+
+.ctl-arr {
+    color: rgba(170, 255, 94, 0.6) !important;
+    transition: transform 0.3s ease, color 0.3s !important;
+}
+
+.ct-link:hover .ctl-arr {
+    transform: translateX(5px) !important;
+    color: var(--accent) !important;
+}
+
+/* Form inputs */
+.fg input, .fg textarea {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: rgba(240, 242, 248, 0.92) !important;
+    padding: 0.85rem 0 !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 0.95rem !important;
+    transition: border-color 0.3s ease !important;
+    outline: none !important;
+    width: 100% !important;
+}
+
+.fg input:focus, .fg textarea:focus {
+    border-bottom-color: var(--accent) !important;
+}
+
+.fg input::placeholder,
+.fg textarea::placeholder {
+    color: rgba(240, 242, 248, 0.28) !important;
+}
+
+.btn-submit {
+    background: transparent !important;
+    border: 1.5px solid rgba(240, 242, 248, 0.3) !important;
+    color: rgba(240, 242, 248, 0.88) !important;
+    border-radius: 6px !important;
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    font-size: 0.8rem !important;
+    padding: 1rem 2rem !important;
+    width: 100% !important;
+    cursor: none !important;
+    transition: all 0.3s ease !important;
+    margin-top: 1rem !important;
+}
+
+.btn-submit:hover {
+    background: rgba(240, 242, 248, 0.05) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   12. MARQUEE STRIP REFINEMENT
+══════════════════════════════════════════════════ */
+
+.marquee-strip {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.marquee-item {
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    color: rgba(240, 242, 248, 0.35) !important;
+    transition: color 0.3s;
+}
+
+.marquee-sep {
+    color: var(--accent) !important;
+    opacity: 0.5;
+}
+
+
+/* ══════════════════════════════════════════════════
+   13. IMPACT STATS — PREMIUM NUMBER DISPLAY
+══════════════════════════════════════════════════ */
+
+.impact-strip {
+    display: flex;
+    gap: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    margin-top: 3rem !important;
+    padding-top: 2rem !important;
+}
+
+.impact-item {
+    flex: 1;
+    padding-right: 1.5rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding-right: 1.5rem;
+    padding-left: 0;
+}
+
+.impact-item:last-child {
+    border-right: none;
+}
+
+.impact-num {
+    font-family: 'Syne', sans-serif !important;
+    font-size: clamp(2rem, 4vw, 3rem) !important;
+    font-weight: 800 !important;
+    color: #F0F2F8 !important;
+    line-height: 1 !important;
+    margin-bottom: 0.4rem !important;
+}
+
+.impact-label {
+    font-size: 0.65rem !important;
+    letter-spacing: 0.15em !important;
+    color: rgba(240, 242, 248, 0.38) !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   14. FOOTER REFINEMENT & LAYOUT CONTAINMENT
+══════════════════════════════════════════════════ */
+
+#right-panel {
+    overflow-x: hidden !important;
+}
+
+footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: rgba(5, 7, 16, 0.8) !important;
+    backdrop-filter: blur(12px);
+    margin-bottom: 0 !important;
+}
+
+
+/* ══════════════════════════════════════════════════
+   15. EQUITY & ACCESSIBILITY — WCAG AA
+══════════════════════════════════════════════════ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent) !important;
+    outline-offset: 4px !important;
+    border-radius: 4px !important;
+}
+
+/* High contrast skip link */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: #050710;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 700;
+    z-index: 99999;
+    transition: top 0.2s;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+
+/* ══════════════════════════════════════════════════
+   16. REDUCED MOTION SAFETY
+══════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+    #hero-canvas { display: none !important; }
+    .hero-gradient-orb { animation: none !important; }
+    .btn-primary::before { transition: none !important; }
+    .proj-item { transition: none !important; }
+    .ld-logo-img { animation: none !important; }
+    @keyframes orbPulse { to {} }
+}

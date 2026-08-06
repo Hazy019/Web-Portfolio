@@ -1,0 +1,296 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #07090e;
+  --bg-secondary: #12151e;
+  --bg-panel: rgba(18, 21, 30, 0.85);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --accent-green: #8cff2e;
+  
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 200ms;
+  --dur-base: 500ms;
+  --dur-slow: 900ms;
+  --stagger: 80ms;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-panel: rgba(255, 255, 255, 0.85);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --accent-green: #16a34a;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-manrope), sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  /* Ambient radial bloom background lighting */
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(140, 255, 46, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* All headings sit in solid, crisp, high-contrast type without text-shadow or glow */
+h1, h2, h3, h4, h5, h6, blockquote {
+  text-shadow: none !important;
+  filter: none !important;
+}
+
+/* Background Grids & Coordinate Overlay */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(140, 255, 46, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 255, 46, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(140, 255, 46, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 255, 46, 0.08) 1px, transparent 1px);
+  background-size: 200px 200px;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  z-index: 2;
+}
+
+/* Typography display face */
+.font-display {
+  font-family: var(--font-syne), serif;
+}
+
+.accent-txt {
+  color: var(--accent-green);
+}
+
+/* GLOW BUDGET: HERO ACCENT WORD WITH NEON GLOW */
+.hero-glow-word {
+  -webkit-text-stroke: 1.5px var(--accent-green);
+  color: transparent;
+  text-shadow: 0 0 25px rgba(140, 255, 46, 0.45);
+}
+
+/* Glassmorphism Panel with Ambient Glowing Border */
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(140, 255, 46, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(140, 255, 46, 0.28);
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px -5px rgba(140, 255, 46, 0.15);
+}
+
+/* Custom Reticle Loader Iris Exit */
+.iris-exit {
+  animation: irisWipe 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes irisWipe {
+  0% {
+    clip-path: circle(150% at 50% 50%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: circle(0% at 50% 50%);
+    opacity: 0;
+  }
+}
+
+/* Scanline sweep animation */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  animation: scanline 3s ease-in-out infinite;
+}
+
+@keyframes scanline {
+  0% { top: 0; opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* Marquee continuous scroll */
+@keyframes marqueeScroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+.animate-marquee {
+  animation: marqueeScroll 55s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: marqueeScroll 55s linear infinite reverse;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .animate-marquee, .animate-marquee-reverse {
+    animation-duration: 40s;
+  }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-marquee, .animate-marquee-reverse {
+    animation: none !important;
+  }
+  .iris-exit {
+    animation: none !important;
+    opacity: 0 !important;
+    display: none !important;
+  }
+  .ambient-orb {
+    animation: none !important;
+  }
+}
+
+/* ─── Ambient Atmosphere Orb System (§1) ─────────────────────────────────── */
+
+/*
+ * Slow drift animation — 60+ second loop, barely perceptible.
+ * Guardrail: if an orb reads as a visible "blob shape" rather than
+ * ambient glow, reduce the component's opacity prop below 0.10.
+ */
+@keyframes ambientDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(1.5%, 2.5%) scale(1.04); }
+  50%  { transform: translate(-1%, 1%) scale(0.98); }
+  75%  { transform: translate(-2%, -2.5%) scale(1.02); }
+  100% { transform: translate(0.5%, -1%) scale(1); }
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  animation: ambientDrift 62s ease-in-out infinite;
+  will-change: transform;
+  /* Performance: promote to own layer */
+  transform: translateZ(0);
+}
+
+/* ─── Cursor: none sitewide — CustomCursor renders the pointer ────────────── */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+/* ─── Native scrollbar hidden — Lenis progress bar is the replacement ─────── */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / WebKit */
+}
+
+/* ─── Lenis Scroll Progress Indicator ───────────────────────────────────────
+   A 2px fixed right-edge bar that fills as scroll progress goes 0 → 1.
+   .lenis-progress-bar uses scaleY() set by JS so no layout thrash.
+   transform-origin: top keeps the fill growing downward.
+──────────────────────────────────────────────────────────────────────────── */
+.lenis-progress-track {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.05);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.lenis-progress-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(140, 255, 46, 0.9) 0%,
+    rgba(140, 255, 46, 0.3) 100%
+  );
+  transform-origin: top center;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lenis-progress-track {
+    display: none;
+  }
+}
+
+/* ─── HazyMark — Animated Logo Mark Keyframes (§4) ────────────────────────── */
+
+/* Slow continuous idle rotation */
+@keyframes hazyMarkRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Traveling dot along a line (stroke-dashoffset animation) */
+@keyframes hazyDash {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -200; }
+}
+
+/* Node pulse — subtle opacity breathe */
+@keyframes hazyNodePulse {
+  0%, 100% { fill-opacity: 0.5; r: var(--r-base, 3.5px); }
+  50%       { fill-opacity: 1;   r: var(--r-base, 3.5px); }
+}
+
+/* ─── Reduced Motion: disable all new animations too ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  [style*="hazyMarkRotate"],
+  [style*="hazyDash"],
+  [style*="hazyNodePulse"] {
+    animation: none !important;
+  }
+}
+

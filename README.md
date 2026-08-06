@@ -1,86 +1,103 @@
 <div align="center">
-  <img src="hazy-logo.png" alt="HAZY Logo" width="120" />
+  <img src="public/logo.png" alt="HAZY Logo" width="110" />
 
-  # HAZY · Kyrell
+  # HAZY · Kyrell Santillan
   **Building Systems. Thoughtfully.**
 
-  *Portfolio of Kyrell Santillan (HAZY) — CS graduate from the Philippines building government infrastructure, automation, and thoughtful systems.*
+  *Premier Engineering & Systems Architecture Portfolio of Kyrell Santillan (HAZY) — CS Graduate & Full-Stack Developer from the Philippines.*
 
-  [Live Demo](#) · [Report Bug](#) · [Request Feature](#)
+  [Live Demo](https://hazyfactory.vercel.app/) · [GitHub](https://github.com/Hazy019) · [LinkedIn](https://linkedin.com/in/kyrell-santillan)
 </div>
 
 <hr />
 
 ## ✦ Overview
 
-This is the personal web portfolio of **Kyrell Santillan** (HAZY). It features a custom "Cyber-Gold" aesthetic designed with an emphasis on **failure modes first, elegance second**. The site showcases production-level projects ranging from government infrastructure to zero-touch automation pipelines.
+**HAZY** is the official portfolio of **Kyrell Santillan**, a Computer Science graduate specializing in government infrastructure, automated video rendering pipelines, real-time WebSocket architecture, and defensive cybersecurity software.
 
-Built entirely with vanilla web technologies, the interface includes a precision ring loader, a dynamic custom cursor, deep thematic styling (Dark/Light mode), and hardware-accelerated animations using CSS and vanilla JavaScript.
+Built with **Next.js 15 App Router**, **React 19**, **TypeScript**, **Tailwind CSS**, **GSAP ScrollTrigger**, and **Framer Motion**, the site features hardware-accelerated motion mechanics, fluid clamp typography, a zero-re-render custom cursor sphere, and responsive glassmorphic cards.
 
-## ✦ Key Features
+---
 
-- **Cyber-Gold Aesthetic**: A high-end, dynamic design system featuring glassmorphism, glowing neon effects, and custom interactive components.
-- **Hardware-Accelerated Motion**: Custom animations powered by vanilla JavaScript and CSS.
-- **Precision Ring Loader**: An immersive "targeting reticle" loading sequence with an iris-out circle wipe.
-- **Dynamic Context Panel**: A reactive left panel that updates contextually based on the user's scroll position and active project.
-- **Theme Engine**: A robust dark/light mode toggle with smooth transitions across all UI elements.
-- **Documentation Modal**: An interactive, responsive modal system for deep-diving into individual project architecture, problems, solutions, and tech stacks.
+## ✦ Key Architectural Features
+
+- **Next.js 15 & React 19 App Router Architecture**: Server-side rendered static pages with client-side interactive components (`"use client"`).
+- **GSAP ScrollTrigger Pinned Project Showcase**: Hardware-accelerated horizontal track scrub pinning 6 featured projects with bottom progress indicators (`01 / 06`) and arrow navigation controls.
+- **Dual-Tier Infinite Marquee Ticker**: 55s linear GPU-accelerated dual-track scroll (`translate3d(0, 0, 0)` -> `translate3d(-50%, 0, 0)`) with smooth hover-pause state.
+- **Zero-Re-Render Interactive Follower Cursor**: Jingjing Han style custom cursor with GPU-accelerated `quickTo` setters on `mousemove` (116px blur sphere on interactive media previews).
+- **Glassmorphic Recommendation & Philosophy Cards**: Upgraded recommendation quote cards with 24px–28px italic serif typography, neon green (`#8CFF2E`) JetBrains Mono author tags, and scale-in entrance motion.
+- **Fluid Clamp Layout & 2-Column Contact Grid**: 2-column contact section (`1fr 1fr`, gap `64px–80px`) with `clamp(2.5rem, 4.5vw, 4rem)` headline sizing and 52px input heights with 1px neon green focus bloom.
+- **Unified Vertical Rhythm**: Consistent `140px` desktop (`80px` mobile) section equity padding across `#about`, `#philosophy`, `#projects`, and `#contact`.
+
+---
 
 ## ✦ Featured Work
 
-The portfolio highlights 5 core production projects:
+The portfolio showcases 6 production systems built and deployed by Kyrell:
 
-1. **YouTube Shorts Automator**
-   - *Automation Engineering* | A fully unattended Python pipeline that converts raw scripts into polished YouTube Shorts (TTS, subtitles, B-roll stitching).
-2. **DTI Queue System**
-   - *Government Infrastructure* | A real-time WebSocket queue and ticket generation system built for the Department of Trade and Industry.
-3. **Polycon — A Consultation System**
-   - *Academic Platform* | A full-stack LMS with real-time scheduling and AI-powered session transcription via AssemblyAI.
-4. **Spell Gate**
-   - *UX Engineering* | A walk-up kiosk system for non-technical users, gating access behind a real-time spell-check validation layer.
-5. **SentinelView**
-   - *Cybersecurity Engineering* | A real-time cybersecurity threat visualiser simulating network log ingestion, threat pattern rules matching, and WebSocket live alert rendering on a 3D attack globe.
+1. **DTI Local Queue & Ticket System**  
+   *Government Infrastructure* | Real-time WebSocket queue ticketing and counter management system built for the Department of Trade and Industry with SQLite transaction safety.
+2. **YouTube Shorts Automated Video Pipeline**  
+   *Automation Engineering* | Fully automated video rendering pipeline using PyQt6, AWS Lambda, Remotion, and Reddit API integration.
+3. **Polycon — Consultation & LMS Platform**  
+   *Academic System* | Full-stack learning management system with real-time consultation scheduling and AI-powered session transcription via AssemblyAI.
+4. **SpellGate — Access Control Kiosk**  
+   *UX & Defensive Engineering* | Walk-up kiosk system gating non-technical user access behind a real-time spell-check validation layer.
+5. **IDEE-CLI — System Architecture Tool**  
+   *Developer Tooling* | Command-line interface utility for automated project scaffolding and architecture validation.
+6. **SentinelView — Cyber Threat Visualiser**  
+   *Cybersecurity Engineering* | Real-time cybersecurity threat visualiser simulating network log ingestion and threat pattern rule matching.
 
-## ✦ The Arsenal (Tech Stack)
+---
 
-The portfolio itself is built with:
-- **HTML5** (Semantic structure)
-- **Vanilla CSS3** (`index.css`, `depth.css`, `animations.css`)
-- **Vanilla JavaScript** (`main.js`, `animations.js`)
+## ✦ Technology Stack
 
-Kyrell's broader technical stack showcased in the projects includes:
-- **Frontend**: Next.js, React, Flutter, Figma, HTML5/CSS, JavaScript
-- **Backend**: Python, Django, Flask, PostgreSQL, REST APIs, WebSockets
-- **Security**: Secure Coding, Network Security, Linux, Git
-- **Automation**: Python Automation, Selenium, NLP, Voice AI, Bot Systems, Kiosk Dev
+| Category | Technology / Library |
+| :--- | :--- |
+| **Framework** | Next.js 15.1 (App Router), React 19 |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS, Vanilla CSS |
+| **Animation Engine** | GSAP 3 (ScrollTrigger), Framer Motion, Lenis Smooth Scroll |
+| **Icons & Assets** | Lucide React |
 
-## ✦ Getting Started
+---
 
-Because this portfolio is built with vanilla web technologies, running it locally is incredibly straightforward with zero build steps required.
+## ✦ Local Development Setup
 
 ### Prerequisites
-
-- A modern web browser
-- (Optional) [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension for VS Code
+- Node.js `18.x` or `20.x`
+- `npm` or `pnpm`
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/Hazy019/Web-Portfolio.git
-   ```
-2. Navigate to the project directory:
-   ```bash
    cd Web-Portfolio
    ```
-3. Open `index.html` in your browser:
-   - **Option A**: Double-click the `index.html` file.
-   - **Option B**: Right-click `index.html` in VS Code and select **"Open with Live Server"**.
 
-## ✦ Contact
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## ✦ Contact & Inquiries
 
 **Kyrell Santillan**  
-*Available for full-time, contract, and research opportunities.*
+*Open to full-time engineering roles, contract projects, and research opportunities worldwide.*
 
 - **Email**: santillankyrell@gmail.com
 - **LinkedIn**: [in/kyrell-santillan](https://linkedin.com/in/kyrell-santillan)
@@ -90,4 +107,3 @@ Because this portfolio is built with vanilla web technologies, running it locall
 <div align="center">
   <i>© 2026 Kyrell Santillan · Built with obsession 🇵🇭</i>
 </div>
-
