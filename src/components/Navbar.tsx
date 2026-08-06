@@ -43,11 +43,10 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
     <header className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 flex justify-center pointer-events-none">
       {/* Floating Glass Capsule Nav (backdrop-filter: blur(16px), border: 1px solid rgba(255,255,255,0.08)) */}
       <div
-        className={`pointer-events-auto flex items-center justify-between gap-4 sm:gap-8 px-5 py-2.5 sm:px-7 sm:py-3 rounded-full border transition-all duration-300 ${
-          scrolled
+        className={`pointer-events-auto flex items-center justify-between gap-4 sm:gap-8 px-5 py-2.5 sm:px-7 sm:py-3 rounded-full border transition-all duration-300 ${scrolled
             ? "bg-[#07090E]/90 border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
             : "bg-[#07090E]/80 border-white/10 shadow-2xl"
-        }`}
+          }`}
         style={{
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
@@ -61,7 +60,7 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
         >
           <div className="w-8 h-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center group-hover:border-[#8cff2e] transition-colors">
             <Image
-              src="/hazy-logo.png"
+              src="/logo.png"
               alt="HAZY"
               width={22}
               height={22}
@@ -87,9 +86,8 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className={`relative flex items-center gap-2 py-1.5 px-4 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${
-                  isActive ? "text-white font-bold" : "text-[#94A3B8] hover:text-white"
-                }`}
+                className={`relative flex items-center gap-2 py-1.5 px-4 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${isActive ? "text-white font-bold" : "text-[#94A3B8] hover:text-white"
+                  }`}
               >
                 {/* Smooth Sliding Pill Background */}
                 {isActive && (
@@ -152,11 +150,10 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
                 key={item.id}
                 href={`#${item.id}`}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm ${
-                  activeSection === item.id
+                className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm ${activeSection === item.id
                     ? "text-white bg-white/10 font-bold border border-white/20"
                     : "text-[#94A3B8] hover:bg-white/5"
-                }`}
+                  }`}
               >
                 <span>{item.label}</span>
                 <span className="text-xs opacity-50">{item.num}</span>
