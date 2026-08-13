@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ProjectData } from "@/lib/projectsData";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ExternalLink, Terminal, Shield, ArrowUpRight } from "lucide-react";
+import { ProjectIcon } from "./ProjectIcon";
 
 interface ProjectCardProps {
   project: ProjectData;
@@ -46,14 +47,8 @@ export function ProjectCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`group relative rounded-3xl border border-white/10 bg-slate-950/70 backdrop-blur-xl transition-all duration-300 overflow-hidden ${
-        isFlagship ? "p-8 lg:p-10 border-white/15" : "p-6 lg:p-8"
-      }`}
-      style={{
-        borderColor: isHovered ? project.nativeAccent : "rgba(255, 255, 255, 0.1)",
-        boxShadow: isHovered
-          ? `0 0 35px ${project.accentGlow}, inset 0 0 20px ${project.accentGlow}`
-          : "none",
-      }}
+        isFlagship ? "p-8 lg:p-10" : "p-6 lg:p-8"
+      } ${isHovered ? "border-white/20 shadow-[0_20px_50px_rgba(0,0,0,0.6)] -translate-y-1" : ""}`}
     >
       <div
         className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${
@@ -98,7 +93,7 @@ export function ProjectCard({
           </div>
 
           {/* Solid crisp title */}
-          <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-white group-hover:text-emerald-300 transition-colors leading-tight">
+          <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-white leading-tight">
             {project.title}
           </h3>
 
@@ -126,7 +121,7 @@ export function ProjectCard({
               className="inline-flex items-center gap-2 font-mono text-sm font-semibold transition-all group-hover:translate-x-1"
               style={{ color: project.nativeAccent }}
             >
-              <span>View Full Specs</span>
+              <span>View Case Study</span>
               <ArrowUpRight className="w-4 h-4" />
             </button>
 
@@ -170,15 +165,30 @@ export function ProjectCard({
           </div>
 
           {/* Screenshot Image Container */}
-          <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-950 p-2 cursor-pointer" data-cursor="view" onClick={() => onOpenDoc(project.id)}>
-            <Image
-              src={project.imageSrc}
-              alt={project.title}
-              fill
-              className={`object-cover object-top transition-all duration-500 ${
-                isHovered ? "scale-105 filter brightness-105" : "scale-100"
-              }`}
-            />
+          <div
+            className="relative aspect-[16/10] w-full overflow-hidden p-3 sm:p-4 cursor-pointer flex items-center justify-center"
+            data-cursor="view"
+            style={{
+              background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
+            }}
+            onClick={() => {
+              if (project.liveUrl) {
+                window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+              } else {
+                onOpenDoc(project.id);
+              }
+            }}
+          >
+            <div className="relative w-full h-full min-h-[200px] flex items-center justify-center filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.85)]">
+              <Image
+                src={project.imageSrc}
+                alt={project.title}
+                fill
+                className={`object-contain object-center transition-all duration-500 ${
+                  isHovered ? "scale-[1.03] filter brightness-105" : "scale-100"
+                }`}
+              />
+            </div>
 
             {/* Project Specific Flagship Overlays */}
             {project.id === "yt-shorts" && (

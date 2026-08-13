@@ -230,6 +230,27 @@ body::-webkit-scrollbar {
   display: none; /* Chrome / Safari / WebKit */
 }
 
+/* ─── Custom Modal Scrollbar ──────────────────────────────────────────────── */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 255, 46, 0.4) rgba(255, 255, 255, 0.05);
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  display: block !important;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(140, 255, 46, 0.3);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 255, 46, 0.6);
+}
+
 /* ─── Lenis Scroll Progress Indicator ───────────────────────────────────────
    A 2px fixed right-edge bar that fills as scroll progress goes 0 → 1.
    .lenis-progress-bar uses scaleY() set by JS so no layout thrash.

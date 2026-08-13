@@ -72,220 +72,308 @@ export function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="relative py-[80px] lg:py-[140px] border-t border-white/10 bg-[#07090E] overflow-hidden"
-    >
-      <AmbientOrbs
-        orbs={[
-          {
-            color: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)",
-            size: "600px",
-            top: "-20%",
-            right: "-5%",
-            opacity: 0.1,
-            delay: "-15s",
-          },
-          {
-            color: "radial-gradient(circle, rgba(140,255,46,0.06) 0%, transparent 70%)",
-            size: "450px",
-            bottom: "5%",
-            left: "-8%",
-            opacity: 0.08,
-            delay: "-40s",
-          },
-        ]}
-      />
+    <>
+      {/* ── Testimonial / Recommendation Standalone Section (Modern Editorial Glass Card) ────── */}
+      <section id="testimonial" className="relative py-[50px] lg:py-[80px] border-t border-white/10 bg-[#07090E] overflow-hidden">
+        <AmbientOrbs
+          orbs={[
+            {
+              color: "radial-gradient(circle, rgba(140,255,46,0.08) 0%, transparent 70%)",
+              size: "500px",
+              top: "-20%",
+              right: "-5%",
+              opacity: 0.08,
+              delay: "-15s",
+            },
+          ]}
+        />
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10">
+          <motion.div
+            initial={reducedMotion ? undefined : { opacity: 0, y: 35 }}
+            whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              background: "rgba(13, 16, 23, 0.7)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+            }}
+            className="p-8 sm:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
+          >
+            {/* Subtle internal accent ambient glow */}
+            <div
+              aria-hidden="true"
+              className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full pointer-events-none opacity-20"
+              style={{
+                background: "radial-gradient(circle, rgba(140,255,46,0.4) 0%, transparent 70%)",
+                filter: "blur(50px)",
+              }}
+            />
 
-      <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full space-y-20 relative z-10">
-        {/* ── Upgraded Recommendation Quote Card (#0d1017 glass surface) ────── */}
-        <motion.div
-          initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
-          whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="p-8 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/70 backdrop-blur-xl relative overflow-hidden text-center space-y-6 shadow-2xl">
+            {/* Asymmetric 10-Column Grid (30% Left / 70% Right Split) with Staggered Entrance (100ms stagger, 750ms duration) */}
             <motion.div
-              initial={reducedMotion ? undefined : { scale: 0, opacity: 0 }}
-              whileInView={reducedMotion ? undefined : { scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="flex justify-center"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.1,
+                    delayChildren: 0.05,
+                  },
+                },
+              }}
+              className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-center relative z-10"
             >
-              <Quote className="w-10 h-10 text-[#8cff2e]/80" />
-            </motion.div>
+              {/* Left Metadata (30% / 3 Columns) */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -25 },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      duration: 0.75,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  },
+                }}
+                className="lg:col-span-3 space-y-3.5 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8"
+              >
+                <div className="space-y-1">
+                  <div className="font-display font-extrabold text-[#FFFFFF] text-lg sm:text-xl tracking-tight uppercase">
+                    RESEARCH ADVISER
+                  </div>
+                  <div className="font-mono text-xs text-[#94A3B8] opacity-60 uppercase tracking-wider font-medium">
+                    CS Department Faculty
+                  </div>
+                </div>
 
-            <blockquote className="font-serif italic font-light text-[22px] sm:text-[25px] md:text-[28px] text-[#FFFFFF] leading-relaxed max-w-3xl mx-auto">
-              &ldquo;Kyrell builds like someone who has already thought about what happens when
-              things go wrong. His systems are defensible and his interfaces are genuinely
-              considered — a combination that&apos;s rarer than it should be.&rdquo;
-            </blockquote>
+                <div className="pt-1">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8cff2e]/10 border border-[#8cff2e]/30 text-[11px] font-mono text-[#8cff2e] font-bold tracking-wide">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse" />
+                    <span>ACADEMIC VERIFIED</span>
+                  </div>
+                </div>
+              </motion.div>
 
-            <div className="font-mono text-xs sm:text-sm text-[#8cff2e] font-semibold tracking-widest uppercase pt-2">
-              — RESEARCH ADVISER, CS DEPARTMENT
-            </div>
-          </div>
-        </motion.div>
-
-        {/* ── 2-Column Grid (1fr 1fr, Gap 64px–80px) ────────────────────────── */}
-        <motion.div
-          variants={reducedMotion ? undefined : containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 pt-4 items-start"
-        >
-          {/* Left Column: Heading (Fluid Clamp clamp(2.5rem, 4.5vw, 4rem)), Copy & Social Pills */}
-          <div className="space-y-8">
-            {/* Eyebrow Badge */}
-            <motion.div
-              variants={reducedMotion ? undefined : itemVariants}
-              className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest"
-            >
-              <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-              <span>[ 05 // CONTACT & INQUIRIES ]</span>
-            </motion.div>
-
-            {/* Headline Display Fluid Clamp Sizing: clamp(2.5rem, 4.5vw, 4rem) */}
-            <motion.h2
-              initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
-              whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold text-white leading-[1.05] tracking-tight"
-            >
-              Let&apos;s build <br />
-              <span className="text-white/80 transition-all duration-300">
-                {rotatingWords[wordIdx]}
-              </span>
-            </motion.h2>
-
-            <motion.p
-              variants={reducedMotion ? undefined : itemVariants}
-              className="text-[#94A3B8] text-base sm:text-lg leading-[1.6] font-normal"
-            >
-              Open to full-time engineering roles, contract projects, and research opportunities.
-              Based in the Philippines (UTC+8) and available remotely worldwide. I respond to every
-              message.
-            </motion.p>
-
-            {/* Social Link Pills */}
-            <motion.div
-              variants={reducedMotion ? undefined : itemVariants}
-              className="space-y-3 font-mono text-sm"
-            >
-              <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
+              {/* Right Quotation (70% / 7 Columns) */}
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 25 },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: {
+                      duration: 0.75,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  },
+                }}
+                className="lg:col-span-7 space-y-4"
               >
                 <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-[#8cff2e]" />
-                  <span className="text-[#94A3B8] text-xs uppercase tracking-wider">Email</span>
+                  <span className="text-[#8cff2e] font-serif text-4xl leading-none select-none font-bold">
+                    “
+                  </span>
+                  <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">
+                    THIRD-PARTY ENDORSEMENT
+                  </span>
                 </div>
-                <span className="text-white group-hover:text-[#8cff2e] transition-colors font-medium">
-                  santillankyrell@gmail.com →
-                </span>
-              </a>
 
-              <a
-                href="https://github.com/Hazy019"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <Github className="w-4 h-4 text-[#8cff2e]" />
-                  <span className="text-[#94A3B8] text-xs uppercase tracking-wider">GitHub</span>
-                </div>
-                <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
-                  @hazy019 →
-                </span>
-              </a>
-
-              <a
-                href="https://linkedin.com/in/kyrell-santillan"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <Linkedin className="w-4 h-4 text-[#8cff2e]" />
-                  <span className="text-[#94A3B8] text-xs uppercase tracking-wider">LinkedIn</span>
-                </div>
-                <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
-                  Kyrell Santillan →
-                </span>
-              </a>
+                <blockquote className="font-serif italic font-light text-[22px] sm:text-[24px] lg:text-[26px] text-[#FFFFFF] leading-relaxed tracking-tight">
+                  &ldquo;Kyrell builds like someone who has already thought about what happens when
+                  things go wrong. His systems are defensible and his interfaces are genuinely
+                  considered — a combination that&apos;s rarer than it should be.&rdquo;
+                </blockquote>
+              </motion.div>
             </motion.div>
-          </div>
-
-          {/* Right Column: Contact Form Box */}
-          <motion.div variants={reducedMotion ? undefined : formVariants}>
-            <form
-              onSubmit={handleSubmit}
-              className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-[#12151E] backdrop-blur-xl space-y-6 shadow-2xl"
-            >
-              <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Jane Doe"
-                  className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="jane@company.com"
-                  className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
-                  Message
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="How can I help you build?"
-                  className="w-full p-4 rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
-                />
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                className="w-full py-4 rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Send className="w-4 h-4" />
-                <span>{submitted ? "Message Transmitted!" : "Send Message"}</span>
-              </motion.button>
-            </form>
           </motion.div>
-        </motion.div>
+        </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="max-w-7xl mx-auto pt-20 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#94A3B8] gap-4">
+      {/* ── Contact Form Section (#contact anchor target with scroll-margin-top) ────── */}
+      <section
+        id="contact"
+        className="relative py-[80px] lg:py-[140px] border-t border-white/10 bg-[#07090E] overflow-hidden scroll-mt-28"
+      >
+        <AmbientOrbs
+          orbs={[
+            {
+              color: "radial-gradient(circle, rgba(140,255,46,0.06) 0%, transparent 70%)",
+              size: "450px",
+              bottom: "5%",
+              left: "-8%",
+              opacity: 0.08,
+              delay: "-40s",
+            },
+          ]}
+        />
+
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10">
+          {/* ── 2-Column Grid (12-Col System: 7-Col Content / 5-Col Form) ────────────────────────── */}
+          <motion.div
+            variants={reducedMotion ? undefined : containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pt-4 items-start"
+          >
+            {/* Left Column: Heading (Fluid Clamp clamp(1.75rem, 4vw, 3.5rem)), Copy & Social Pills */}
+            <div className="lg:col-span-7 space-y-8 min-w-0 overflow-visible">
+              {/* Eyebrow Badge */}
+              <motion.div
+                variants={reducedMotion ? undefined : itemVariants}
+                className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+                <span>[ 05 // CONTACT & INQUIRIES ]</span>
+              </motion.div>
+
+              {/* Headline Display Fluid Clamp Sizing */}
+              <motion.h2
+                initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+                whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible"
+              >
+                Let&apos;s build <br />
+                <span className="text-white/80 transition-all duration-300 inline-block pb-1">
+                  {rotatingWords[wordIdx]}
+                </span>
+              </motion.h2>
+
+              <motion.p
+                variants={reducedMotion ? undefined : itemVariants}
+                className="text-[#94A3B8] text-base sm:text-lg leading-[1.6] font-normal max-w-xl"
+              >
+                Open to full-time engineering roles, contract projects, and research opportunities.
+                Based in the Philippines (UTC+8) and available remotely worldwide. I respond to every
+                message.
+              </motion.p>
+
+              {/* Social Link Pills */}
+              <motion.div
+                variants={reducedMotion ? undefined : itemVariants}
+                className="space-y-3 font-mono text-sm max-w-xl"
+              >
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Mail className="w-4 h-4 text-[#8cff2e]" />
+                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">Email</span>
+                  </div>
+                  <span className="text-white group-hover:text-[#8cff2e] transition-colors font-medium">
+                    santillankyrell@gmail.com →
+                  </span>
+                </a>
+
+                <a
+                  href="https://github.com/Hazy019"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Github className="w-4 h-4 text-[#8cff2e]" />
+                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">GitHub</span>
+                  </div>
+                  <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
+                    @hazy019 →
+                  </span>
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/kyrell-santillan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Linkedin className="w-4 h-4 text-[#8cff2e]" />
+                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">LinkedIn</span>
+                  </div>
+                  <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
+                    Kyrell Santillan →
+                  </span>
+                </a>
+              </motion.div>
+            </div>
+
+            {/* Right Column: Contact Form Box */}
+            <motion.div variants={reducedMotion ? undefined : formVariants} className="lg:col-span-5 min-w-0 w-full max-w-[590px] mx-auto lg:mx-0">
+              <form
+                onSubmit={handleSubmit}
+                className="p-8 sm:p-10 rounded-2xl border border-white/10 bg-[#12151E] backdrop-blur-xl space-y-6 shadow-2xl"
+              >
+                <div className="space-y-2">
+                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                    Your Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Jane Doe"
+                    className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="jane@company.com"
+                    className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                    Message
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
+                    placeholder="How can I help you build?"
+                    className="w-full p-4 rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                  />
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full py-4 rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>{submitted ? "Message Transmitted!" : "Send Message"}</span>
+                </motion.button>
+              </form>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Standalone Footer Ribbon (Clear separation mt-16/lg:mt-24 & Tight vertical padding py-4/py-5) ────── */}
+      <footer className="w-full mt-16 lg:mt-24 border-t border-white/10 bg-[#07090E] py-4 sm:py-5 px-6 lg:px-12 relative z-10">
+        <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#94A3B8] gap-3">
           <div className="font-display text-base font-extrabold text-white">
             H<span className="text-[#8cff2e]">AZY</span>
           </div>
           <div>© 2026 Kyrell Santillan · Built with obsession 🇵🇭</div>
-        </footer>
-      </div>
-    </section>
+        </div>
+      </footer>
+    </>
   );
 }

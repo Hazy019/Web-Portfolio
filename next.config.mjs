@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  productionBrowserSourceMaps: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     unoptimized: false,
@@ -14,7 +15,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:all*(svg|jpg|png|webp|avif|gif|ico|woff|woff2|ttf|otf)',
+        source: '/:path*.(svg|jpg|png|webp|avif|gif|ico|woff|woff2|ttf|otf)',
         headers: [
           {
             key: 'Cache-Control',

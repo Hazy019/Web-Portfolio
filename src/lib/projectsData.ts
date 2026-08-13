@@ -16,6 +16,7 @@ export interface ProjectData {
   accentBorder: string;
   accentGlow: string;
   imageSrc: string;
+  screenshots: string[];
   deviceFrame: 'phone' | 'browser' | 'split-terminal' | 'laptop-phone';
   repoUrl?: string;
   liveUrl?: string;
@@ -43,7 +44,12 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#84cc16',
     accentBorder: 'rgba(132, 204, 22, 0.4)',
     accentGlow: 'rgba(132, 204, 22, 0.15)',
-    imageSrc: '/Shortsautomation_preview.webp',
+    imageSrc: '/Shortsautomation_mockup_preview.png',
+    screenshots: [
+      '/Shortsautomation_mockup_preview.png',
+      '/Shortsautomation_phone_preview.webp',
+      '/Shortsautomation_preview.webp'
+    ],
     deviceFrame: 'phone',
     repoUrl: 'https://github.com/Hazy019/youtube-shorts-automation',
     liveUrl: 'https://shortsautomations.vercel.app/',
@@ -74,13 +80,18 @@ export const PROJECTS: ProjectData[] = [
     type: 'Government Infrastructure',
     ghostType: 'WEBSITE',
     title: 'DTI Queue System',
-    status: 'Production',
+    status: 'Live (Restricted Access)',
     role: 'Lead Developer',
     timeline: '2026',
     nativeAccent: '#eab308',
     accentBorder: 'rgba(234, 179, 8, 0.4)',
     accentGlow: 'rgba(234, 179, 8, 0.15)',
-    imageSrc: '/DTI_Queue_preview.webp',
+    imageSrc: '/DTI_Queue_mockup_preview.png',
+    screenshots: [
+      '/DTI_Queue_mockup_preview.png',
+      '/DTI_Queue_phone_preview.png',
+      '/DTI_Queue_preview.webp'
+    ],
     deviceFrame: 'browser',
     outcomeBadge: '1,800+ Active Centers · LAN-based',
     narrative: 'The Department of Trade and Industry\'s regional branch was processing walk-ins with paper slips and a whiteboard. Rebuilt from scratch — real-time WebSocket ticket generation, role-based access, and a live admin dashboard with full audit history.',
@@ -109,13 +120,18 @@ export const PROJECTS: ProjectData[] = [
     type: 'Academic Platform',
     ghostType: 'WEBSITE',
     title: 'Polycon — Consultation System',
-    status: 'Live',
+    status: 'Live (Restricted Access)',
     role: 'Full-Stack Developer',
     timeline: '2024-2026',
     nativeAccent: '#3b82f6',
     accentBorder: 'rgba(59, 130, 246, 0.4)',
     accentGlow: 'rgba(59, 130, 246, 0.15)',
-    imageSrc: '/Polycon_preview.webp',
+    imageSrc: '/Polycon_mockup_preview.png',
+    screenshots: [
+      '/Polycon_mockup_preview.png',
+      '/Polycon_phone_preview.jfif',
+      '/Polycon_preview.webp'
+    ],
     deviceFrame: 'browser',
     repoUrl: 'https://github.com/xenhusk/POLYCON',
     outcomeBadge: 'Zero missed appointments since launch',
@@ -151,9 +167,15 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#22c55e',
     accentBorder: 'rgba(34, 197, 94, 0.4)',
     accentGlow: 'rgba(34, 197, 94, 0.15)',
-    imageSrc: '/IDEE-CLI_preview.webp',
+    imageSrc: '/IDEE-CLI_mockup_preview.png',
+    screenshots: [
+      '/IDEE-CLI_mockup_preview.png',
+      '/IDEE-CLI_phone_preview.webp',
+      '/IDEE-CLI_preview.webp'
+    ],
     deviceFrame: 'split-terminal',
     repoUrl: 'https://github.com/Hazy019/idee-cli',
+    liveUrl: 'https://idee-cli.vercel.app/',
     outcomeBadge: 'Instant project scaffolding in <3 seconds',
     narrative: 'A high-performance developer CLI tool for opinionated project scaffolding, boilerplate generation, and security configuration setup across full-stack applications.',
     problem: 'Setting up new full-stack projects with strict security headers, authentication boilerplate, and consistent linting rules was repetitive and error-prone.',
@@ -180,13 +202,18 @@ export const PROJECTS: ProjectData[] = [
     type: 'Cybersecurity Engineering',
     ghostType: 'SECURITY',
     title: 'SentinelView',
-    status: 'Live Demo',
+    status: 'Repo Only',
     role: 'Solo Developer',
     timeline: '2026',
     nativeAccent: '#06b6d4',
     accentBorder: 'rgba(6, 182, 212, 0.4)',
     accentGlow: 'rgba(6, 182, 212, 0.15)',
-    imageSrc: '/Sentinel_preview.webp',
+    imageSrc: '/Sentinel_mockup_preview.png',
+    screenshots: [
+      '/Sentinel_mockup_preview.png',
+      '/Sentinel_phone_preview.png',
+      '/Sentinel_preview.webp'
+    ],
     deviceFrame: 'browser',
     repoUrl: 'https://github.com/Hazy019/SentinelView',
     outcomeBadge: 'Sub-second alert latency · 10,000+ logs/sec',
@@ -216,13 +243,18 @@ export const PROJECTS: ProjectData[] = [
     type: 'UX & System Engineering',
     ghostType: 'KIOSK',
     title: 'SpellGate',
-    status: 'Production',
+    status: 'Live',
     role: 'Solo Developer',
     timeline: '2025-2026',
     nativeAccent: '#8b5cf6',
     accentBorder: 'rgba(139, 92, 246, 0.4)',
     accentGlow: 'rgba(139, 92, 246, 0.15)',
-    imageSrc: '/SpellGate_preview.webp',
+    imageSrc: '/SpellGate_mockup_preview.png',
+    screenshots: [
+      '/SpellGate_mockup_preview.png',
+      '/SpellGate_phone_preview.webp',
+      '/SpellGate_preview.webp'
+    ],
     deviceFrame: 'laptop-phone',
     repoUrl: 'https://github.com/Hazy019/SpellGate',
     liveUrl: 'https://spellgate-eb1e8.web.app/',

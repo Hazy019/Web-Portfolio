@@ -33,6 +33,9 @@ const config: Config = {
         display: ["var(--font-syne)", "serif"],
         mono: ["var(--font-jetbrains)", "monospace"],
       },
+      screens: {
+        xs: "475px",
+      },
       transitionTimingFunction: {
         "ease-out-custom": "cubic-bezier(0.16, 1, 0.3, 1)",
         "ease-in-out-custom": "cubic-bezier(0.65, 0, 0.35, 1)",

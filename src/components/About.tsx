@@ -104,7 +104,7 @@ export function About() {
         >
           <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-            <span>[ 02 // PERSPECTIVE & EXPERIENCE ]</span>
+            <span>[ 03 // PERSPECTIVE & EXPERIENCE ]</span>
           </div>
           <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white">
             Tailored <span className="text-white/80">Perspective.</span>

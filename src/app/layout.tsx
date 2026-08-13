@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "HAZY",
+  title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
   description:
     "Portfolio of Kyrell Santillan (HAZY), CS graduate from the Philippines building government infrastructure, automation pipelines, and AI-driven systems.",
   keywords: [
@@ -46,6 +46,8 @@ export const metadata: Metadata = {
     "SentinelView",
     "SpellGate",
     "Polycon",
+    "Systems Architect",
+    "Full-Stack Engineer",
   ],
   authors: [{ name: "Kyrell Santillan" }],
   metadataBase: new URL("https://hazyfactory.vercel.app/"),
@@ -53,10 +55,10 @@ export const metadata: Metadata = {
     canonical: "https://hazyfactory.vercel.app/",
   },
   openGraph: {
-    type: "profile",
-    title: "HAZY",
+    type: "website",
+    title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
     description:
-      "I build systems the way architects design buildings — failure modes first, elegance second.",
+      "I build systems the way architects design buildings — failure modes first, elegance second. Government infrastructure, AI automation pipelines, and defensible web applications.",
     url: "https://hazyfactory.vercel.app/",
     siteName: "HAZY · Kyrell Santillan",
     images: [
@@ -64,13 +66,13 @@ export const metadata: Metadata = {
         url: "/logo.png",
         width: 512,
         height: 512,
-        alt: "HAZY Logo",
+        alt: "HAZY Circular Mark & Logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HAZY",
+    title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
     description:
       "Portfolio of Kyrell Santillan (HAZY), building government infrastructure, automation pipelines, and AI-driven systems.",
     images: ["/logo.png"],
@@ -82,6 +84,9 @@ export const metadata: Metadata = {
     ],
     shortcut: "/logo.png",
     apple: "/logo.png",
+  },
+  verification: {
+    google: "ZL-rIBLn4dRYbQvp5nrjL1SfCtzVrel-UX-sP3Pl9ME",
   },
 };
 
@@ -154,6 +159,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark" className={`${syne.variable} ${manrope.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <meta name="google-site-verification" content="ZL-rIBLn4dRYbQvp5nrjL1SfCtzVrel-UX-sP3Pl9ME" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

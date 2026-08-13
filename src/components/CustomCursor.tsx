@@ -24,8 +24,19 @@ export function CustomCursor() {
   const modeRef = useRef<"default" | "hover" | "view">("default");
   const [cursorMode, setCursorMode] = useState<"default" | "hover" | "view">("default");
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    // Check coarse pointer / touch hardware
+    if (typeof window !== "undefined") {
+      const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+      const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      if (isCoarse || hasTouch) {
+        setIsTouch(true);
+        return;
+      }
+    }
+
     if (reducedMotion) return;
 
     const dot = dotRef.current;
@@ -87,7 +98,7 @@ export function CustomCursor() {
     };
   }, [reducedMotion]);
 
-  if (reducedMotion) return null;
+  if (reducedMotion || isTouch) return null;
 
   const isView = cursorMode === "view";
   const isHover = cursorMode === "hover";
@@ -97,7 +108,7 @@ export function CustomCursor() {
       {/* ── Inner neon green dot ─────────────────────────────────────── */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9990] w-2 h-2 bg-[#8cff2e] rounded-full shadow-[0_0_10px_#8cff2e] transition-opacity duration-300 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[10000] w-2 h-2 bg-[#8cff2e] rounded-full shadow-[0_0_10px_#8cff2e] transition-opacity duration-300 ${
           isVisible && !isView ? "opacity-100" : "opacity-0"
         }`}
         style={{
@@ -106,10 +117,10 @@ export function CustomCursor() {
         }}
       />
 
-      {/* ── Interactive Follower Sphere (Jingjing Han Style) ──────────── */}
+      {/* ── Interactive Follower Sphere ──────────── */}
       <div
         ref={ringRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9989] rounded-full flex items-center justify-center text-center transition-all duration-300 ease-out ${
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center text-center transition-all duration-300 ease-out ${
           isVisible ? "opacity-100" : "opacity-0"
         } ${
           isView
@@ -121,14 +132,14 @@ export function CustomCursor() {
         style={{
           transform: "translate3d(-50%, -50%, 0)",
           willChange: "transform",
-          background: isView ? "rgba(18, 21, 30, 0.9)" : undefined,
+          background: isView ? "rgba(8, 10, 15, 0.45)" : undefined,
           backdropFilter: isView ? "blur(12px) saturate(180%)" : undefined,
           WebkitBackdropFilter: isView ? "blur(12px) saturate(180%)" : undefined,
-          border: isView ? "1px solid rgba(255, 255, 255, 0.2)" : undefined,
+          border: isView ? "1px solid rgba(255, 255, 255, 0.15)" : undefined,
         }}
       >
         {isView && (
-          <div className="flex flex-col items-center justify-center text-center font-sans font-medium text-[14px] leading-[1.2] text-white select-none">
+          <div className="flex flex-col items-center justify-center text-center font-mono font-bold text-[12px] tracking-wider uppercase text-white select-none">
             <span>View</span>
             <span>Project</span>
           </div>

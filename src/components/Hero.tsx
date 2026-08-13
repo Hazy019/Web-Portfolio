@@ -19,10 +19,11 @@ interface CounterProps {
   target: number;
   label: string;
   sublabel?: string;
+  showPlus?: boolean;
   icon?: React.ReactNode;
 }
 
-function Counter({ target, label, sublabel, icon }: CounterProps) {
+function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProps) {
   const count = useMotionValue(0);
   const [displayValue, setDisplayValue] = useState("0");
   const ref = useRef<HTMLDivElement>(null);
@@ -59,13 +60,13 @@ function Counter({ target, label, sublabel, icon }: CounterProps) {
         {icon && <div className="text-slate-500 group-hover:text-[#8cff2e] transition-colors">{icon}</div>}
       </div>
 
-      <div className="font-display text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1">
+      <div className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1">
         <span>{displayValue}</span>
-        <span className="text-[#8cff2e] text-2xl font-light">+</span>
+        {showPlus && <span className="text-[#8cff2e] text-2xl font-light">+</span>}
       </div>
 
       {sublabel && (
-        <div className="text-[11px] font-mono text-slate-400 mt-1 tracking-wide">
+        <div className="text-[11px] font-mono text-slate-400 mt-1 tracking-wide uppercase">
           {sublabel}
         </div>
       )}
@@ -75,16 +76,16 @@ function Counter({ target, label, sublabel, icon }: CounterProps) {
 
 interface GitHubUserData {
   public_repos: number;
-  public_gists: number;
-  followers: number;
+  created_year: number;
+  total_commits: number;
 }
 
 export function Hero() {
   const reducedMotion = useReducedMotion();
   const [githubStats, setGithubStats] = useState<GitHubUserData>({
-    public_repos: 30,
-    public_gists: 6,
-    followers: 12,
+    public_repos: 12,
+    created_year: 2024,
+    total_commits: 250,
   });
 
   const word1Ref = useRef<HTMLDivElement>(null);
@@ -93,17 +94,17 @@ export function Hero() {
   const valuePropRef = useRef<HTMLDivElement>(null);
   const statsContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch Live GitHub API Stats
+  // Fetch Live GitHub API Stats (Refetched dynamically on page reload via /api/github)
   useEffect(() => {
     async function fetchGitHubData() {
       try {
-        const res = await fetch("https://api.github.com/users/Hazy019");
+        const res = await fetch("/api/github", { cache: "no-cache" });
         if (res.ok) {
           const data = await res.json();
           setGithubStats({
-            public_repos: data.public_repos || 30,
-            public_gists: data.public_gists || 6,
-            followers: data.followers || 12,
+            public_repos: data.public_repos || 12,
+            created_year: data.created_year || 2024,
+            total_commits: data.total_commits || 250,
           });
         }
       } catch {
@@ -209,7 +210,7 @@ export function Hero() {
           <div className="md:col-span-4 flex flex-col sm:flex-row md:flex-col gap-3">
             {/* Sleek CTA Button with Spring Physics Hover */}
             <motion.a
-              href="#work"
+              href="#projects"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
@@ -230,7 +231,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Live GitHub Stats Quartet */}
+        {/* Live GitHub & Systems Stats Quartet */}
         <div
           ref={statsContainerRef}
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-10 border-t border-white/10"
@@ -244,21 +245,29 @@ export function Hero() {
           <Counter
             target={6}
             label="CORE PROJECTS"
-            sublabel="PRODUCTION SYSTEMS"
+            sublabel="CURATED SHIPPED TOTAL"
             icon={<Code2 className="w-4 h-4" />}
           />
           <Counter
-            target={3}
-            label="YEARS DEV"
-            sublabel="FULL-STACK & SYSTEMS"
+            target={githubStats.created_year}
+            label="CODING SINCE"
+            sublabel="GITHUB ACCOUNT CREATED"
+            showPlus={false}
             icon={<Github className="w-4 h-4" />}
           />
           <Counter
-            target={2}
-            label="GOV SYSTEMS"
-            sublabel="DTI INFRASTRUCTURE"
+            target={githubStats.total_commits}
+            label="PUBLIC COMMITS"
+            sublabel="FETCHED VIA GITHUB API"
             icon={<ShieldCheck className="w-4 h-4" />}
           />
+        </div>
+
+        {/* Scroll Nudge Prompt (§7) */}
+        <div className="pt-6 font-mono text-[11px] text-[#94A3B8]/60 uppercase tracking-widest flex items-center justify-center gap-2">
+          <span>[</span>
+          <span className="animate-pulse">scroll to continue</span>
+          <span>]</span>
         </div>
       </div>
     </section>

@@ -1,26 +1,55 @@
 "use client";
 
-/**
- * Work — Project Showcase (Image 2 Architecture Standard & Pinned GSAP ScrollTrigger)
- *
- * Card Container: Glassmorphic dark card (#0d1017, border 1px solid rgba(255,255,255,0.08), radius 16px, padding 24px)
- * Left Column: ~60% width media frame (fixed 16:9 aspect ratio, data-cursor="view", status pill)
- * Right Column: System Specs ([ 03 ] ACADEMIC PLATFORM in #8CFF2E, white geometric display title, slate narrative, tech badges, View Full Specs CTA)
- * ScrollTrigger: Pin section (pin: true, scrub: 0.8, snap: 1 / (N - 1)), zero autoplay, zero infinite loop
- * Navigation Sync: Synchronized bottom arrows [ < ] [ > ] and status indicators (03 / 06)
- */
-
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROJECTS, ProjectData } from "@/lib/projectsData";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
-import { ArrowUpRight, ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react";
+import { ProjectIcon } from "./ProjectIcon";
+import {
+  ArrowUpRight,
+  ExternalLink,
+  Github,
+  ChevronLeft,
+  ChevronRight,
+  Terminal,
+  Code2,
+  Server,
+  Database,
+  Cloud,
+  Zap,
+  Layers,
+  Activity,
+  GitBranch,
+} from "lucide-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ ignoreMobileResize: true });
+}
+
+export function TechIcon({ name }: { name: string }) {
+  const lower = name.toLowerCase();
+  if (lower.includes("python") || lower.includes("ink") || lower.includes("cli"))
+    return <Terminal className="w-3.5 h-3.5 shrink-0 text-[#8cff2e]" />;
+  if (lower.includes("react") || lower.includes("remotion") || lower.includes("docker"))
+    return <Layers className="w-3.5 h-3.5 shrink-0 text-cyan-400" />;
+  if (lower.includes("next") || lower.includes("vite"))
+    return <Zap className="w-3.5 h-3.5 shrink-0 text-amber-400" />;
+  if (lower.includes("node") || lower.includes("express") || lower.includes("flask") || lower.includes("fastapi"))
+    return <Server className="w-3.5 h-3.5 shrink-0 text-emerald-400" />;
+  if (lower.includes("sql") || lower.includes("prisma") || lower.includes("database") || lower.includes("supabase"))
+    return <Database className="w-3.5 h-3.5 shrink-0 text-blue-400" />;
+  if (lower.includes("aws") || lower.includes("lambda") || lower.includes("s3") || lower.includes("cloud"))
+    return <Cloud className="w-3.5 h-3.5 shrink-0 text-amber-400" />;
+  if (lower.includes("socket") || lower.includes("webhook") || lower.includes("edge"))
+    return <Activity className="w-3.5 h-3.5 shrink-0 text-purple-400" />;
+  if (lower.includes("git"))
+    return <GitBranch className="w-3.5 h-3.5 shrink-0 text-rose-400" />;
+  return <Code2 className="w-3.5 h-3.5 shrink-0 text-slate-400" />;
 }
 
 interface WorkProps {
@@ -28,7 +57,233 @@ interface WorkProps {
   onHoverProject?: (project: ProjectData | null) => void;
 }
 
-// ─── Mobile / Reduced-Motion Vertical Card Fallback ─────────────────────────
+// ─── Mobile Scrubbed Project Card (Vertical Scroll Reveal — No Pinning §2 v8) ───
+function MobileProjectCard({
+  project,
+  onOpenDoc,
+}: {
+  project: ProjectData;
+  onOpenDoc: (id: string) => void;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "center center"],
+  });
+
+  // Focus differential & scrubbed reveals (Matching desktop visual rhyme)
+  const cardOpacity = useTransform(scrollYProgress, [0, 0.4, 0.85], [0.5, 0.85, 1]);
+  const cardScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.94, 0.98, 1]);
+  const mediaScale = useTransform(scrollYProgress, [0, 0.6, 1], [0.92, 0.98, 1]);
+  const mediaOpacity = useTransform(scrollYProgress, [0, 0.4, 0.9], [0.4, 0.8, 1]);
+  const titleY = useTransform(scrollYProgress, [0.15, 0.7], [24, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0.15, 0.7], [0, 1]);
+  const bodyY = useTransform(scrollYProgress, [0.25, 0.8], [18, 0]);
+  const bodyOpacity = useTransform(scrollYProgress, [0.25, 0.8], [0, 1]);
+  const ctaY = useTransform(scrollYProgress, [0.35, 0.9], [15, 0]);
+  const ctaOpacity = useTransform(scrollYProgress, [0.35, 0.9], [0, 1]);
+
+  if (reducedMotion) {
+    return (
+      <div className="bg-[#0d1017] border border-white/[0.08] rounded-[16px] p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col gap-6">
+        <div
+          className="relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] p-3 sm:p-4 cursor-pointer group flex items-center justify-center"
+          style={{
+            background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
+          }}
+          onClick={() => {
+            if (project.liveUrl) {
+              window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+            } else {
+              onOpenDoc(project.id);
+            }
+          }}
+        >
+          <div className="relative w-full h-full min-h-[200px] flex items-center justify-center filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.85)]">
+            <Image
+              src={project.imageSrc}
+              alt={project.title}
+              fill
+              className="object-contain object-center"
+            />
+          </div>
+          <div className="absolute top-4 right-4 z-10">
+            <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-white backdrop-blur-md uppercase">
+              {project.status}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <div
+            className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider"
+            style={{ color: project.nativeAccent || "#8cff2e" }}
+          >
+            [ {project.num} ] {project.ghostType || project.type}
+          </div>
+          <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+            {project.title}
+          </h3>
+          <p className="text-[#94A3B8] text-sm leading-relaxed">{project.narrative}</p>
+
+          <div className="flex flex-wrap gap-2 pt-1">
+            {project.stack.slice(0, 5).map((tech) => (
+              <span
+                key={tech}
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
+              >
+                <TechIcon name={tech} />
+                <span>{tech}</span>
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/[0.08]">
+            <button
+              onClick={() => onOpenDoc(project.id)}
+              className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
+            >
+              View Case Study <ArrowUpRight className="w-4 h-4" />
+            </button>
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
+              >
+                <Github className="w-3.5 h-3.5" /> Repo
+              </a>
+            )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> Live
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      ref={cardRef}
+      style={{
+        opacity: cardOpacity,
+        scale: cardScale,
+      }}
+      className="bg-[#0d1017] border border-white/[0.08] rounded-[16px] p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col gap-6 transition-colors duration-300"
+    >
+      {/* Media Frame ~60% with scrubbed scale & opacity reveal */}
+      <motion.div
+        style={{
+          scale: mediaScale,
+          opacity: mediaOpacity,
+          background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
+        }}
+        className="relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] p-3 sm:p-4 cursor-pointer group flex items-center justify-center"
+        data-cursor="view"
+        onClick={() => {
+          if (project.liveUrl) {
+            window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+          } else {
+            onOpenDoc(project.id);
+          }
+        }}
+      >
+        <div className="relative w-full h-full min-h-[200px] flex items-center justify-center filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.85)]">
+          <Image
+            src={project.imageSrc}
+            alt={project.title}
+            fill
+            className="object-contain object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+          />
+        </div>
+        <div className="absolute top-4 right-4 z-10">
+          <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-white backdrop-blur-md uppercase">
+            {project.status}
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Content Specs with scrubbed staggered reveal */}
+      <div className="flex flex-col gap-3">
+        <motion.div
+          style={{ y: titleY, opacity: titleOpacity }}
+          className="space-y-1"
+        >
+          <div
+            className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider"
+            style={{ color: project.nativeAccent || "#8cff2e" }}
+          >
+            [ {project.num} ] {project.ghostType || project.type}
+          </div>
+          <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+            {project.title}
+          </h3>
+        </motion.div>
+
+        <motion.div style={{ y: bodyY, opacity: bodyOpacity }} className="space-y-3">
+          <p className="text-[#94A3B8] text-sm leading-relaxed">{project.narrative}</p>
+
+          <div className="flex flex-wrap gap-2 pt-1">
+            {project.stack.slice(0, 5).map((tech) => (
+              <span
+                key={tech}
+                className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
+              >
+                <TechIcon name={tech} />
+                <span>{tech}</span>
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          style={{ y: ctaY, opacity: ctaOpacity }}
+          className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/[0.08]"
+        >
+          <button
+            onClick={() => onOpenDoc(project.id)}
+            className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
+          >
+            View Case Study <ArrowUpRight className="w-4 h-4" />
+          </button>
+          {project.repoUrl && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
+            >
+              <Github className="w-3.5 h-3.5" /> Repo
+            </a>
+          )}
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
+            >
+              <ExternalLink className="w-3.5 h-3.5" /> Live
+            </a>
+          )}
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Mobile / Reduced-Motion Vertical Card Layout ─────────────────────────
 function WorkFallback({ onOpenDoc }: { onOpenDoc: (id: string) => void }) {
   return (
     <section id="projects" className="relative py-[80px] lg:py-[140px] overflow-hidden bg-[#07090E]">
@@ -65,81 +320,11 @@ function WorkFallback({ onOpenDoc }: { onOpenDoc: (id: string) => void }) {
 
         <div className="space-y-12">
           {PROJECTS.map((project) => (
-            <div
+            <MobileProjectCard
               key={project.id}
-              className="bg-[#0d1017] border border-white/[0.08] rounded-[16px] p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col gap-6"
-            >
-              {/* Left Column / Top: Media Frame ~60% */}
-              <div
-                className="relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] bg-[#07090E] cursor-pointer group"
-                data-cursor="view"
-                onClick={() => onOpenDoc(project.id)}
-              >
-                <Image
-                  src={project.imageSrc}
-                  alt={project.title}
-                  fill
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07090E]/60 via-transparent to-transparent opacity-70 group-hover:opacity-30 transition-opacity" />
-                <div className="absolute top-4 right-4">
-                  <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-white backdrop-blur-md uppercase">
-                    {project.status}
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column / Bottom: System Specs ~40% */}
-              <div className="flex flex-col gap-3">
-                <div className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-bold text-[#8cff2e] uppercase tracking-wider">
-                  [ {project.num} ] {project.ghostType || project.type}
-                </div>
-                <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-white leading-tight">
-                  {project.title}
-                </h3>
-                <p className="text-[#94A3B8] text-sm leading-relaxed">{project.narrative}</p>
-
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {project.stack.slice(0, 4).map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/[0.08]">
-                  <button
-                    onClick={() => onOpenDoc(project.id)}
-                    className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
-                  >
-                    View Full Specs <ArrowUpRight className="w-4 h-4" />
-                  </button>
-                  {project.repoUrl && (
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <Github className="w-3.5 h-3.5" /> Repo
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5" /> Live
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
+              project={project}
+              onOpenDoc={onOpenDoc}
+            />
           ))}
         </div>
       </div>
@@ -147,7 +332,7 @@ function WorkFallback({ onOpenDoc }: { onOpenDoc: (id: string) => void }) {
   );
 }
 
-// ─── Desktop Pinned Showcase (Image 2 Standard & Navigation Sync) ───────────
+// ─── Desktop Pinned Showcase Carousel (Focus Pull Behavior) ─────────────────
 function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void }) {
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -194,10 +379,14 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
       });
 
       triggerRef.current = anim.scrollTrigger || null;
+      ScrollTrigger.refresh();
     }, section);
 
     return () => {
       clearTimeout(timer);
+      if (triggerRef.current) {
+        triggerRef.current.kill();
+      }
       ctx.revert();
     };
   }, [totalProjects]);
@@ -221,7 +410,7 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
     <section
       ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden w-screen h-screen bg-[#07090E] select-none flex flex-col justify-between py-6 md:py-8"
+      className="relative overflow-hidden w-full h-screen bg-[#07090E] select-none flex flex-col justify-between py-6 md:py-8"
       aria-label="Selected Projects — Showcase Track"
     >
       <AmbientOrbs
@@ -249,7 +438,7 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 font-mono text-xs text-[#8cff2e] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-            Selected Projects [ 04 ]
+            Selected Projects [ 02 ]
           </div>
           <h2 className="font-display text-3xl md:text-4xl font-extrabold text-[#ffffff]">
             Selected <span className="text-white/80">Work.</span>
@@ -262,105 +451,138 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
         </div>
       </div>
 
-      {/* Horizontal Cards Track (Image 2 Architecture Standard) */}
+      {/* Horizontal Focus-Pull Carousel Track */}
       <div
         ref={trackRef}
         id="project-track"
         className="flex flex-nowrap w-max h-auto items-center gap-8 lg:gap-12 px-6 md:px-16 lg:px-24 my-auto z-10"
       >
-        {PROJECTS.map((project) => (
-          <div
-            key={project.id}
-            className="w-[88vw] max-w-[1100px] shrink-0 bg-[#0d1017] border border-white/[0.08] rounded-[16px] p-6 lg:p-8 backdrop-blur-xl shadow-2xl"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              {/* Left Column (Media Frame ~60%) */}
-              <div
-                className="lg:col-span-7 relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] bg-[#07090E] cursor-pointer group"
-                data-cursor="view"
-                onClick={() => onOpenDoc(project.id)}
-              >
-                <Image
-                  src={project.imageSrc}
-                  alt={project.title}
-                  fill
-                  className="object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-out"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07090E]/60 via-transparent to-transparent opacity-70 group-hover:opacity-30 transition-opacity" />
-
-                <div className="absolute top-4 right-4">
-                  <span className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-[#ffffff] backdrop-blur-md uppercase">
-                    {project.status}
-                  </span>
-                </div>
-              </div>
-
-              {/* Right Column (System Specs ~40%) */}
-              <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-                <div className="space-y-2">
-                  <div className="inline-flex items-center gap-2 font-mono text-xs lg:text-sm font-bold text-[#8cff2e] uppercase tracking-wider">
-                    [ {project.num} ] {project.ghostType || project.type}
+        {PROJECTS.map((project, idx) => {
+          const isActive = idx === activeIndex;
+          return (
+            <div
+              key={project.id}
+              onClick={() => {
+                if (!isActive) navigateToIndex(idx);
+              }}
+              className={`w-[88vw] max-w-[1100px] shrink-0 bg-[#0d1017] rounded-[16px] p-6 lg:p-8 backdrop-blur-xl border border-white/[0.08] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive
+                  ? "opacity-100 scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-20 hover:-translate-y-1"
+                  : "opacity-40 scale-[0.92] blur-[1px] grayscale-[40%] cursor-pointer hover:opacity-60 z-10"
+              }`}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                {/* Left Column (Media Frame ~60%) */}
+                <div
+                  className="lg:col-span-7 relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] p-4 lg:p-6 cursor-pointer group flex items-center justify-center"
+                  data-cursor="view"
+                  style={{
+                    background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (project.liveUrl) {
+                      window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+                    } else {
+                      onOpenDoc(project.id);
+                    }
+                  }}
+                >
+                  <div className="relative w-full h-full min-h-[220px] lg:min-h-[300px] flex items-center justify-center filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]">
+                    <Image
+                      src={project.imageSrc}
+                      alt={project.title}
+                      fill
+                      className="object-contain object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                      priority
+                    />
                   </div>
 
-                  <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-[#ffffff] leading-tight">
-                    {project.title}
-                  </h3>
-
-                  <p className="text-[#94A3B8] text-sm lg:text-base leading-relaxed line-clamp-3">
-                    {project.narrative}
-                  </p>
-                </div>
-
-                {/* Tech Badges */}
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {project.stack.slice(0, 4).map((tech) => (
+                  <div className="absolute top-4 right-4 z-10">
                     <span
-                      key={tech}
-                      className="px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
+                      className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-[#ffffff] backdrop-blur-md uppercase"
+                      style={{ borderColor: project.accentBorder }}
                     >
-                      {tech}
+                      {project.status}
                     </span>
-                  ))}
+                  </div>
                 </div>
 
-                {/* CTA Buttons */}
-                <div className="flex items-center gap-3 pt-3 border-t border-white/[0.08]">
-                  <button
-                    onClick={() => onOpenDoc(project.id)}
-                    className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
-                    aria-label={`View full specs for ${project.title}`}
-                  >
-                    View Full Specs
-                    <ArrowUpRight className="w-4 h-4" />
-                  </button>
-
-                  {project.repoUrl && (
-                    <a
-                      href={project.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                {/* Right Column (System Specs ~40%) */}
+                <div className="lg:col-span-5 flex flex-col justify-between gap-4">
+                  <div className="space-y-2">
+                    <div
+                      className="inline-flex items-center gap-2 font-mono text-xs lg:text-sm font-bold uppercase tracking-wider"
+                      style={{ color: project.nativeAccent || "#8cff2e" }}
                     >
-                      <Github className="w-3.5 h-3.5" /> Repo
-                    </a>
-                  )}
+                      [ {project.num} ] {project.ghostType || project.type}
+                    </div>
 
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                    <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-[#ffffff] leading-tight">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-[#94A3B8] text-sm lg:text-base leading-relaxed line-clamp-3">
+                      {project.narrative}
+                    </p>
+                  </div>
+
+                  {/* Tech Badges with Monochrome Icons */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {project.stack.slice(0, 5).map((tech) => (
+                      <span
+                        key={tech}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
+                      >
+                        <TechIcon name={tech} />
+                        <span>{tech}</span>
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* CTA Buttons */}
+                  <div className="flex items-center gap-3 pt-3 border-t border-white/[0.08]">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenDoc(project.id);
+                      }}
+                      className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
+                      aria-label={`View full specs for ${project.title}`}
                     >
-                      <ExternalLink className="w-3.5 h-3.5" /> Live
-                    </a>
-                  )}
+                      View Full Specs
+                      <ArrowUpRight className="w-4 h-4" />
+                    </button>
+
+                    {project.repoUrl && (
+                      <a
+                        href={project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Github className="w-3.5 h-3.5" /> Repo
+                      </a>
+                    )}
+
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" /> Live
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Synchronized Navigation & Controls Bar */}
@@ -370,16 +592,17 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
           <span className="text-[#8cff2e] font-bold text-sm tracking-widest">
             {String(activeIndex + 1).padStart(2, "0")} / {String(totalProjects).padStart(2, "0")}
           </span>
-          <div className="hidden sm:flex items-center gap-1.5">
+          <div className="hidden sm:flex items-center gap-2">
             {PROJECTS.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => navigateToIndex(idx)}
                 aria-label={`Go to project ${idx + 1}`}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${idx === activeIndex
-                  ? "w-6 bg-[#8cff2e]"
-                  : "w-2 bg-white/20 hover:bg-white/40"
-                  }`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  idx === activeIndex
+                    ? "w-7 bg-[#8cff2e] shadow-[0_0_10px_rgba(140,255,46,0.5)]"
+                    : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
               />
             ))}
           </div>
@@ -412,10 +635,15 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
 // ─── Root export ──────────────────────────────────────────────────────────────
 export function Work({ onOpenDoc, onHoverProject }: WorkProps) {
   const reducedMotion = useReducedMotion();
-  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    setMounted(true);
+    const check = () => {
+      const mobileOrTablet = window.innerWidth < 1024 || window.matchMedia("(max-width: 1023px)").matches;
+      setIsMobile(mobileOrTablet);
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -423,6 +651,9 @@ export function Work({ onOpenDoc, onHoverProject }: WorkProps) {
 
   void onHoverProject;
 
-  if (reducedMotion || isMobile) return <WorkFallback onOpenDoc={onOpenDoc} />;
+  if (!mounted || reducedMotion || isMobile)
+    return <WorkFallback onOpenDoc={onOpenDoc} />;
+
   return <WorkHorizontalTrack onOpenDoc={onOpenDoc} />;
 }
+

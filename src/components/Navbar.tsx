@@ -17,30 +17,102 @@ interface NavbarProps {
   activeSection: string;
   theme: "dark" | "light";
   onToggleTheme: () => void;
+  isModalOpen?: boolean;
 }
 
-export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
+export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
 
   const navItems = [
     { id: "intro", num: "01", label: "Intro" },
-    { id: "about", num: "02", label: "About" },
-    { id: "philosophy", num: "03", label: "Philosophy" },
-    { id: "projects", num: "04", label: "Projects" },
+    { id: "projects", num: "02", label: "Projects" },
+    { id: "about", num: "03", label: "About" },
+    { id: "philosophy", num: "04", label: "Philosophy" },
     { id: "contact", num: "05", label: "Contact" },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+    let directionChangeY = lastScrollY;
+    let isLastScrollDown = false;
+    let rafId: number | null = null;
+
+    const checkScroll = (e?: any) => {
+      const scrollYVal = typeof e?.scroll === "number" ? e.scroll : window.scrollY;
+      const currentY = Math.max(0, scrollYVal);
+      setScrolled(currentY > 40);
+
+      // Dead zone (top 120px) or open modal / mobile drawer -> always visible
+      if (currentY <= 120 || isOpen || isModalOpen) {
+        setIsHidden(false);
+        lastScrollY = currentY;
+        directionChangeY = currentY;
+        isLastScrollDown = false;
+        return;
+      }
+
+      const delta = currentY - lastScrollY;
+
+      // Ignore zero velocity / resting state: HOLD CURRENT STATE UNCHANGED!
+      if (Math.abs(delta) < 3) {
+        return;
+      }
+
+      const isScrollingDown = delta > 0;
+
+      if (isScrollingDown) {
+        if (!isLastScrollDown) {
+          directionChangeY = currentY;
+          isLastScrollDown = true;
+        }
+        if (currentY - directionChangeY > 140) {
+          setIsHidden(true);
+        }
+      } else {
+        if (isLastScrollDown) {
+          directionChangeY = currentY;
+          isLastScrollDown = false;
+        }
+        if (directionChangeY - currentY > 60) {
+          setIsHidden(false);
+        }
+      }
+
+      lastScrollY = currentY;
     };
+
+    const handleScroll = (e?: any) => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => checkScroll(e));
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    // Also attach to Lenis scroll if available for pinned section sync
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.on === "function") {
+      lenis.on("scroll", handleScroll);
+    }
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      if (lenis && typeof lenis.off === "function") {
+        lenis.off("scroll", handleScroll);
+      }
+    };
+  }, [isOpen, isModalOpen]);
 
   return (
-    <header className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 flex justify-center pointer-events-none">
+    <header
+      className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 flex justify-center pointer-events-none transition-transform duration-300"
+      style={{
+        transform: isHidden ? "translateY(-140%)" : "translateY(0%)",
+        transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
+    >
       {/* Floating Glass Capsule Nav (backdrop-filter: blur(16px), border: 1px solid rgba(255,255,255,0.08)) */}
       <div
         className={`pointer-events-auto flex items-center justify-between gap-4 sm:gap-8 px-5 py-2.5 sm:px-7 sm:py-3 rounded-full border transition-all duration-300 ${scrolled
@@ -107,7 +179,7 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2.5 shrink-0">
           <a
-            href="Kyrell_Santillan_Resume.pdf"
+            href="/Kyrell_Santillan_Resume.pdf"
             download
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 font-mono text-xs font-medium transition-all hover:border-white/30"
           >
@@ -163,7 +235,7 @@ export function Navbar({ activeSection, theme, onToggleTheme }: NavbarProps) {
 
           <div className="flex gap-2 pt-2 border-t border-white/10">
             <a
-              href="Kyrell_Santillan_Resume.pdf"
+              href="/Kyrell_Santillan_Resume.pdf"
               download
               className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs"
             >

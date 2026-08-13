@@ -33,7 +33,7 @@ export function Marquee() {
 
   return (
     <section
-      className="group w-full py-4 md:py-5 border-y border-[#8cff2e]/20 bg-[#0d1017]/90 backdrop-blur-xl overflow-hidden select-none relative z-20 shadow-[0_0_30px_rgba(140,255,46,0.08)]"
+      className="group w-full py-4 md:py-5 mb-[80px] lg:mb-[120px] border-y border-[#8cff2e]/20 bg-[#0d1017]/90 backdrop-blur-xl overflow-hidden select-none relative z-20 shadow-[0_0_30px_rgba(140,255,46,0.08)]"
       aria-label="Technical Capabilities and Ticker Banner"
     >
       {/* ── Row 1: Category Track (Monospace 13px, Opacity 60%) ───────────── */}

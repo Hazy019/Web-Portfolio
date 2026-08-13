@@ -1,26 +1,19 @@
 "use client";
 
 /**
- * PhilosophyQuote — Upgraded Recommendation / Philosophy Card & Word-Scrub Reveal (§4)
+ * PhilosophyQuote — Scroll-Triggered Reveal Quote (§1-2 v10)
  *
- * Section Padding: py-[80px] lg:py-[140px] (140px desktop / 80px mobile equity spacing).
- * Card Container: Glass Surface (padding 48px md:64px, bg rgba(13,16,23,0.7), backdrop-blur-xl, border 1px solid rgba(255,255,255,0.08)).
- * Typography: 24px-28px italic serif white (#FFFFFF), author info in JetBrains Mono neon green (#8CFF2E).
- * Motion Entrance: Quote icon scales in (scale: [0, 1]), words scrub/unmask gracefully.
+ * Architecture: Uses Framer Motion whileInView / IntersectionObserver (NO GSAP ScrollTrigger)
+ * to avoid document-height math conflicts with the upstream pinned Projects carousel.
+ * Card Container: Glass Surface (padding 48px md:64px, bg rgba(13,16,23,0.8), backdrop-blur-2xl, border 1px solid rgba(255,255,255,0.1)).
+ * Motion Spec: 100ms stagger, 750ms duration, cubic-bezier(0.16, 1, 0.3, 1) easing.
  */
 
-import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
 import { HazyMark } from "./HazyMark";
 import { Quote } from "lucide-react";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const QUOTE_LINES = [
   { text: "DESIGN IS NOT JUST WHAT IT LOOKS LIKE AND FEELS LIKE.", accent: [] as string[] },
@@ -29,62 +22,98 @@ const QUOTE_LINES = [
 
 export function PhilosophyQuote() {
   const reducedMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (reducedMotion) return;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
+      },
+    },
+  };
 
-    const section = sectionRef.current;
-    const inner = innerRef.current;
-    if (!section || !inner) return;
+  const cardVariants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
 
-    const eyebrow = inner.querySelector<HTMLElement>("[data-pq-eyebrow]");
-    const wordSpans = inner.querySelectorAll<HTMLElement>("[data-pq-word]");
-    const attribution = inner.querySelector<HTMLElement>("[data-pq-attribution]");
+  const eyebrowVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
 
-    const allElements = [
-      ...(eyebrow ? [eyebrow] : []),
-      ...Array.from(wordSpans),
-      ...(attribution ? [attribution] : []),
-    ];
+  const iconVariants = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
 
-    gsap.set(allElements, { opacity: 0, y: 15 });
+  const lineVariants = {
+    hidden: { opacity: 0, y: "100%" },
+    visible: {
+      opacity: 1,
+      y: "0%",
+      transition: {
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=200vh",
-          pin: true,
-          anticipatePin: 1,
-          scrub: 1.2,
-        },
-      });
-
-      tl.to(allElements, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: {
-          each: 0.12,
-          ease: "power2.out",
-        },
-        ease: "power2.out",
-      });
-    }, section);
-
-    return () => ctx.revert();
-  }, [reducedMotion]);
+  const attributionVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.75,
+        ease: [0.16, 1, 0.3, 1] as const,
+      },
+    },
+  };
 
   return (
     <section
-      ref={sectionRef}
       id="philosophy"
-      className="relative py-[80px] lg:py-[140px] px-6 lg:px-12 border-y border-white/10 overflow-hidden bg-slate-950/40 min-h-[90vh] flex items-center justify-center"
+      className="relative w-full py-[80px] lg:py-[140px] px-6 lg:px-12 border-y border-white/10 overflow-hidden bg-slate-950/40 flex items-center justify-center select-none z-10 min-h-[60vh]"
       aria-label="Technical philosophy"
     >
+      {/* Faint radial glow depth background (2-3% opacity) */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none flex items-center justify-center"
+      >
+        <div
+          className="w-[600px] h-[400px] rounded-full opacity-[0.03]"
+          style={{
+            background: "radial-gradient(circle, rgba(140,255,46,1) 0%, rgba(59,130,246,0.5) 50%, transparent 70%)",
+            filter: "blur(60px)",
+          }}
+        />
+      </div>
+
       <AmbientOrbs
         orbs={[
           {
@@ -113,64 +142,75 @@ export function PhilosophyQuote() {
         <HazyMark size={400} opacity={0.04} parallax={false} decorative={true} />
       </div>
 
-      <div
-        ref={innerRef}
+      <motion.div
+        variants={reducedMotion ? undefined : containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.25 }}
         className="max-w-[1100px] mx-auto px-6 md:px-12 w-full space-y-10 text-center relative z-10"
       >
         {/* Section Eyebrow */}
-        <div
-          data-pq-eyebrow
+        <motion.div
+          variants={reducedMotion ? undefined : eyebrowVariants}
           className="text-xs font-mono text-[#8cff2e] tracking-[0.3em] uppercase flex items-center justify-center gap-2"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse" />
-          <span>[ 03 // TECHNICAL PHILOSOPHY ]</span>
-        </div>
+          <span>[ 04 // TECHNICAL PHILOSOPHY ]</span>
+        </motion.div>
 
-        {/* Glass Card Container (Padding: 48px md:64px, Glass backdrop) */}
-        <div className="p-8 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/70 backdrop-blur-xl shadow-2xl space-y-8 max-w-4xl mx-auto relative overflow-hidden">
-          {/* Quote Icon with Scale-in Animation */}
-          <motion.div
-            initial={reducedMotion ? undefined : { scale: 0, opacity: 0 }}
-            whileInView={reducedMotion ? undefined : { scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex justify-center"
-          >
+        {/* Glass Card Container (Depth & Grain overlay) */}
+        <motion.div
+          variants={reducedMotion ? undefined : cardVariants}
+          className="p-8 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/80 backdrop-blur-2xl shadow-2xl space-y-8 max-w-4xl mx-auto relative overflow-hidden"
+        >
+          {/* Subtle card internal radial glow */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/[0.03] via-transparent to-transparent"
+          />
+
+          {/* Quote Icon */}
+          <motion.div variants={reducedMotion ? undefined : iconVariants} className="flex justify-center relative z-10">
             <Quote className="w-10 h-10 text-[#8cff2e]/80" />
           </motion.div>
 
-          {/* 24px–28px High-Contrast White Italic Quote */}
-          <blockquote className="font-serif italic font-light text-[22px] sm:text-[25px] md:text-[28px] text-[#FFFFFF] tracking-tight leading-relaxed max-w-3xl mx-auto space-y-2">
+          {/* 24px–28px High-Contrast White Italic Quote with Masked Line Reveal */}
+          <blockquote className="font-serif italic font-light text-[22px] sm:text-[25px] md:text-[28px] text-[#FFFFFF] tracking-tight leading-relaxed max-w-3xl mx-auto space-y-3 relative z-10">
             {QUOTE_LINES.map((lineObj, lineIdx) => (
-              <div key={lineIdx} className="block">
-                {lineObj.text.split(" ").map((word, wIdx) => {
-                  const isAccent = lineObj.accent.includes(word);
-                  return (
-                    <span
-                      key={wIdx}
-                      data-pq-word
-                      className={`inline-block mr-[0.25em] ${
-                        isAccent ? "text-[#8cff2e] not-italic font-sans font-extrabold" : "text-white"
-                      }`}
-                    >
-                      {word}
-                    </span>
-                  );
-                })}
+              <div key={lineIdx} className="overflow-hidden py-1">
+                <motion.div
+                  variants={reducedMotion ? undefined : lineVariants}
+                  className="inline-block"
+                >
+                  {lineObj.text.split(" ").map((word, wIdx) => {
+                    const isAccent = lineObj.accent.includes(word);
+                    return (
+                      <span
+                        key={wIdx}
+                        className={`inline-block mr-[0.25em] ${
+                          isAccent ? "text-[#8cff2e] not-italic font-sans font-extrabold" : "text-white"
+                        }`}
+                      >
+                        {word}
+                      </span>
+                    );
+                  })}
+                </motion.div>
               </div>
             ))}
           </blockquote>
 
           {/* Author Subtitle Tag in JetBrains Mono Neon Green */}
-          <div
-            data-pq-attribution
-            className="font-mono text-xs sm:text-sm text-[#8cff2e] tracking-widest uppercase pt-4 border-t border-white/10 flex items-center justify-center gap-2 font-semibold"
+          <motion.div
+            variants={reducedMotion ? undefined : attributionVariants}
+            className="font-mono text-xs sm:text-sm text-[#8cff2e] tracking-widest uppercase pt-4 border-t border-white/10 flex items-center justify-center gap-2 font-semibold relative z-10"
           >
             <span>— STEVE JOBS</span>
             <span className="text-white/60">[ INSPIRATION ]</span>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
+
