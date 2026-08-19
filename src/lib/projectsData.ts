@@ -17,7 +17,15 @@ export interface ProjectData {
   accentGlow: string;
   imageSrc: string;
   screenshots: string[];
+  /** Labels for each screenshot slot in the modal gallery.
+   *  If a label starts with "TODO:", the modal renders an access-restricted
+   *  placeholder instead of silently reusing a landing-page screenshot. */
+  screenshotLabels: string[];
   deviceFrame: 'phone' | 'browser' | 'split-terminal' | 'laptop-phone';
+  /** Helps recruiters correctly weight each project.
+   *  Values: "Government internship deliverable" | "Self-initiated product" |
+   *  "Academic collaboration" | "SaaS / Client product" */
+  projectNature: string;
   repoUrl?: string;
   liveUrl?: string;
   outcomeBadge: string;
@@ -50,7 +58,13 @@ export const PROJECTS: ProjectData[] = [
       '/Shortsautomation_phone_preview.webp',
       '/Shortsautomation_preview.webp'
     ],
+    screenshotLabels: [
+      'Primary Mockup',
+      'Mobile View — Pipeline UI',
+      'System Output — Generated Video'
+    ],
     deviceFrame: 'phone',
+    projectNature: 'Self-initiated product',
     repoUrl: 'https://github.com/Hazy019/youtube-shorts-automation',
     liveUrl: 'https://shortsautomations.vercel.app/',
     outcomeBadge: '85% Lambda memory reduction',
@@ -92,7 +106,13 @@ export const PROJECTS: ProjectData[] = [
       '/DTI_Queue_phone_preview.png',
       '/DTI_Queue_preview.webp'
     ],
+    screenshotLabels: [
+      'Primary Mockup — Cashier Dashboard',
+      'Kiosk View — Customer Ticket Interface',
+      'System Output — Live Queue Monitor'
+    ],
     deviceFrame: 'browser',
+    projectNature: 'Government internship deliverable',
     outcomeBadge: '1,800+ Active Centers · LAN-based',
     narrative: 'The Department of Trade and Industry\'s regional branch was processing walk-ins with paper slips and a whiteboard. Rebuilt from scratch — real-time WebSocket ticket generation, role-based access, and a live admin dashboard with full audit history.',
     problem: 'The DTI Payment Office managed walk-in client flow with paper ticket slips, a whiteboard, and verbal call-outs. There was no audit trail, no way to measure wait times, no mechanism to handle multiple service lanes simultaneously, and no visibility for clients on where they stood in the queue.',
@@ -132,7 +152,13 @@ export const PROJECTS: ProjectData[] = [
       '/Polycon_phone_preview.jfif',
       '/Polycon_preview.webp'
     ],
+    screenshotLabels: [
+      'Primary Mockup — Student Booking Portal',
+      'Mobile View — Faculty Notification Panel',
+      'System Output — POLYCON Analysis Dashboard'
+    ],
     deviceFrame: 'browser',
+    projectNature: 'Academic collaboration',
     repoUrl: 'https://github.com/xenhusk/POLYCON',
     outcomeBadge: 'Zero missed appointments since launch',
     narrative: 'Faculty-student consultations at the polytechnic had no digital infrastructure. Polycon is a full-stack LMS with real-time scheduling, AI-powered session transcription via AssemblyAI, grade-improvement tracking, and portal access.',
@@ -173,7 +199,13 @@ export const PROJECTS: ProjectData[] = [
       '/IDEE-CLI_phone_preview.webp',
       '/IDEE-CLI_preview.webp'
     ],
+    screenshotLabels: [
+      'Primary Mockup — CLI Interface',
+      'Terminal View — Interactive Prompts',
+      'System Output — Scaffolded Project'
+    ],
     deviceFrame: 'split-terminal',
+    projectNature: 'Self-initiated product',
     repoUrl: 'https://github.com/Hazy019/idee-cli',
     liveUrl: 'https://idee-cli.vercel.app/',
     outcomeBadge: 'Instant project scaffolding in <3 seconds',
@@ -211,10 +243,16 @@ export const PROJECTS: ProjectData[] = [
     imageSrc: '/Sentinel_mockup_preview.png',
     screenshots: [
       '/Sentinel_mockup_preview.png',
-      '/Sentinel_phone_preview.png',
-      '/Sentinel_preview.webp'
+      '/Sentinel_phone_preview.jfif',
+      '/Sentinel_preview.jfif'
+    ],
+    screenshotLabels: [
+      'Primary Mockup — 3D Attack Globe',
+      'Login View — DEMO ENVIRONMENT',
+      'System Output — Live Threat Feed'
     ],
     deviceFrame: 'browser',
+    projectNature: 'Self-initiated product',
     repoUrl: 'https://github.com/Hazy019/SentinelView',
     outcomeBadge: 'Sub-second alert latency · 10,000+ logs/sec',
     narrative: 'A real-time cybersecurity threat visualiser simulating network log ingestion, detecting pattern-based threat vectors, and pushing live WebSocket alerts to a glassmorphic dashboard with a 3D attack globe.',
@@ -255,7 +293,13 @@ export const PROJECTS: ProjectData[] = [
       '/SpellGate_phone_preview.webp',
       '/SpellGate_preview.webp'
     ],
+    screenshotLabels: [
+      'Primary Mockup — Kiosk Lock Screen',
+      'Mobile View — Parent Dashboard',
+      'System Output — Spelling Challenge'
+    ],
     deviceFrame: 'laptop-phone',
+    projectNature: 'Self-initiated product',
     repoUrl: 'https://github.com/Hazy019/SpellGate',
     liveUrl: 'https://spellgate-eb1e8.web.app/',
     outcomeBadge: 'Locks Windows shell · Real-time Firebase link',
@@ -278,5 +322,53 @@ export const PROJECTS: ProjectData[] = [
     stack: ['Python 3.12', 'PyQt6', 'React', 'Vite', 'Firebase Firestore', 'Google Gemini AI', 'Keyring API'],
     devnotes: 'A separate watchdog.py background daemon runs as a system process to monitor the main kiosk status and auto-spawn it if killed.',
     outcome: 'Successfully locks Windows shell environment. Direct real-time Firebase pairing. Adapts difficulty based on child accuracy.'
+  },
+  {
+    id: 'client-echo',
+    num: '07',
+    type: 'SaaS / Platform Engineering',
+    ghostType: 'SAAS',
+    title: 'ClientEcho',
+    status: 'Live',
+    role: 'Solo Developer',
+    timeline: '2026',
+    nativeAccent: '#f97316',
+    accentBorder: 'rgba(249, 115, 22, 0.4)',
+    accentGlow: 'rgba(249, 115, 22, 0.15)',
+    imageSrc: '/ClientEcho_mockup_preview.png',
+    screenshots: [
+      '/ClientEcho_mockup_preview.png',
+      '/ClientEcho_phone_preview.png',
+      '/ClientEcho_preview.png'
+    ],
+    screenshotLabels: [
+      'Primary Mockup — Landing Page',
+      'Mobile View — Magic-Link Approval Flow',
+      'Desktop Interface — Embed & Review System'
+    ],
+    deviceFrame: 'browser',
+    projectNature: 'SaaS / Client product',
+    liveUrl: 'https://client-echo-web.vercel.app/',
+    repoUrl: 'https://github.com/Hazy019/ClientEcho',
+    outcomeBadge: 'Multi-tenant · Stripe billing · Zero-CLS embeds',
+    narrative: 'A multi-tenant B2B SaaS platform for collecting, verifying, and embedding client testimonials — 1-click cryptographic magic-link approvals, Postgres row-level security per tenant, sandboxed zero-CLS embed widgets, and full Stripe billing.',
+    problem: 'Businesses collecting client testimonials relied on manual email chains, screenshot trust-signals, and copy-pasted quotes with no verifiable audit trail. Embedding testimonials caused layout shift, slowed pages, and had no real-time update mechanism.',
+    solution: 'ClientEcho automates the full testimonial lifecycle — businesses invite clients via a cryptographic magic-link (one-time, time-limited), clients approve in one click with no account required, and verified testimonials are embedded via a sandboxed zero-CLS widget. Each tenant\'s data is isolated via Postgres row-level security.',
+    steps: [
+      'Business creates a testimonial request; ClientEcho generates a cryptographic magic-link token (signed, short-TTL)',
+      'Client receives the link, reviews the draft testimonial, and approves in one click — no account creation required',
+      'Approval triggers Cloudflare Turnstile verification and stores the approval event with a tamper-evident audit record',
+      'Verified testimonial is immediately available in the business dashboard and pushed to all embed widgets via Upstash Redis cache invalidation',
+      'Embed widget (sandboxed iframe, zero-CLS) renders the testimonial on any site without JavaScript bundle overhead'
+    ],
+    specs: [
+      { label: 'Multi-tenancy', value: 'Postgres Row-Level Security (per tenant)' },
+      { label: 'Auth Flow', value: 'Cryptographic Magic-Link (signed + TTL)' },
+      { label: 'Billing', value: 'Stripe Checkout + Webhook lifecycle' },
+      { label: 'Cache', value: 'Upstash Redis + Edge invalidation' }
+    ],
+    stack: ['Next.js 14', 'PostgreSQL (Supabase RLS)', 'Drizzle ORM', 'Stripe', 'Cloudflare Turnstile', 'Upstash Redis', 'TailwindCSS', 'Framer Motion'],
+    devnotes: 'The most complex part was the multi-tenant RLS architecture: every Postgres query automatically scopes to the authenticated tenant\'s row set via a session-level set_config call, so cross-tenant data leakage is architecturally impossible rather than just policy-enforced. The embed widget is deliberately sandboxed as an iframe with a strict Content-Security-Policy to prevent XSS from the host page.',
+    outcome: 'Full end-to-end testimonial lifecycle automation. Zero-CLS embeds with sub-100ms load time. Stripe billing with webhook-driven subscription state machine.'
   }
 ];

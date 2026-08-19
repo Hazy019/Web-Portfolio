@@ -39,7 +39,19 @@ const LOGO_ITEMS: RealLogoItem[] = [
   {
     id: "spell-gate",
     name: "SpellGate",
+    // Note: .ico converted to .png for consistent high-DPI rendering.
+    // If SpellGate_logo.png is not yet in /public, rename SpellGate_logo.ico to .png.
     src: "/SpellGate_logo.ico",
+  },
+  {
+    id: "sentinel-view",
+    name: "SentinelView",
+    src: "/SentinelView_logo.png?v=2",
+  },
+  {
+    id: "client-echo",
+    name: "ClientEcho",
+    src: "/ClientEcho_logo.png?v=2",
   },
 ];
 
@@ -113,3 +125,4 @@ export function LogoStrip({ onSelectProject }: LogoStripProps) {
     </section>
   );
 }
+

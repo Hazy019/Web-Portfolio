@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROJECTS, ProjectData } from "@/lib/projectsData";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { scrollRegistry } from "@/lib/scrollRegistry";
 import { AmbientOrbs } from "./AmbientOrbs";
 import { ProjectIcon } from "./ProjectIcon";
 import {
@@ -337,6 +338,8 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<ScrollTrigger | null>(null);
+  const isNavigatingRef = useRef(false);
+  const navTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const totalProjects = PROJECTS.length;
@@ -362,13 +365,16 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
           end: () => "+=" + (track.scrollWidth - window.innerWidth),
           invalidateOnRefresh: true,
           anticipatePin: 1,
+          refreshPriority: 1,
           snap: {
             snapTo: 1 / (totalProjects - 1),
-            duration: { min: 0.25, max: 0.5 },
-            delay: 0.05,
-            ease: "power2.inOut",
+            directional: false,
+            duration: { min: 0.2, max: 0.4 },
+            delay: 0.15,
+            ease: "power1.inOut",
           },
           onUpdate: (self) => {
+            if (isNavigatingRef.current) return;
             const idx = Math.min(
               totalProjects - 1,
               Math.max(0, Math.round(self.progress * (totalProjects - 1)))
@@ -379,14 +385,35 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
       });
 
       triggerRef.current = anim.scrollTrigger || null;
+
+      // Register into scrollRegistry so PhilosophyQuote can anchor its
+      // GSAP ScrollTrigger to start AFTER this pin fully releases.
+      scrollRegistry.work.trigger = anim.scrollTrigger || null;
+
       ScrollTrigger.refresh();
     }, section);
 
+    // Refresh ScrollTrigger after both document/image load and font readiness.
+    const onReady = () => {
+      ScrollTrigger.refresh();
+    };
+
+    if (document.readyState === "complete") {
+      document.fonts.ready.then(onReady);
+    } else {
+      window.addEventListener("load", () => {
+        document.fonts.ready.then(onReady);
+      }, { once: true });
+    }
+
     return () => {
       clearTimeout(timer);
+      if (navTimeoutRef.current) clearTimeout(navTimeoutRef.current);
       if (triggerRef.current) {
         triggerRef.current.kill();
       }
+      // Clear registry on unmount so stale references don't leak
+      scrollRegistry.work.trigger = null;
       ctx.revert();
     };
   }, [totalProjects]);
@@ -396,21 +423,42 @@ function WorkHorizontalTrack({ onOpenDoc }: { onOpenDoc: (id: string) => void })
     const st = triggerRef.current;
     if (!st) return;
 
+    isNavigatingRef.current = true;
+    if (navTimeoutRef.current) clearTimeout(navTimeoutRef.current);
+    setActiveIndex(targetIdx);
+
     const start = st.start;
     const end = st.end;
     const targetScroll = start + (targetIdx / (totalProjects - 1)) * (end - start);
 
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth",
-    });
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(targetScroll, {
+        duration: 0.6,
+        lock: false,
+        onComplete: () => {
+          isNavigatingRef.current = false;
+        },
+      });
+      navTimeoutRef.current = setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 700);
+    } else {
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
+      navTimeoutRef.current = setTimeout(() => {
+        isNavigatingRef.current = false;
+      }, 700);
+    }
   };
 
   return (
     <section
       ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden w-full h-screen bg-[#07090E] select-none flex flex-col justify-between py-6 md:py-8"
+      className="relative overflow-hidden w-full h-dvh bg-[#07090E] select-none flex flex-col justify-between py-6 md:py-8"
       aria-label="Selected Projects — Showcase Track"
     >
       <AmbientOrbs

@@ -1,17 +1,17 @@
 "use client";
 
 /**
- * Navbar — Floating Glass Capsule Nav with Smooth Sliding Active Pill (§5)
+ * Navbar — Floating Glass Capsule Nav with Progressive Disclosure (§5)
  *
- * Typography: 14px (text-sm) medium weight for immediate legibility.
- * Container: Glassmorphism (backdrop-filter: blur(16px), border: 1px solid rgba(255,255,255,0.08)).
- * Sliding Pill: Smooth layoutId background pill transition beneath active item.
+ * State 1 (Expanded / Near Top): Full HAZY wordmark + labeled Talk button.
+ * State 2 (Compact / Past Hero): Icon-only capsule + chat bubble icon + hamburger.
+ * Transition: Smooth animated width/opacity with zero layout shift.
  */
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { FileText, Send, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FileText, MessageSquare, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   activeSection: string;
@@ -23,6 +23,7 @@ interface NavbarProps {
 export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
 
   const navItems = [
@@ -32,6 +33,27 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
     { id: "philosophy", num: "04", label: "Philosophy" },
     { id: "contact", num: "05", label: "Contact" },
   ];
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    if (typeof window !== "undefined" && window.history?.pushState) {
+      window.history.pushState(null, "", `#${id}`);
+    }
+
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.scrollTo === "function") {
+      lenis.scrollTo(el, {
+        offset: -40,
+        duration: 1.0,
+        lock: false,
+      });
+    } else {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
@@ -44,6 +66,9 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
       const currentY = Math.max(0, scrollYVal);
       setScrolled(currentY > 40);
 
+      // Progressive disclosure: Compact once scrolled past Hero (~320px) or away from intro
+      setIsCompact(currentY > 320);
+
       // Dead zone (top 120px) or open modal / mobile drawer -> always visible
       if (currentY <= 120 || isOpen || isModalOpen) {
         setIsHidden(false);
@@ -55,7 +80,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
 
       const delta = currentY - lastScrollY;
 
-      // Ignore zero velocity / resting state: HOLD CURRENT STATE UNCHANGED!
+      // Ignore zero velocity / resting state
       if (Math.abs(delta) < 3) {
         return;
       }
@@ -90,7 +115,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
 
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // Also attach to Lenis scroll if available for pinned section sync
+    // Attach to Lenis scroll for sync
     const lenis = (window as any).lenis;
     if (lenis && typeof lenis.on === "function") {
       lenis.on("scroll", handleScroll);
@@ -107,50 +132,63 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
 
   return (
     <header
-      className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-8 flex justify-center pointer-events-none transition-transform duration-300"
+      className="fixed top-4 sm:top-6 left-0 right-0 z-50 px-3 sm:px-8 flex justify-center pointer-events-none transition-transform duration-300"
       style={{
         transform: isHidden ? "translateY(-140%)" : "translateY(0%)",
         transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
-      {/* Floating Glass Capsule Nav (backdrop-filter: blur(16px), border: 1px solid rgba(255,255,255,0.08)) */}
+      {/* Floating Glass Capsule Nav with Smooth Adaptive Transitions */}
       <div
-        className={`pointer-events-auto flex items-center justify-between gap-4 sm:gap-8 px-5 py-2.5 sm:px-7 sm:py-3 rounded-full border transition-all duration-300 ${scrolled
+        className={`pointer-events-auto flex items-center justify-between border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          isCompact
+            ? "gap-2.5 sm:gap-6 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full"
+            : "gap-3 sm:gap-8 px-4 py-2.5 sm:px-7 sm:py-3 rounded-full"
+        } ${
+          scrolled
             ? "bg-[#07090E]/90 border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
             : "bg-[#07090E]/80 border-white/10 shadow-2xl"
-          }`}
+        }`}
         style={{
           backdropFilter: "blur(16px)",
           WebkitBackdropFilter: "blur(16px)",
         }}
       >
-        {/* Brand Logo & Live Status Dot */}
-        <a
-          href="#intro"
-          className="flex items-center gap-3 group shrink-0"
-          aria-label="HAZY — Back to Top"
-        >
-          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center group-hover:border-[#8cff2e] transition-colors">
-            <Image
-              src="/logo.png"
-              alt="HAZY"
-              width={22}
-              height={22}
-              className="object-contain"
-            />
-          </div>
-          <span className="font-display font-extrabold text-base tracking-wider text-white hidden xs:inline">
-            H<span className="text-[#8cff2e]">AZY</span>
-          </span>
-        </a>
+        {/* Left Cluster: Brand Logo, Wordmark & Live Status Badge */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+          <a
+            href="#intro"
+            className="flex items-center gap-2.5 group shrink-0"
+            aria-label="HAZY — Back to Top"
+          >
+            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center group-hover:border-[#8cff2e] transition-colors shrink-0">
+              <Image
+                src="/logo.png"
+                alt="HAZY Mark"
+                width={22}
+                height={22}
+                className="object-contain"
+              />
+            </div>
+            <span
+              className={`font-display font-extrabold text-base tracking-wider text-white whitespace-nowrap overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isCompact
+                  ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
+                  : "max-w-[100px] opacity-100 translate-x-0"
+              }`}
+            >
+              H<span className="text-[#8cff2e]">AZY</span>
+            </span>
+          </a>
 
-        {/* Live Status Pill */}
-        <div className="hidden md:flex items-center gap-2 pl-2 pr-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#94A3B8]">
-          <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-          <span className="text-white font-medium">[ ONLINE ]</span>
+          {/* Live Status Pill (Tightly paired with brand mark) */}
+          <div className="hidden md:flex items-center gap-2 pl-2 pr-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#94A3B8] shrink-0">
+            <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+            <span className="text-white font-medium">[ ONLINE ]</span>
+          </div>
         </div>
 
-        {/* Center Sliding Pill Navigation (14px font-medium) */}
+        {/* Center Sliding Pill Navigation (Desktop lg:flex) */}
         <nav className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 relative">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
@@ -158,8 +196,10 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className={`relative flex items-center gap-2 py-1.5 px-4 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${isActive ? "text-white font-bold" : "text-[#94A3B8] hover:text-white"
-                  }`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={`relative flex items-center gap-2 py-1.5 px-4 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${
+                  isActive ? "text-white font-bold" : "text-[#94A3B8] hover:text-white"
+                }`}
               >
                 {/* Smooth Sliding Pill Background */}
                 {isActive && (
@@ -177,31 +217,45 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
         </nav>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
           <a
             href="/Kyrell_Santillan_Resume.pdf"
             download
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 font-mono text-xs font-medium transition-all hover:border-white/30"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 font-mono text-xs font-medium transition-all hover:border-white/30"
           >
             <FileText className="w-3.5 h-3.5 text-[#8cff2e]" />
             <span>CV</span>
           </a>
 
+          {/* Talk / Message Button with Universal Chat-Bubble Icon & Progressive Label Disclosure */}
           <a
             href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded-full bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-all shadow-lg flex items-center gap-1.5"
+            aria-label="Talk to Kyrell (Contact)"
+            className={`rounded-full bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-all shadow-lg flex items-center justify-center gap-1.5 ${
+              isCompact
+                ? "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 p-0"
+                : "px-3.5 py-1.5 sm:px-4 sm:py-2"
+            }`}
           >
-            <Send className="w-3 h-3" />
-            <span className="hidden xs:inline">Talk</span>
+            <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+            <span
+              className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isCompact
+                  ? "max-w-0 opacity-0 hidden sm:inline sm:max-w-[40px] sm:opacity-100"
+                  : "max-w-[50px] opacity-100 inline"
+              }`}
+            >
+              Talk
+            </span>
           </a>
 
-          {/* Mobile Toggle */}
+          {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-full border border-white/15 bg-white/5 text-slate-200 hover:text-white"
-            aria-label="Toggle Menu"
+            className="lg:hidden p-2 rounded-full border border-white/15 bg-white/5 text-slate-200 hover:text-white transition-colors cursor-pointer"
+            aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
           >
             {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
@@ -221,11 +275,15 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm ${activeSection === item.id
+                onClick={(e) => {
+                  setIsOpen(false);
+                  handleNavClick(e, item.id);
+                }}
+                className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm ${
+                  activeSection === item.id
                     ? "text-white bg-white/10 font-bold border border-white/20"
                     : "text-[#94A3B8] hover:bg-white/5"
-                  }`}
+                }`}
               >
                 <span>{item.label}</span>
                 <span className="text-xs opacity-50">{item.num}</span>
@@ -237,7 +295,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
             <a
               href="/Kyrell_Santillan_Resume.pdf"
               download
-              className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs"
+              className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs hover:border-white/30 transition-colors"
             >
               Resume
             </a>
@@ -245,9 +303,10 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
               href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-2.5 text-center rounded-xl bg-white text-[#07090E] font-mono font-bold text-xs"
+              className="flex-1 py-2.5 text-center rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
             >
-              Contact
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Contact</span>
             </a>
           </div>
         </div>
@@ -255,3 +314,4 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
     </header>
   );
 }
+

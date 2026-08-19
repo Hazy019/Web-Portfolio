@@ -8,8 +8,15 @@
   --bg-panel: rgba(18, 21, 30, 0.85);
   --border-color: rgba(255, 255, 255, 0.08);
   --text-main: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(240, 242, 248, 0.78);
   --text-muted: #94a3b8;
   --accent-green: #8cff2e;
+  
+  /* Section Spacing Rhythm Token (Phase 19) */
+  --section-gap: clamp(80px, 8vw, 140px);
+  --section-gap-mobile: 80px;
+  --section-gap-desktop: 140px;
   
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -27,6 +34,13 @@
   --text-main: #0f172a;
   --text-muted: #475569;
   --accent-green: #16a34a;
+}
+
+/* Prevent layout shift when body scroll is locked (modal open).
+   The scrollbar disappearing previously caused a ~15px jump.
+   scrollbar-gutter: stable reserves the scrollbar space even when hidden. */
+html {
+  scrollbar-gutter: stable;
 }
 
 body {

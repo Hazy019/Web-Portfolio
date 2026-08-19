@@ -31,16 +31,21 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
+  title: "HAZY",
   description:
     "Portfolio of Kyrell Santillan (HAZY), CS graduate from the Philippines building government infrastructure, automation pipelines, and AI-driven systems.",
   keywords: [
     "Kyrell Santillan",
     "kyrell santillan",
+    "Kyrell",
+    "kyrell",
     "HAZY",
+    "hazy",
     "CS graduate",
     "software developer",
     "Philippines",
+    "Bacolod City",
+    "Negros Occidental",
     "YouTube Shorts automation",
     "DTI queue system",
     "SentinelView",
@@ -56,7 +61,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
+    title: "HAZY",
     description:
       "I build systems the way architects design buildings — failure modes first, elegance second. Government infrastructure, AI automation pipelines, and defensible web applications.",
     url: "https://hazyfactory.vercel.app/",
@@ -72,7 +77,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "HAZY · Kyrell Santillan — Systems Architect & Software Engineer",
+    title: "HAZY",
     description:
       "Portfolio of Kyrell Santillan (HAZY), building government infrastructure, automation pipelines, and AI-driven systems.",
     images: ["/logo.png"],
@@ -157,7 +162,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" data-theme="dark" className={`${syne.variable} ${manrope.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${syne.variable} ${manrope.variable} ${jetbrainsMono.variable}`}>
       <head>
         <meta name="google-site-verification" content="ZL-rIBLn4dRYbQvp5nrjL1SfCtzVrel-UX-sP3Pl9ME" />
         <script
@@ -165,7 +170,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+      <body suppressHydrationWarning className="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
         <LenisProvider>
           {children}
         </LenisProvider>

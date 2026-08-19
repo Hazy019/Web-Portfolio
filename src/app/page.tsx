@@ -59,6 +59,7 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [activeSection, setActiveSection] = useState("intro");
+  const activeSectionRef = React.useRef("intro");
   const [activeModalId, setActiveModalId] = useState<string | null>(null);
   const [hoverContext, setHoverContext] = useState<{
     num: string;
@@ -66,11 +67,13 @@ export default function Home() {
     title: string;
   } | null>(null);
 
-  // Active section scroll spy with viewport center detection
+  // Active section scroll spy with viewport center detection & URL hash synchronization
   useEffect(() => {
+    const sections = ["intro", "projects", "about", "philosophy", "contact"];
+
     const handleScroll = () => {
-      const sections = ["intro", "projects", "about", "philosophy", "contact"];
       const targetThreshold = window.innerHeight * 0.4;
+      let currentSection = "intro";
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const sectionId = sections[i];
@@ -78,8 +81,24 @@ export default function Home() {
         if (el) {
           const rect = el.getBoundingClientRect();
           if (rect.top <= targetThreshold && rect.bottom >= 100) {
-            setActiveSection(sectionId);
+            currentSection = sectionId;
             break;
+          }
+        }
+      }
+
+      if (currentSection !== activeSectionRef.current) {
+        activeSectionRef.current = currentSection;
+        setActiveSection(currentSection);
+
+        // Update URL hash dynamically without history pollution
+        if (typeof window !== "undefined" && window.history?.replaceState) {
+          const newHash =
+            currentSection === "intro"
+              ? window.location.pathname + window.location.search
+              : `#${currentSection}`;
+          if (window.location.hash !== (currentSection === "intro" ? "" : `#${currentSection}`)) {
+            window.history.replaceState(null, "", newHash);
           }
         }
       }
@@ -87,7 +106,19 @@ export default function Home() {
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Sync with Lenis scroll stream
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.on === "function") {
+      lenis.on("scroll", handleScroll);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (lenis && typeof lenis.off === "function") {
+        lenis.off("scroll", handleScroll);
+      }
+    };
   }, []);
 
   const toggleTheme = () => {

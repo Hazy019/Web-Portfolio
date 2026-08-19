@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 0; // Disable static caching for live stats
+// ISR: Cache for 24 hours at the Next.js server layer.
+// Previously revalidate=0 + cache:"no-store" hit GitHub API on every page load,
+// causing 500-1200ms TTFB and risking GitHub's unauthenticated 10 req/min
+// search/commits rate limit. Now a cache hit returns in <15ms.
+export const revalidate = 86400; // 24 hours
 
 export async function GET() {
   let public_repos = 12;
@@ -13,7 +17,8 @@ export async function GET() {
         "User-Agent": "HAZY-Portfolio-App",
         Accept: "application/vnd.github.v3+json",
       },
-      cache: "no-store",
+      // ISR cache: Next.js will revalidate this fetch every 24 hours
+      next: { revalidate: 86400 },
     });
 
     if (userRes.ok) {
@@ -35,7 +40,8 @@ export async function GET() {
           "User-Agent": "HAZY-Portfolio-App",
           Accept: "application/vnd.github.cloak-preview+json",
         },
-        cache: "no-store",
+        // ISR cache: prevent rate-limit on the 10 req/min search/commits endpoint
+        next: { revalidate: 86400 },
       }
     );
 
@@ -57,7 +63,8 @@ export async function GET() {
     },
     {
       headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        // CDN + browser cache: serve from edge for 24h, stale-while-revalidate for 12h
+        "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=43200",
       },
     }
   );

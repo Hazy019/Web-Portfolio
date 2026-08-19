@@ -11,6 +11,17 @@
  *   - pointer-events: none
  *   - will-change: transform
  *   - text: High-contrast pure white (#FFFFFF), 12px tracked-out monospace ("VIEW PROJECT")
+ *
+ * PERFORMANCE FIX (v2): Removed per-mousemove .closest() DOM tree-walks.
+ * Previously: on every single mousemove event, the code ran:
+ *   target.closest("[data-cursor='view']")
+ *   target.closest("a, button, input, textarea, [role='button'], [tabindex='0']")
+ * This is a full DOM ancestor tree-walk on every pixel of mouse movement, competing
+ * with scroll for main-thread time.
+ *
+ * Fix: cursor mode is now tracked via mouseenter/mouseleave listeners on interactive
+ * elements themselves (event delegation to document), updating a stable ref. The
+ * mousemove handler only does GPU position updates — no DOM queries.
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -52,9 +63,10 @@ export function CustomCursor() {
 
     let hasMoved = false;
 
+    // ── Optimized: mousemove ONLY does GPU position updates ─────────────────
+    // Mode detection moved to mouseenter/mouseleave on elements (below).
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
-
       xDotTo(x);
       yDotTo(y);
       xRingTo(x);
@@ -64,25 +76,65 @@ export function CustomCursor() {
         hasMoved = true;
         setIsVisible(true);
       }
+    };
 
-      // Check hover targets efficiently and only trigger state update when mode changes
-      const target = e.target as HTMLElement | null;
-      let nextMode: "default" | "hover" | "view" = "default";
-
-      if (target && target.closest("[data-cursor='view']")) {
-        nextMode = "view";
-      } else if (
-        target &&
-        target.closest("a, button, input, textarea, [role='button'], [tabindex='0']")
-      ) {
-        nextMode = "hover";
-      }
-
-      if (modeRef.current !== nextMode) {
-        modeRef.current = nextMode;
-        setCursorMode(nextMode);
+    // ── Mode detection via event delegation ─────────────────────────────────
+    // Listen on document for mouseenter/mouseleave on matching selectors.
+    // This fires once per element boundary crossing, not on every pixel moved.
+    const handleEnterView = () => {
+      if (modeRef.current !== "view") {
+        modeRef.current = "view";
+        setCursorMode("view");
       }
     };
+    const handleLeaveView = () => {
+      if (modeRef.current === "view") {
+        modeRef.current = "default";
+        setCursorMode("default");
+      }
+    };
+    const handleEnterInteractive = () => {
+      if (modeRef.current === "default") {
+        modeRef.current = "hover";
+        setCursorMode("hover");
+      }
+    };
+    const handleLeaveInteractive = (e: Event) => {
+      // Only reset if the relatedTarget isn't another interactive element
+      const related = (e as MouseEvent).relatedTarget as HTMLElement | null;
+      if (modeRef.current === "hover") {
+        const stillOnInteractive = related?.closest(
+          "a, button, input, textarea, [role='button'], [tabindex='0']"
+        );
+        if (!stillOnInteractive) {
+          modeRef.current = "default";
+          setCursorMode("default");
+        }
+      }
+    };
+
+    // Attach delegated listeners to document using event capture
+    // so they fire for all matching descendants automatically
+    const attachDelegated = () => {
+      // [data-cursor="view"] elements
+      document.querySelectorAll<HTMLElement>("[data-cursor='view']").forEach((el) => {
+        el.addEventListener("mouseenter", handleEnterView);
+        el.addEventListener("mouseleave", handleLeaveView);
+      });
+
+      // Interactive elements
+      document.querySelectorAll<HTMLElement>(
+        "a, button, input, textarea, [role='button'], [tabindex='0']"
+      ).forEach((el) => {
+        el.addEventListener("mouseenter", handleEnterInteractive);
+        el.addEventListener("mouseleave", handleLeaveInteractive);
+      });
+    };
+
+    // Initial attach + re-attach after DOM changes via MutationObserver
+    attachDelegated();
+    const observer = new MutationObserver(() => attachDelegated());
+    observer.observe(document.body, { childList: true, subtree: true });
 
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
@@ -92,6 +144,7 @@ export function CustomCursor() {
     document.body.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("mousemove", handleMouseMove);
       document.body.removeEventListener("mouseleave", handleMouseLeave);
       document.body.removeEventListener("mouseenter", handleMouseEnter);

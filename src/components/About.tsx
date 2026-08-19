@@ -90,7 +90,11 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative py-[80px] lg:py-[140px] px-6 overflow-hidden border-t border-white/10 bg-[#07090E]"
+      className="relative px-6 overflow-hidden border-t border-white/10 bg-[#07090E]"
+      style={{
+        paddingTop: "var(--section-gap, 140px)",
+        paddingBottom: "clamp(48px, 5vw, 80px)",
+      }}
     >
       {/* Strict Global Container Wrapper */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-12 w-full space-y-12">

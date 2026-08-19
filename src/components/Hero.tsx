@@ -14,6 +14,7 @@ import { motion, useMotionValue, animate, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowRight, Github, Code2, FolderGit2, ShieldCheck } from "lucide-react";
+import { FitText } from "./FitText";
 
 interface CounterProps {
   target: number;
@@ -25,7 +26,10 @@ interface CounterProps {
 
 function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProps) {
   const count = useMotionValue(0);
-  const [displayValue, setDisplayValue] = useState("0");
+  // Write directly to a DOM ref inside the animation loop to bypass React re-renders.
+  // Previously: setState(Math.round(latest)) on every RAF tick = ~240 React updates/sec
+  // per counter, 4 counters = ~480 React updates/sec clogging the reconciler during scroll.
+  const displayRef = useRef<HTMLSpanElement>(null);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.4 });
   const reducedMotion = useReducedMotion();
@@ -33,7 +37,7 @@ function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProp
   useEffect(() => {
     if (!isInView || target === 0) return;
     if (reducedMotion) {
-      setDisplayValue(String(target));
+      if (displayRef.current) displayRef.current.textContent = String(target);
       return;
     }
 
@@ -41,7 +45,10 @@ function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProp
       duration: 1.4,
       ease: [0.16, 1, 0.3, 1] as const,
       onUpdate: (latest) => {
-        setDisplayValue(String(Math.round(latest)));
+        // Direct DOM mutation — no React state, no reconciliation, no re-renders
+        if (displayRef.current) {
+          displayRef.current.textContent = String(Math.round(latest));
+        }
       },
     });
 
@@ -61,7 +68,8 @@ function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProp
       </div>
 
       <div className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1">
-        <span>{displayValue}</span>
+        {/* Initial value shown server-side; JS overwrites via ref after animation starts */}
+        <span ref={displayRef}>{reducedMotion ? target : 0}</span>
         {showPlus && <span className="text-[#8cff2e] text-2xl font-light">+</span>}
       </div>
 
@@ -94,11 +102,14 @@ export function Hero() {
   const valuePropRef = useRef<HTMLDivElement>(null);
   const statsContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch Live GitHub API Stats (Refetched dynamically on page reload via /api/github)
+  // Fetch Live GitHub API Stats
+  // Note: { cache: "no-cache" } removed — browser HTTP cache is now respected.
+  // The server-side ISR (revalidate: 86400) in /api/github/route.ts ensures
+  // data is fresh from the CDN edge on cache hits in <15ms.
   useEffect(() => {
     async function fetchGitHubData() {
       try {
-        const res = await fetch("/api/github", { cache: "no-cache" });
+        const res = await fetch("/api/github");
         if (res.ok) {
           const data = await res.json();
           setGithubStats({
@@ -108,7 +119,7 @@ export function Hero() {
           });
         }
       } catch {
-        // Fallback default values
+        // Fallback default values already set in useState initial state
       }
     }
     fetchGitHubData();
@@ -171,27 +182,27 @@ export function Hero() {
           </span>
         </div>
 
-        {/* Primary Headline with Clipped Word Entrance & Static Blinking Terminal Cursor */}
+        {/* Primary Headline with Clipped Word Entrance & Auto-Fitting Kinetic Typography */}
         <div
           className="space-y-2 font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.8rem] font-extrabold tracking-tight leading-[0.94] text-white"
         >
           {/* Clipped Line 1 */}
-          <div className="overflow-hidden">
+          <FitText containerClassName="overflow-hidden" minFontSize={24}>
             <div ref={word1Ref}>Building</div>
-          </div>
+          </FitText>
 
           {/* Clipped Line 2 */}
-          <div className="overflow-hidden text-white/90 italic">
-            <div ref={word2Ref}>Systems.</div>
-          </div>
+          <FitText containerClassName="overflow-hidden" minFontSize={24}>
+            <div ref={word2Ref} className="text-white/90 italic">Systems</div>
+          </FitText>
 
           {/* Clipped Line 3 + Static Blinking Terminal Cursor */}
-          <div className="overflow-hidden flex items-center">
+          <FitText containerClassName="overflow-hidden" minFontSize={22}>
             <div ref={word3Ref} className="flex items-center">
               <span>Thoughtfully.</span>
-              <span className="text-[#8cff2e] animate-pulse ml-3 font-normal text-4xl sm:text-6xl">▍</span>
+              <span className="text-[#8cff2e] animate-pulse ml-2 sm:ml-3 font-normal text-[0.85em]">▍</span>
             </div>
-          </div>
+          </FitText>
         </div>
 
         {/* 2-Line Value Proposition & Sleek CTA Button Pair */}

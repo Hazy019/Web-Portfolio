@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * LenisProvider — Global smooth scroll + GSAP ScrollTrigger bridge (§1–2 v8)
+ * LenisProvider — Global smooth scroll + GSAP ScrollTrigger bridge (§1–2 v9)
  *
  * Responsibilities:
  *   1. Instantiate Lenis with inertial ease physics.
@@ -9,6 +9,12 @@
  *      reads from Lenis's virtual scroll offset rather than the native window scroll.
  *   3. Drive a thin right-edge progress indicator as a scrollbar replacement.
  *   4. prefers-reduced-motion: skip Lenis entirely, leave native scroll in place.
+ *
+ * HYDRATION FIX (v9): ScrollTrigger.normalizeScroll(true) was removed from module
+ * scope. It caused a hydration mismatch by injecting `touch-action: pan-x` on
+ * <html>/<body> synchronously before React's hydration match-check. Lenis already
+ * manages smooth scroll — normalizeScroll was redundant and conflicting with it.
+ * GSAP plugin registration is kept in module scope but without DOM-mutating calls.
  *
  * NOTE: Lenis 1.3 on('scroll') callback receives the full Lenis instance.
  *       GSAP ticker drives Lenis RAF for frame-perfect synchronization.
@@ -19,10 +25,15 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+// Safe to register plugins at module scope — this only registers the plugin
+// class with GSAP's internal registry, it does NOT touch the DOM.
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
-  ScrollTrigger.normalizeScroll(true);
+  // NOTE: ScrollTrigger.normalizeScroll(true) intentionally removed.
+  // It mutated document.documentElement.style.touchAction synchronously,
+  // causing a React hydration mismatch (touch-action: pan-x on <html>/<body>).
+  // Lenis handles smooth scroll; this call was redundant and harmful.
 }
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
@@ -64,7 +75,14 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     // Refresh ScrollTrigger after Lenis initialization to lock frame-accurate trigger offsets
     const refreshTimer = setTimeout(() => {
       ScrollTrigger.refresh();
-    }, 200);
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+      if (hash) {
+        const target = document.querySelector(hash);
+        if (target) {
+          lenis.scrollTo(target as HTMLElement, { offset: -40, immediate: true });
+        }
+      }
+    }, 250);
 
     // Debounced resize handler for orientation and viewport changes
     let resizeTimer: NodeJS.Timeout | null = null;
