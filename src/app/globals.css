@@ -229,9 +229,11 @@ h1, h2, h3, h4, h5, h6, blockquote {
   transform: translateZ(0);
 }
 
-/* ─── Cursor: none sitewide — CustomCursor renders the pointer ────────────── */
-*, *::before, *::after {
-  cursor: none !important;
+/* ─── Cursor: none only on fine-pointer devices — CustomCursor renders the pointer ────────────── */
+@media (hover: hover) and (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
 }
 
 /* ─── Native scrollbar hidden — Lenis progress bar is the replacement ─────── */

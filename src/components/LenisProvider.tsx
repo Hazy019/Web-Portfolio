@@ -41,12 +41,24 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Respect prefers-reduced-motion & mobile/tablet screens (< 1024px) — skip Lenis, leave native scroll
+    // Respect prefers-reduced-motion & mobile/tablet screens (< 1024px) — skip Lenis, drive progress bar via native scroll
     const isMobileOrTablet = typeof window !== "undefined" && window.innerWidth < 1024;
     const prefersReduced = typeof window !== "undefined" && window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    if (prefersReduced || isMobileOrTablet) return;
+
+    if (prefersReduced || isMobileOrTablet) {
+      const handleNativeScroll = () => {
+        const scrollY = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll > 0 && progressRef.current) {
+          progressRef.current.style.transform = `scaleY(${Math.min(1, Math.max(0, scrollY / maxScroll))})`;
+        }
+      };
+      window.addEventListener("scroll", handleNativeScroll, { passive: true });
+      handleNativeScroll();
+      return () => window.removeEventListener("scroll", handleNativeScroll);
+    }
 
     // ── Instantiate Lenis ─────────────────────────────────────────────────────
     const lenis = new Lenis({

@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
-import { Mail, Github, Linkedin, Send, Quote, GraduationCap } from "lucide-react";
+import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck } from "lucide-react";
 import { FitText } from "./FitText";
 
 export function Contact() {
@@ -74,13 +74,13 @@ export function Contact() {
 
   return (
     <>
-      {/* ── Testimonial / Recommendation Standalone Section (Modern Editorial Glass Card — Spaced with --section-gap) ────── */}
+      {/* ── Trust & Validation Section (§36 Two-Tier Hierarchy) ────── */}
       <section
         id="testimonial"
         className="relative border-t border-white/10 bg-[#07090E] overflow-hidden"
         style={{
           paddingTop: "var(--section-gap, 140px)",
-          paddingBottom: "var(--section-gap, 140px)",
+          paddingBottom: "clamp(60px, 6vw, 100px)",
         }}
       >
         <AmbientOrbs
@@ -95,47 +95,51 @@ export function Contact() {
             },
           ]}
         />
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10 space-y-8">
+          {/* Section Header */}
+          <motion.div
+            initial={reducedMotion ? undefined : { y: 20, opacity: 0 }}
+            whileInView={reducedMotion ? undefined : { y: 0, opacity: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-3"
+          >
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+              <span>[ 05 // TRUST & VALIDATION ]</span>
+            </div>
+            <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white">
+              Endorsements & <span className="text-white/80">Proof.</span>
+            </h2>
+          </motion.div>
+
+          {/* Primary Tier: Formal Academic Recommendation (High Prominence) */}
           <motion.div
             initial={reducedMotion ? undefined : { opacity: 0, y: 35 }}
             whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              background: "rgba(13, 16, 23, 0.7)",
+              background: "rgba(13, 16, 23, 0.75)",
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(255, 255, 255, 0.12)",
             }}
-            className="p-8 sm:p-10 rounded-2xl shadow-2xl relative overflow-hidden"
+            className="p-8 sm:p-10 md:p-12 rounded-2xl shadow-2xl relative overflow-hidden"
           >
             {/* Subtle internal accent ambient glow */}
             <div
               aria-hidden="true"
-              className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full pointer-events-none opacity-20"
+              className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full pointer-events-none opacity-25"
               style={{
                 background: "radial-gradient(circle, rgba(140,255,46,0.4) 0%, transparent 70%)",
                 filter: "blur(40px)",
               }}
             />
 
-            {/* Content: Two-Column Responsive Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-              {/* Left Author Metadata (30% / 5 Columns) */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -25 },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                    transition: {
-                      duration: 0.75,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                  },
-                }}
-                className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8"
-              >
+              {/* Left Author Metadata */}
+              <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-full border border-[#8cff2e]/30 bg-gradient-to-br from-[#8cff2e]/10 via-slate-900 to-slate-950 flex items-center justify-center flex-shrink-0 relative shadow-[0_0_20px_rgba(140,255,46,0.15)] ring-1 ring-white/10">
                     <GraduationCap className="w-6 h-6 text-[#8cff2e]" />
@@ -161,23 +165,10 @@ export function Contact() {
                     CS Department Faculty
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
-              {/* Right Quotation (70% / 7 Columns) */}
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: 25 },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                    transition: {
-                      duration: 0.75,
-                      ease: [0.16, 1, 0.3, 1],
-                    },
-                  },
-                }}
-                className="lg:col-span-7 space-y-4"
-              >
+              {/* Right Quotation */}
+              <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-3">
                   <span className="text-[#8cff2e] font-serif text-4xl leading-none select-none font-bold">
                     &ldquo;
@@ -187,15 +178,44 @@ export function Contact() {
                   </span>
                 </div>
 
-                <p className="font-sans text-sm sm:text-base text-[#94A3B8] leading-relaxed italic">
+                <p className="font-sans text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed italic">
                   &ldquo;Kyrell demonstrated exceptional technical initiative and architecture skills during the development of critical departmental systems. His ability to turn complex logistical queue requirements into high-throughput, fault-tolerant web software is outstanding for a software engineer.&rdquo;
                 </p>
 
                 <div className="pt-2 flex items-center justify-between text-xs font-mono text-white/60">
                   <span>CAPSTONE EVALUATION</span>
-                  <span className="text-[#8cff2e]">SCORE: 1.00 (EXCELLENT)</span>
+                  <span className="text-[#8cff2e] font-semibold">SCORE: 1.00 (EXCELLENT)</span>
                 </div>
-              </motion.div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Secondary Tier: Client & Stakeholder Proof (Visually Demoted §36) */}
+          <motion.div
+            initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
+            whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="p-5 sm:p-6 rounded-xl border border-white/[0.06] bg-[#0d1017]/50 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#8cff2e] shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5">
+                <div className="text-white font-semibold tracking-wide flex items-center gap-2">
+                  <span>Client & Stakeholder Proof</span>
+                  <span className="text-[10px] text-slate-500 font-normal">[ SYSTEM VALIDATION ]</span>
+                </div>
+                <div className="text-[#94A3B8] text-[11px]">
+                  Government & SaaS deliverables validated in live production with zero downtime.
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-[11px] text-slate-400 self-end sm:self-center">
+              <span>POWERED BY</span>
+              <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white font-bold">ClientEcho Engine</span>
             </div>
           </motion.div>
         </div>
@@ -240,7 +260,7 @@ export function Contact() {
                 className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest"
               >
                 <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-                <span>[ 05 // CONTACT & INQUIRIES ]</span>
+                <span>[ 06 // CONTACT & INQUIRIES ]</span>
               </motion.div>
 
               {/* Headline Display Fluid Clamp Sizing with Auto-Fitting Rotating Suffix */}
@@ -249,11 +269,11 @@ export function Contact() {
                 whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-[clamp(1.75rem,4vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
+                className="font-display text-[clamp(2.5rem,4vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
               >
                 <span>Let&apos;s build</span>
                 <FitText
-                  minFontSize={24}
+                  minFontSize={16}
                   containerClassName="overflow-visible relative z-20"
                   className="text-white/80 transition-all duration-300 block pb-1 overflow-visible relative z-20"
                 >
@@ -395,6 +415,12 @@ export function Contact() {
                   <Send className="w-4 h-4" />
                   <span>{submitted ? "Message Transmitted!" : "Send Message"}</span>
                 </motion.button>
+
+                {/* Direct Data-Handling Trust Note */}
+                <p className="text-[11px] font-mono text-slate-500 text-center flex items-center justify-center gap-1.5 pt-1">
+                  <Lock className="w-3 h-3 text-[#8cff2e]/70 shrink-0" />
+                  <span>Direct transmission to inbox only. Zero tracking, no third-party data broker storage.</span>
+                </p>
               </form>
             </motion.div>
           </motion.div>

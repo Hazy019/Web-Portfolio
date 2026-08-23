@@ -68,7 +68,7 @@ export const PROJECTS: ProjectData[] = [
     repoUrl: 'https://github.com/Hazy019/youtube-shorts-automation',
     liveUrl: 'https://shortsautomations.vercel.app/',
     outcomeBadge: '85% Lambda memory reduction',
-    narrative: 'An enterprise-grade, fully autonomous programmatic video production pipeline leveraging multi-model generative AI, stateful recovery, and serverless parallel rendering to syndicate high-retention content at scale.',
+    narrative: 'A fault-tolerant, fully autonomous programmatic video production pipeline leveraging multi-model generative AI, stateful recovery, and serverless parallel rendering to syndicate high-retention content at scale.',
     problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels was unsustainable and would require a full production team.',
     solution: 'YouTube Shorts Automation is a fully autonomous video production pipeline. It leverages multi-model generative AI, serverless parallel rendering, and stateful recovery to syndicate high-retention video content across YouTube Shorts, TikTok, and Meta (Instagram/Facebook Reels) at scale, while keeping costs minimal by integrating with free APIs (Gemini, Pexels, Pixabay).',
     steps: [

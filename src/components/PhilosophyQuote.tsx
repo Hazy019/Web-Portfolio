@@ -181,9 +181,85 @@ export function PhilosophyQuote() {
         }
       );
 
-      // ── Mobile (< 1024px) or prefers-reduced-motion Fallback ───────────────────
+      // ── Mobile/Tablet (< 1024px) & No Reduced Motion: Non-Pinned Scrub Word Illumination ──
       mm.add(
-        "(max-width: 1023px), (prefers-reduced-motion: reduce)",
+        "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const l1Spans = wordsLine1Ref.current.filter(Boolean);
+          const l2BaseSpans = wordsLine2Ref.current.filter(
+            (span, idx) => span && !LINE_2_WORDS[idx]?.isAccent
+          );
+          const l2AccentSpans = wordsLine2Ref.current.filter(
+            (span, idx) => span && LINE_2_WORDS[idx]?.isAccent
+          );
+
+          // Start muted; card fades up with the scrub rather than firing once
+          gsap.set(card, { y: 20, opacity: 0 });
+          gsap.set(l1Spans, { color: "var(--text-muted, #94a3b8)" });
+          gsap.set(l2BaseSpans, { color: "var(--text-muted, #94a3b8)" });
+          gsap.set(l2AccentSpans, { color: "var(--text-muted, #94a3b8)" });
+
+          // Non-pinned scrub: ties progress to native scroll, no scroll hijacking
+          const mobileTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: card,
+              start: "top 75%",
+              end: "bottom 35%",
+              scrub: 0.5,
+              once: false,
+            },
+          });
+
+          // 1. Card entry (first ~15% of scrub range)
+          mobileTl.to(card, {
+            y: 0,
+            opacity: 1,
+            duration: 0.15,
+            ease: "power2.out",
+          });
+
+          // 2. Line 1 words illuminate muted → main
+          mobileTl.to(
+            l1Spans,
+            {
+              color: "var(--text-main, #ffffff)",
+              stagger: 0.04,
+              duration: 0.4,
+              ease: "power1.inOut",
+            },
+            0.1
+          );
+
+          // 3. Line 2 base words illuminate
+          mobileTl.to(
+            l2BaseSpans,
+            {
+              color: "var(--text-main, #ffffff)",
+              stagger: 0.04,
+              duration: 0.2,
+              ease: "power1.inOut",
+            },
+            0.52
+          );
+
+          // 4. Punchline ignites into neon green (#8cff2e)
+          mobileTl.to(
+            l2AccentSpans,
+            {
+              color: "var(--accent-green, #8cff2e)",
+              stagger: 0.06,
+              duration: 0.28,
+              ease: "power2.out",
+            },
+            0.75
+          );
+        }
+      );
+
+
+      // ── Prefers-Reduced-Motion Fallback Only ──────────────────────────────────
+      mm.add(
+        "(prefers-reduced-motion: reduce)",
         () => {
           gsap.set(
             [
@@ -197,24 +273,7 @@ export function PhilosophyQuote() {
             ].filter(Boolean),
             { clearProps: "all" }
           );
-
-          // Non-pinned, one-shot static reveal on enter
-          gsap.fromTo(
-            card,
-            { opacity: 0, y: 25 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.75,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: section,
-                start: "top 85%",
-                toggleActions: "play none none none",
-                once: true,
-              },
-            }
-          );
+          gsap.set(card, { opacity: 1, y: 0 });
         }
       );
     }, section);
@@ -239,7 +298,7 @@ export function PhilosophyQuote() {
     <section
       ref={sectionRef}
       id="philosophy"
-      className="relative w-full px-6 lg:px-12 border-y border-white/10 overflow-hidden bg-slate-950/40 select-none"
+      className="relative w-full px-6 lg:px-12 border-y border-white/10 overflow-hidden bg-slate-950/40 select-none scroll-mt-24"
       style={{
         paddingTop: "clamp(48px, 5vw, 80px)",
         paddingBottom: "clamp(72px, 7vw, 110px)",

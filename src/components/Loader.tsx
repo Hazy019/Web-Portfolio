@@ -118,14 +118,14 @@ export function Loader({ onComplete }: LoaderProps) {
             <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse" />
             <span>STATE: {CYCLING_TERMS[currentTermIndex]}</span>
           </div>
-          <div className="overflow-hidden h-12 sm:h-16">
+          <div className="overflow-hidden h-10 sm:h-14 flex items-center">
             <motion.div
               key={currentTermIndex}
               initial={{ y: 24, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -24, opacity: 0 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="font-display text-3xl sm:text-5xl font-extrabold text-white tracking-tight uppercase"
+              className="font-display text-[clamp(1.35rem,5.5vw,3rem)] font-extrabold text-white tracking-tight uppercase whitespace-nowrap leading-none"
             >
               {CYCLING_TERMS[currentTermIndex]}
             </motion.div>

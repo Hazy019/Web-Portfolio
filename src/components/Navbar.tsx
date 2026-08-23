@@ -36,23 +36,41 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
+    setIsOpen(false);
+
     const el = document.getElementById(id);
     if (!el) return;
 
-    if (typeof window !== "undefined" && window.history?.pushState) {
-      window.history.pushState(null, "", `#${id}`);
-    }
+    // Use requestAnimationFrame to ensure drawer state update doesn't cancel smooth scroll
+    requestAnimationFrame(() => {
+      if (id === "intro") {
+        const lenis = (window as any).lenis;
+        if (lenis && typeof lenis.scrollTo === "function") {
+          lenis.scrollTo(0, { duration: 1.0, lock: false });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+        return;
+      }
 
-    const lenis = (window as any).lenis;
-    if (lenis && typeof lenis.scrollTo === "function") {
-      lenis.scrollTo(el, {
-        offset: -40,
-        duration: 1.0,
-        lock: false,
-      });
-    } else {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+      const navOffset = window.innerWidth >= 1024 ? 40 : 80;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.scrollTo === "function") {
+        lenis.scrollTo(el, {
+          offset: -navOffset,
+          duration: 1.0,
+          lock: false,
+        });
+      } else {
+        window.scrollTo({
+          top: Math.max(0, offsetPosition),
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -181,10 +199,9 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
             </span>
           </a>
 
-          {/* Live Status Pill (Tightly paired with brand mark) */}
-          <div className="hidden md:flex items-center gap-2 pl-2 pr-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-[#94A3B8] shrink-0">
-            <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-            <span className="text-white font-medium">[ ONLINE ]</span>
+          {/* Live Status Telemetry (§35) */}
+          <div className="hidden md:flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-[#8cff2e] tracking-wider shrink-0 font-semibold">
+            <span>[ ONLINE ]</span>
           </div>
         </div>
 
@@ -263,54 +280,59 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
       </div>
 
       {/* Mobile Menu Drawer */}
-      {isOpen && (
-        <div className="pointer-events-auto absolute top-20 left-4 right-4 bg-[#07090E]/95 backdrop-blur-2xl border border-white/15 p-6 rounded-2xl space-y-4 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 max-w-md mx-auto">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-xs text-white">
-            <span>[ SYSTEM NAV ]</span>
-            <span className="text-[#94A3B8]">{navItems.length} SECTIONS</span>
-          </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.97 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="pointer-events-auto absolute top-20 left-4 right-4 bg-[#07090E]/95 backdrop-blur-2xl border border-white/15 p-6 rounded-2xl space-y-4 shadow-2xl max-w-md mx-auto z-50"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-xs text-white">
+              <span>[ SYSTEM NAV ]</span>
+              <span className="text-[#94A3B8]">{navItems.length} SECTIONS</span>
+            </div>
 
-          <nav className="flex flex-col gap-2">
-            {navItems.map((item) => (
+            <nav className="flex flex-col gap-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  onClick={(e) => handleNavClick(e, item.id)}
+                  className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm transition-all duration-200 ${
+                    activeSection === item.id
+                      ? "text-white bg-white/10 font-bold border border-white/20"
+                      : "text-[#94A3B8] hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  <span className="text-xs opacity-50">{item.num}</span>
+                </a>
+              ))}
+            </nav>
+
+            <div className="flex gap-2 pt-2 border-t border-white/10">
               <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  setIsOpen(false);
-                  handleNavClick(e, item.id);
-                }}
-                className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm ${
-                  activeSection === item.id
-                    ? "text-white bg-white/10 font-bold border border-white/20"
-                    : "text-[#94A3B8] hover:bg-white/5"
-                }`}
+                href="/Kyrell_Santillan_Resume.pdf"
+                download
+                className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs hover:border-white/30 transition-colors"
               >
-                <span>{item.label}</span>
-                <span className="text-xs opacity-50">{item.num}</span>
+                Resume
               </a>
-            ))}
-          </nav>
-
-          <div className="flex gap-2 pt-2 border-t border-white/10">
-            <a
-              href="/Kyrell_Santillan_Resume.pdf"
-              download
-              className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs hover:border-white/30 transition-colors"
-            >
-              Resume
-            </a>
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-2.5 text-center rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Contact</span>
-            </a>
-          </div>
-        </div>
-      )}
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2.5 text-center rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Contact</span>
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

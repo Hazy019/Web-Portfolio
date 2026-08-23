@@ -192,9 +192,9 @@ export function CustomCursor() {
         }}
       >
         {isView && (
-          <div className="flex flex-col items-center justify-center text-center font-mono font-bold text-[12px] tracking-wider uppercase text-white select-none">
+          <div className="flex flex-col items-center justify-center text-center font-mono font-bold text-[11px] leading-tight tracking-wider uppercase text-white select-none">
             <span>View</span>
-            <span>Project</span>
+            <span>Case Study</span>
           </div>
         )}
       </div>

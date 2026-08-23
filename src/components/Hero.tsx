@@ -58,23 +58,23 @@ function Counter({ target, label, sublabel, showPlus = true, icon }: CounterProp
   return (
     <div
       ref={ref}
-      className="p-6 rounded-2xl bg-[#12151E] border border-white/5 hover:border-white/20 transition-all duration-300 backdrop-blur-md group shadow-xl"
+      className="p-4 sm:p-6 rounded-2xl bg-[#12151E] border border-white/5 hover:border-white/20 transition-all duration-300 backdrop-blur-md group shadow-xl"
     >
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-mono text-[#94A3B8] group-hover:text-white transition-colors">
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <span className="text-[11px] sm:text-xs font-mono text-[#94A3B8] group-hover:text-white transition-colors truncate">
           {label}
         </span>
-        {icon && <div className="text-slate-500 group-hover:text-[#8cff2e] transition-colors">{icon}</div>}
+        {icon && <div className="text-slate-500 group-hover:text-[#8cff2e] transition-colors shrink-0">{icon}</div>}
       </div>
 
-      <div className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1">
+      <div className="font-display text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1">
         {/* Initial value shown server-side; JS overwrites via ref after animation starts */}
         <span ref={displayRef}>{reducedMotion ? target : 0}</span>
-        {showPlus && <span className="text-[#8cff2e] text-2xl font-light">+</span>}
+        {showPlus && <span className="text-[#8cff2e] text-xl sm:text-2xl font-light">+</span>}
       </div>
 
       {sublabel && (
-        <div className="text-[11px] font-mono text-slate-400 mt-1 tracking-wide uppercase">
+        <div className="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-1 tracking-wide uppercase truncate">
           {sublabel}
         </div>
       )}
@@ -157,7 +157,7 @@ export function Hero() {
   return (
     <section
       id="intro"
-      className="relative min-h-[90vh] flex flex-col justify-center py-24 sm:py-32 overflow-hidden bg-[#07090E] select-none"
+      className="relative min-h-[90vh] flex flex-col justify-center py-24 sm:py-32 overflow-hidden bg-[#07090E] select-none scroll-mt-24"
     >
       {/* Static subtle radial background bloom behind headline (opacity: 0.15) */}
       <div
@@ -171,14 +171,13 @@ export function Hero() {
 
       {/* Strict Global Container Wrapper */}
       <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-12 w-full space-y-12">
-        {/* Status Live Indicator Badge */}
-        <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-mono text-slate-200 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
-            <span className="font-semibold text-white">OPEN TO OPPORTUNITIES</span>
+        {/* Status Telemetry Header (§35) */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <div className="text-xs font-mono text-[#8cff2e] tracking-widest uppercase flex items-center gap-2">
+            <span>[ STATUS // OPEN TO OPPORTUNITIES ]</span>
           </div>
           <span className="text-xs font-mono text-[#94A3B8] hidden sm:inline">
-            Philippines · UTC+8
+            // Philippines · UTC+8
           </span>
         </div>
 
@@ -187,17 +186,17 @@ export function Hero() {
           className="space-y-2 font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.8rem] font-extrabold tracking-tight leading-[0.94] text-white"
         >
           {/* Clipped Line 1 */}
-          <FitText containerClassName="overflow-hidden" minFontSize={24}>
+          <FitText containerClassName="overflow-hidden" minFontSize={18}>
             <div ref={word1Ref}>Building</div>
           </FitText>
 
           {/* Clipped Line 2 */}
-          <FitText containerClassName="overflow-hidden" minFontSize={24}>
+          <FitText containerClassName="overflow-hidden" minFontSize={18}>
             <div ref={word2Ref} className="text-white/90 italic">Systems</div>
           </FitText>
 
           {/* Clipped Line 3 + Static Blinking Terminal Cursor */}
-          <FitText containerClassName="overflow-hidden" minFontSize={22}>
+          <FitText containerClassName="overflow-hidden" minFontSize={16}>
             <div ref={word3Ref} className="flex items-center">
               <span>Thoughtfully.</span>
               <span className="text-[#8cff2e] animate-pulse ml-2 sm:ml-3 font-normal text-[0.85em]">▍</span>
@@ -210,9 +209,9 @@ export function Hero() {
           ref={valuePropRef}
           className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end pt-2"
         >
-          <p className="md:col-span-8 text-[#94A3B8] text-lg sm:text-xl md:text-2xl leading-[1.6] font-normal">
-            I build systems the way architects design buildings —{" "}
-            <strong className="text-white font-semibold border-b border-white/30 pb-0.5">
+          <p className="md:col-span-8 text-slate-400 text-sm sm:text-base md:text-lg leading-[1.65] font-normal">
+            I build systems the way architects design buildings —{""}            
+            <strong className="text-white/80 font-medium border-b border-white/20 pb-0.5">
               failure modes first
             </strong>
             , elegance second. Fresh CS graduate with production deployments in government infrastructure, automation pipelines, and security-first web apps.

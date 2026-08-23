@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 /**
  * LogoStrip — Single Real-Logo Infinite Marquee Showcase Strip (§3 v10)
  *
@@ -39,19 +41,17 @@ const LOGO_ITEMS: RealLogoItem[] = [
   {
     id: "spell-gate",
     name: "SpellGate",
-    // Note: .ico converted to .png for consistent high-DPI rendering.
-    // If SpellGate_logo.png is not yet in /public, rename SpellGate_logo.ico to .png.
-    src: "/SpellGate_logo.ico",
+    src: "/SpellGate_logo.png",
   },
   {
     id: "sentinel-view",
     name: "SentinelView",
-    src: "/SentinelView_logo.png?v=2",
+    src: "/SentinelView_logo.png",
   },
   {
     id: "client-echo",
     name: "ClientEcho",
-    src: "/ClientEcho_logo.png?v=2",
+    src: "/ClientEcho_logo.png",
   },
 ];
 
@@ -90,39 +90,45 @@ export function LogoStrip({ onSelectProject }: LogoStripProps) {
           animationDuration: "40s",
         }}
       >
-        {marqueeSequence.map((item, idx) => (
-          <div
-            key={idx}
-            onClick={() => onSelectProject?.(item.id)}
-            className="items-center gap-6 sm:gap-10 px-6 sm:px-10 cursor-pointer group/logo flex-shrink-0"
-            style={{ display: "inline-flex", flexShrink: 0, whiteSpace: "nowrap" }}
-          >
-            {/* Translucent Dark Glass Chip (rgba(255,255,255,0.04) fill, blur(12px), px-6 py-4) */}
+        {marqueeSequence.map((item, idx) => {
+          const isFirstPass = idx < LOGO_ITEMS.length;
+          return (
             <div
-              style={{
-                background: "rgba(255, 255, 255, 0.04)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
-              }}
-              className="px-6 py-4 rounded-xl flex items-center justify-center shadow-lg group-hover/logo:-translate-y-0.5 group-hover/logo:border-[#8cff2e]/30 group-hover/logo:shadow-[0_0_20px_rgba(140,255,46,0.15)] transition-all duration-300 shrink-0"
+              key={idx}
+              onClick={() => onSelectProject?.(item.id)}
+              className="items-center gap-6 sm:gap-10 px-6 sm:px-10 cursor-pointer group/logo flex-shrink-0"
+              style={{ display: "inline-flex", flexShrink: 0, whiteSpace: "nowrap" }}
             >
-              <img
-                src={item.src}
-                alt={item.name}
-                className="h-9 sm:h-10 max-w-[120px] object-contain"
-                loading="eager"
-              />
-            </div>
+              {/* Translucent Dark Glass Chip (rgba(255,255,255,0.04) fill, blur(12px), px-6 py-4) */}
+              <div
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  backdropFilter: "blur(12px)",
+                  WebkitBackdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                }}
+                className="px-6 py-4 rounded-xl flex items-center justify-center shadow-lg group-hover/logo:-translate-y-0.5 group-hover/logo:border-[#8cff2e]/30 group-hover/logo:shadow-[0_0_20px_rgba(140,255,46,0.15)] transition-all duration-300 shrink-0"
+              >
+                <div className="relative h-9 sm:h-10 w-[90px] sm:w-[110px] flex items-center justify-center">
+                  <Image
+                    src={item.src}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 640px) 90px, 110px"
+                    priority={isFirstPass}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
 
-            {/* Separator Motif (✦) */}
-            <span className="text-[#8cff2e] text-xs font-bold select-none opacity-70">
-              ✦
-            </span>
-          </div>
-        ))}
+              {/* Separator Motif (✦) */}
+              <span className="text-[#8cff2e] text-xs font-bold select-none opacity-70">
+                ✦
+              </span>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
 }
-

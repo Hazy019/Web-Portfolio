@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { PROJECTS, ProjectData } from "@/lib/projectsData";
 import { TechIcon } from "./Work";
 import { ProjectIcon } from "./ProjectIcon";
@@ -252,12 +253,16 @@ export function DocModal({
                       onClick={() => setSelectedLightboxImg(src)}
                       className="group/img relative aspect-[16/10] rounded-xl border border-white/15 bg-slate-950/90 overflow-hidden shadow-lg flex items-center justify-center p-2 hover:border-[#8cff2e] transition-all cursor-pointer text-left w-full focus:outline-none focus:ring-2 focus:ring-[#8cff2e]"
                     >
-                      <img
-                        src={src}
-                        alt={`${currentProject.title} — ${label}`}
-                        className="w-full h-full object-contain object-center group-hover/img:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-x-0 bottom-0 p-2 bg-[#07090E]/85 backdrop-blur-md border-t border-white/10 text-[10px] font-mono text-slate-300 flex items-center justify-between gap-1">
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={src}
+                          alt={`${currentProject.title} — ${label}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 350px"
+                          className="object-contain object-center group-hover/img:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 p-2 bg-[#07090E]/85 backdrop-blur-md border-t border-white/10 text-[10px] font-mono text-slate-300 flex items-center justify-between gap-1 z-10">
                         <span className="truncate">{label}</span>
                         <span className="text-[#8cff2e] font-bold shrink-0">ENLARGE ↗</span>
                       </div>
@@ -423,13 +428,15 @@ export function DocModal({
             <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
           <div
-            className="relative max-w-5xl max-h-[85dvh] w-full h-full flex items-center justify-center p-2"
+            className="relative max-w-5xl max-h-[85dvh] w-full h-[70vh] flex items-center justify-center p-2"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
+            <Image
               src={selectedLightboxImg}
               alt="Enlarged screenshot proof"
-              className="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/20"
+              fill
+              sizes="(max-width: 1280px) 100vw, 1200px"
+              className="object-contain rounded-xl shadow-2xl border border-white/20"
             />
           </div>
         </div>
