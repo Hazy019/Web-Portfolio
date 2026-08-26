@@ -14,7 +14,6 @@ import { motion, useMotionValue, animate, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { ArrowRight, Github, Code2, FolderGit2, ShieldCheck } from "lucide-react";
-import { FitText } from "./FitText";
 
 interface CounterProps {
   target: number;
@@ -170,58 +169,64 @@ export function Hero() {
       />
 
       {/* Strict Global Container Wrapper */}
-      <div className="relative z-10 max-w-[1280px] mx-auto px-6 md:px-12 w-full space-y-12">
-        {/* Status Telemetry Header (§35) */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="text-xs font-mono text-[#8cff2e] tracking-widest uppercase flex items-center gap-2">
-            <span>[ STATUS // OPEN TO OPPORTUNITIES ]</span>
-          </div>
-          <span className="text-xs font-mono text-[#94A3B8] hidden sm:inline">
-            // Philippines · UTC+8
-          </span>
-        </div>
+      <div className="relative z-10 max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full space-y-12">
+        {/* Eyebrow Index Anchor (§35 Visual Rhyme with Sections 02–05) */}
+        <motion.div
+          initial={reducedMotion ? undefined : { opacity: 0, y: -10 }}
+          animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-2.5 text-xs font-mono text-[#8cff2e] uppercase tracking-[0.2em]"
+        >
+          <span className="w-2 h-2 rounded-full bg-[#8cff2e] shadow-[0_0_8px_#8cff2e] animate-pulse" />
+          <span>[ 01 // KYRELL SANTILLAN — SYSTEMS ARCHITECT & DEVELOPER ]</span>
+        </motion.div>
 
-        {/* Primary Headline with Clipped Word Entrance & Auto-Fitting Kinetic Typography */}
+        {/* Primary Headline: The Undisputed Focal Point (Scroll-Stopping Monument) */}
         <div
-          className="space-y-2 font-display text-5xl sm:text-7xl md:text-8xl lg:text-[6.8rem] font-extrabold tracking-tight leading-[0.94] text-white"
+          className="space-y-1 sm:space-y-2 font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.8rem] xl:text-[6.4rem] font-extrabold tracking-tight leading-[0.94] text-white"
         >
           {/* Clipped Line 1 */}
-          <FitText containerClassName="overflow-hidden" minFontSize={18}>
+          <div className="overflow-hidden">
             <div ref={word1Ref}>Building</div>
-          </FitText>
+          </div>
 
           {/* Clipped Line 2 */}
-          <FitText containerClassName="overflow-hidden" minFontSize={18}>
+          <div className="overflow-hidden">
             <div ref={word2Ref} className="text-white/90 italic">Systems</div>
-          </FitText>
+          </div>
 
           {/* Clipped Line 3 + Static Blinking Terminal Cursor */}
-          <FitText containerClassName="overflow-hidden" minFontSize={16}>
+          <div className="overflow-hidden">
             <div ref={word3Ref} className="flex items-center">
-              <span>Thoughtfully.</span>
+              <span>Precise.</span>
               <span className="text-[#8cff2e] animate-pulse ml-2 sm:ml-3 font-normal text-[0.85em]">▍</span>
             </div>
-          </FitText>
+          </div>
         </div>
 
-        {/* 2-Line Value Proposition & Sleek CTA Button Pair */}
+        {/* Human Narrative & Value Proposition Grid */}
         <div
           ref={valuePropRef}
-          className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end pt-2"
+          className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-end pt-2"
         >
-          <p className="md:col-span-8 text-slate-400 text-sm sm:text-base md:text-lg leading-[1.65] font-normal">
-            I build systems the way architects design buildings —{""}            
-            <strong className="text-white/80 font-medium border-b border-white/20 pb-0.5">
-              failure modes first
-            </strong>
-            , elegance second. Fresh CS graduate with production deployments in government infrastructure, automation pipelines, and security-first web apps.
-          </p>
+          <div className="md:col-span-8 space-y-3 sm:space-y-4">
+            <p className="text-slate-200 text-base sm:text-lg md:text-xl lg:text-[1.35rem] leading-[1.65] font-normal">
+              I&apos;m <strong className="text-white font-semibold">Kyrell Santillan</strong> — a Computer Science graduate and software engineer from the Philippines. I build digital architectures the way architects engineer buildings:{" "}
+              <strong className="text-white font-medium border-b border-[#8cff2e]/40 pb-0.5">
+                failure modes first, elegance second
+              </strong>
+              .
+            </p>
+            <p className="hidden md:block text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl font-light">
+              Specializing in resilient government infrastructure, autonomous video pipelines, and high-craft, security-first web applications engineered for uptime and longevity.
+            </p>
+          </div>
 
           <div className="md:col-span-4 flex flex-col sm:flex-row md:flex-col gap-3">
             {/* Sleek CTA Button with Spring Physics Hover */}
             <motion.a
               href="#projects"
-              whileHover={{ scale: 1.03 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               className="px-8 py-4 rounded-xl bg-white text-[#07090E] font-mono font-bold text-base transition-all shadow-xl hover:bg-[#8cff2e] text-center flex items-center justify-center gap-2 group"
@@ -234,7 +239,7 @@ export function Hero() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="px-8 py-3.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white font-mono font-semibold text-sm transition-all text-center hover:border-white/30"
+              className="px-8 py-3.5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] text-white font-mono font-semibold text-sm transition-all text-center hover:border-white/25"
             >
               [ Let&apos;s Talk ]
             </motion.a>

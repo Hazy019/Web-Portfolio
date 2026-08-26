@@ -52,9 +52,9 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#84cc16',
     accentBorder: 'rgba(132, 204, 22, 0.4)',
     accentGlow: 'rgba(132, 204, 22, 0.15)',
-    imageSrc: '/Shortsautomation_mockup_preview.png',
+    imageSrc: '/Shortsautomation_mockup_preview.webp',
     screenshots: [
-      '/Shortsautomation_mockup_preview.png',
+      '/Shortsautomation_mockup_preview.webp',
       '/Shortsautomation_phone_preview.webp',
       '/Shortsautomation_preview.webp'
     ],
@@ -100,10 +100,10 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#eab308',
     accentBorder: 'rgba(234, 179, 8, 0.4)',
     accentGlow: 'rgba(234, 179, 8, 0.15)',
-    imageSrc: '/DTI_Queue_mockup_preview.png',
+    imageSrc: '/DTI_Queue_mockup_preview.webp',
     screenshots: [
-      '/DTI_Queue_mockup_preview.png',
-      '/DTI_Queue_phone_preview.png',
+      '/DTI_Queue_mockup_preview.webp',
+      '/DTI_Queue_phone_preview.webp',
       '/DTI_Queue_preview.webp'
     ],
     screenshotLabels: [
@@ -146,10 +146,10 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#3b82f6',
     accentBorder: 'rgba(59, 130, 246, 0.4)',
     accentGlow: 'rgba(59, 130, 246, 0.15)',
-    imageSrc: '/Polycon_mockup_preview.png',
+    imageSrc: '/Polycon_mockup_preview.webp',
     screenshots: [
-      '/Polycon_mockup_preview.png',
-      '/Polycon_phone_preview.jfif',
+      '/Polycon_mockup_preview.webp',
+      '/Polycon_phone_preview.webp',
       '/Polycon_preview.webp'
     ],
     screenshotLabels: [
@@ -193,9 +193,9 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#22c55e',
     accentBorder: 'rgba(34, 197, 94, 0.4)',
     accentGlow: 'rgba(34, 197, 94, 0.15)',
-    imageSrc: '/IDEE-CLI_mockup_preview.png',
+    imageSrc: '/IDEE-CLI_mockup_preview.webp',
     screenshots: [
-      '/IDEE-CLI_mockup_preview.png',
+      '/IDEE-CLI_mockup_preview.webp',
       '/IDEE-CLI_phone_preview.webp',
       '/IDEE-CLI_preview.webp'
     ],
@@ -240,11 +240,11 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#06b6d4',
     accentBorder: 'rgba(6, 182, 212, 0.4)',
     accentGlow: 'rgba(6, 182, 212, 0.15)',
-    imageSrc: '/Sentinel_mockup_preview.png',
+    imageSrc: '/Sentinel_mockup_preview.webp',
     screenshots: [
-      '/Sentinel_mockup_preview.png',
-      '/Sentinel_phone_preview.jfif',
-      '/Sentinel_preview.jfif'
+      '/Sentinel_mockup_preview.webp',
+      '/Sentinel_phone_preview.webp',
+      '/Sentinel_preview.webp'
     ],
     screenshotLabels: [
       'Primary Mockup — 3D Attack Globe',
@@ -287,9 +287,9 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#8b5cf6',
     accentBorder: 'rgba(139, 92, 246, 0.4)',
     accentGlow: 'rgba(139, 92, 246, 0.15)',
-    imageSrc: '/SpellGate_mockup_preview.png',
+    imageSrc: '/SpellGate_mockup_preview.webp',
     screenshots: [
-      '/SpellGate_mockup_preview.png',
+      '/SpellGate_mockup_preview.webp',
       '/SpellGate_phone_preview.webp',
       '/SpellGate_preview.webp'
     ],
@@ -335,11 +335,11 @@ export const PROJECTS: ProjectData[] = [
     nativeAccent: '#f97316',
     accentBorder: 'rgba(249, 115, 22, 0.4)',
     accentGlow: 'rgba(249, 115, 22, 0.15)',
-    imageSrc: '/ClientEcho_mockup_preview.png',
+    imageSrc: '/ClientEcho_mockup_preview.webp',
     screenshots: [
-      '/ClientEcho_mockup_preview.png',
-      '/ClientEcho_phone_preview.png',
-      '/ClientEcho_preview.png'
+      '/ClientEcho_mockup_preview.webp',
+      '/ClientEcho_phone_preview.webp',
+      '/ClientEcho_preview.webp'
     ],
     screenshotLabels: [
       'Primary Mockup — Landing Page',

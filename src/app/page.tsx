@@ -69,35 +69,58 @@ export default function Home() {
 
   // Active section scroll spy with viewport center detection & URL hash synchronization
   useEffect(() => {
-    const sections = ["intro", "projects", "about", "philosophy", "contact"];
+    // Registered sections ordered from bottom to top for reverse scan
+    const trackedSections = [
+      { id: "contact", navId: "contact" },
+      { id: "testimonial", navId: "contact" },
+      { id: "philosophy", navId: "philosophy" },
+      { id: "about", navId: "about" },
+      { id: "projects", navId: "projects" },
+      { id: "intro", navId: "intro" },
+    ];
 
     const handleScroll = () => {
-      const targetThreshold = window.innerHeight * 0.4;
-      let currentSection = "intro";
+      // Bottom of page guarantee: if near bottom, always activate contact
+      const isAtBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 120;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const sectionId = sections[i];
-        const el = document.getElementById(sectionId);
+      if (isAtBottom) {
+        if (activeSectionRef.current !== "contact") {
+          activeSectionRef.current = "contact";
+          setActiveSection("contact");
+          if (typeof window !== "undefined" && window.history?.replaceState) {
+            window.history.replaceState(null, "", "#contact");
+          }
+        }
+        return;
+      }
+
+      const targetThreshold = window.innerHeight * 0.45;
+      let matchedNavId = "intro";
+
+      for (const section of trackedSections) {
+        const el = document.getElementById(section.id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= targetThreshold && rect.bottom >= 100) {
-            currentSection = sectionId;
+          if (rect.top <= targetThreshold && rect.bottom >= 80) {
+            matchedNavId = section.navId;
             break;
           }
         }
       }
 
-      if (currentSection !== activeSectionRef.current) {
-        activeSectionRef.current = currentSection;
-        setActiveSection(currentSection);
+      if (matchedNavId !== activeSectionRef.current) {
+        activeSectionRef.current = matchedNavId;
+        setActiveSection(matchedNavId);
 
         // Update URL hash dynamically without history pollution
         if (typeof window !== "undefined" && window.history?.replaceState) {
           const newHash =
-            currentSection === "intro"
+            matchedNavId === "intro"
               ? window.location.pathname + window.location.search
-              : `#${currentSection}`;
-          if (window.location.hash !== (currentSection === "intro" ? "" : `#${currentSection}`)) {
+              : `#${matchedNavId}`;
+          if (window.location.hash !== (matchedNavId === "intro" ? "" : `#${matchedNavId}`)) {
             window.history.replaceState(null, "", newHash);
           }
         }

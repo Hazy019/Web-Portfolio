@@ -236,13 +236,13 @@ export function Work({ onOpenDoc }: WorkProps) {
       />
 
       {/* Section Header */}
-      <div className="relative z-20 w-full max-w-[1240px] mx-auto px-6 md:px-12 mb-8 lg:mb-0 flex items-end justify-between">
+      <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 mb-8 lg:mb-0 flex items-end justify-between">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 font-mono text-xs text-[#8cff2e] uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
             Selected Projects [ 02 ]
           </div>
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#ffffff]">
+          <h2 className="font-display text-3xl lg:text-5xl font-extrabold text-[#ffffff]">
             Selected <span className="text-white/80">Work.</span>
           </h2>
         </div>
@@ -267,20 +267,17 @@ export function Work({ onOpenDoc }: WorkProps) {
               onClick={() => {
                 if (!isActive && window.innerWidth >= 1024) navigateToIndex(idx);
               }}
-              className={`project-card-item w-full lg:w-[88vw] lg:max-w-[1100px] shrink-0 bg-[#0d1017] rounded-[16px] p-6 lg:p-8 backdrop-blur-xl border border-white/[0.08] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isActive
-                  ? "opacity-100 scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-20 lg:hover:-translate-y-1"
-                  : "opacity-100 lg:opacity-40 scale-100 lg:scale-[0.92] lg:blur-[1px] lg:grayscale-[40%] cursor-pointer lg:hover:opacity-60 z-10"
-              }`}
+              className={`project-card-item w-full lg:w-[88vw] lg:max-w-[1100px] shrink-0 bg-[#0d1017] rounded-[16px] p-6 lg:p-8 backdrop-blur-xl border border-white/[0.08] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                ? "opacity-100 scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-20 lg:hover:-translate-y-1"
+                : "opacity-100 lg:opacity-40 scale-100 lg:scale-[0.92] lg:blur-[1px] lg:grayscale-[40%] cursor-pointer lg:hover:opacity-60 z-10"
+                }`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                 {/* Media Frame (~60%) */}
                 <div
-                  className="lg:col-span-7 relative aspect-[16/9] w-full rounded-[12px] overflow-hidden border border-white/[0.08] p-4 lg:p-6 cursor-pointer group flex items-center justify-center"
+                  className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[16/9.5] w-full rounded-[14px] overflow-hidden border border-white/[0.12] cursor-pointer group flex items-center justify-center bg-[#07090e] shadow-2xl"
                   data-cursor="view"
-                  style={{
-                    background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
-                  }}
+                  data-cursor-text={project.liveUrl ? "VIEW\nPROJECT" : "VIEW\nCASE STUDY"}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (project.liveUrl) {
@@ -290,19 +287,23 @@ export function Work({ onOpenDoc }: WorkProps) {
                     }
                   }}
                 >
-                  <div className="relative w-full h-full min-h-[200px] sm:min-h-[240px] lg:min-h-[300px] flex items-center justify-center filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]">
+                  <div className="relative w-full h-full overflow-hidden flex items-center justify-center">
                     <Image
                       src={project.imageSrc}
                       alt={project.title}
                       fill
-                      sizes="(max-width: 1024px) 100vw, 650px"
-                      className="object-contain object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                      sizes="(max-width: 1024px) 100vw, 750px"
+                      className="object-cover object-center scale-[1.04] group-hover:scale-[1.09] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                      priority={idx === 0}
                     />
                   </div>
 
+                  {/* Subtle bottom gradient to blend cleanly with card depth */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090E]/50 via-transparent to-transparent pointer-events-none" />
+
                   <div className="absolute top-4 right-4 z-10">
                     <span
-                      className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/80 text-[#ffffff] backdrop-blur-md uppercase"
+                      className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/90 text-[#ffffff] backdrop-blur-md uppercase shadow-md"
                       style={{ borderColor: project.accentBorder }}
                     >
                       {project.status}
@@ -391,7 +392,7 @@ export function Work({ onOpenDoc }: WorkProps) {
       </div>
 
       {/* Synchronized Navigation & Controls Bar (Visible on Desktop) */}
-      <div className="relative z-20 hidden lg:flex w-full max-w-[1240px] mx-auto px-6 md:px-12 items-center justify-between mt-4">
+      <div className="relative z-20 hidden lg:flex w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 items-center justify-between mt-4">
         {/* Active Index & Status Indicator */}
         <div className="flex items-center gap-4 font-mono text-xs text-white">
           <span className="text-[#8cff2e] font-bold text-sm tracking-widest">
@@ -403,11 +404,10 @@ export function Work({ onOpenDoc }: WorkProps) {
                 key={idx}
                 onClick={() => navigateToIndex(idx)}
                 aria-label={`Go to project ${idx + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  idx === activeIndex
-                    ? "w-7 bg-[#8cff2e] shadow-[0_0_10px_rgba(140,255,46,0.5)]"
-                    : "w-2 bg-white/20 hover:bg-white/40"
-                }`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === activeIndex
+                  ? "w-7 bg-[#8cff2e] shadow-[0_0_10px_rgba(140,255,46,0.5)]"
+                  : "w-2 bg-white/20 hover:bg-white/40"
+                  }`}
               />
             ))}
           </div>

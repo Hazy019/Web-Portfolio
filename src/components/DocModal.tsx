@@ -64,12 +64,12 @@ export function DocModal({
         if (e.shiftKey) {
           if (document.activeElement === first) {
             e.preventDefault();
-            last.focus();
+            last.focus({ preventScroll: true });
           }
         } else {
           if (document.activeElement === last) {
             e.preventDefault();
-            first.focus();
+            first.focus({ preventScroll: true });
           }
         }
       }
@@ -77,31 +77,35 @@ export function DocModal({
 
     if (projectId) {
       window.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-      document.documentElement.style.overflow = "hidden";
       const lenis = (window as any).lenis;
       if (lenis && typeof lenis.stop === "function") {
         lenis.stop();
+      } else {
+        document.body.style.overflow = "hidden";
       }
-      // Move focus into the modal on open
+      // Move focus into the modal without triggering window scroll
       const modal = document.querySelector('[role="dialog"]') as HTMLElement | null;
       if (modal) {
         const closeBtn = modal.querySelector('button[aria-label="Close modal"]') as HTMLElement | null;
-        (closeBtn || modal).focus();
+        if (closeBtn) {
+          closeBtn.focus({ preventScroll: true });
+        } else {
+          modal.focus({ preventScroll: true });
+        }
       }
     }
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
       const lenis = (window as any).lenis;
       if (lenis && typeof lenis.start === "function") {
         lenis.start();
+      } else {
+        document.body.style.overflow = "";
       }
-      // Restore focus to the element that triggered the modal open
+      // Restore focus to the element that triggered the modal open without scrolling
       if (previouslyFocused && typeof previouslyFocused.focus === "function") {
-        previouslyFocused.focus();
+        previouslyFocused.focus({ preventScroll: true });
       }
     };
   }, [projectId, selectedLightboxImg, onClose]);

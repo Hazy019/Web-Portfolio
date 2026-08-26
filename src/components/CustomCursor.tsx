@@ -34,8 +34,14 @@ export function CustomCursor() {
   const ringRef = useRef<HTMLDivElement>(null);
   const modeRef = useRef<"default" | "hover" | "view">("default");
   const [cursorMode, setCursorMode] = useState<"default" | "hover" | "view">("default");
+  const [viewText, setViewText] = useState<{ line1: string; line2: string }>({
+    line1: "VIEW",
+    line2: "PROJECT",
+  });
   const [isVisible, setIsVisible] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
+
+  const lastPosRef = useRef<{ x: number; y: number }>({ x: -100, y: -100 });
 
   useEffect(() => {
     // Check coarse pointer / touch hardware
@@ -54,19 +60,75 @@ export function CustomCursor() {
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
-    // Direct GPU-accelerated GSAP quickTo setters for 60-120fps tracking
-    const xDotTo = gsap.quickTo(dot, "x", { duration: 0.05, ease: "power3.out" });
-    const yDotTo = gsap.quickTo(dot, "y", { duration: 0.05, ease: "power3.out" });
+    // Direct GPU-accelerated GSAP quickTo setters with tight latency (0.02s dot, 0.1s ring)
+    const xDotTo = gsap.quickTo(dot, "x", { duration: 0.02, ease: "power3.out" });
+    const yDotTo = gsap.quickTo(dot, "y", { duration: 0.02, ease: "power3.out" });
 
-    const xRingTo = gsap.quickTo(ring, "x", { duration: 0.18, ease: "power2.out" });
-    const yRingTo = gsap.quickTo(ring, "y", { duration: 0.18, ease: "power2.out" });
+    const xRingTo = gsap.quickTo(ring, "x", { duration: 0.1, ease: "power2.out" });
+    const yRingTo = gsap.quickTo(ring, "y", { duration: 0.1, ease: "power2.out" });
 
     let hasMoved = false;
 
-    // ── Optimized: mousemove ONLY does GPU position updates ─────────────────
-    // Mode detection moved to mouseenter/mouseleave on elements (below).
+    // ── Instant Target Evaluation & State Resolution ────────────────────────
+    const evaluateTarget = (target: HTMLElement | null) => {
+      if (!target) {
+        if (modeRef.current !== "default") {
+          modeRef.current = "default";
+          setCursorMode("default");
+        }
+        return;
+      }
+
+      // Check if directly on or inside a [data-cursor="view"] container
+      const viewEl = target.closest?.("[data-cursor='view']") as HTMLElement | null;
+      if (viewEl) {
+        const customText = viewEl.getAttribute("data-cursor-text");
+        if (customText) {
+          const parts = customText.split("\n");
+          if (parts.length >= 2) {
+            setViewText({ line1: parts[0], line2: parts[1] });
+          } else {
+            const words = customText.split(" ");
+            setViewText({
+              line1: words[0] || "VIEW",
+              line2: words.slice(1).join(" ") || "PROJECT",
+            });
+          }
+        } else {
+          setViewText({ line1: "VIEW", line2: "PROJECT" });
+        }
+
+        if (modeRef.current !== "view") {
+          modeRef.current = "view";
+          setCursorMode("view");
+        }
+        return;
+      }
+
+      // Check if on interactive button, link, or input
+      const interactiveEl = target.closest?.(
+        "a, button, input, textarea, [role='button'], [tabindex='0']"
+      ) as HTMLElement | null;
+      if (interactiveEl) {
+        if (modeRef.current !== "hover") {
+          modeRef.current = "hover";
+          setCursorMode("hover");
+        }
+        return;
+      }
+
+      // Default state
+      if (modeRef.current !== "default") {
+        modeRef.current = "default";
+        setCursorMode("default");
+      }
+    };
+
+    // ── Mouse Move Handler (Instant 120fps Position + Target Update) ─────────
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
+      lastPosRef.current = { x, y };
+
       xDotTo(x);
       yDotTo(y);
       xRingTo(x);
@@ -76,78 +138,47 @@ export function CustomCursor() {
         hasMoved = true;
         setIsVisible(true);
       }
+
+      evaluateTarget(e.target as HTMLElement);
     };
 
-    // ── Mode detection via event delegation ─────────────────────────────────
-    // Listen on document for mouseenter/mouseleave on matching selectors.
-    // This fires once per element boundary crossing, not on every pixel moved.
-    const handleEnterView = () => {
-      if (modeRef.current !== "view") {
-        modeRef.current = "view";
-        setCursorMode("view");
-      }
-    };
-    const handleLeaveView = () => {
-      if (modeRef.current === "view") {
-        modeRef.current = "default";
-        setCursorMode("default");
-      }
-    };
-    const handleEnterInteractive = () => {
-      if (modeRef.current === "default") {
-        modeRef.current = "hover";
-        setCursorMode("hover");
-      }
-    };
-    const handleLeaveInteractive = (e: Event) => {
-      // Only reset if the relatedTarget isn't another interactive element
-      const related = (e as MouseEvent).relatedTarget as HTMLElement | null;
-      if (modeRef.current === "hover") {
-        const stillOnInteractive = related?.closest(
-          "a, button, input, textarea, [role='button'], [tabindex='0']"
-        );
-        if (!stillOnInteractive) {
-          modeRef.current = "default";
-          setCursorMode("default");
+    // ── Scroll / Pinned Translation Target Re-evaluator ─────────────────────
+    // When user scrolls or carousel translates, elements shift under cursor.
+    let scrollRaf: number | null = null;
+    const handleScrollSync = () => {
+      if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
+      scrollRaf = requestAnimationFrame(() => {
+        const { x, y } = lastPosRef.current;
+        if (x > 0 && y > 0 && typeof document !== "undefined") {
+          const currentUnderCursor = document.elementFromPoint(x, y) as HTMLElement | null;
+          evaluateTarget(currentUnderCursor);
         }
-      }
-    };
-
-    // Attach delegated listeners to document using event capture
-    // so they fire for all matching descendants automatically
-    const attachDelegated = () => {
-      // [data-cursor="view"] elements
-      document.querySelectorAll<HTMLElement>("[data-cursor='view']").forEach((el) => {
-        el.addEventListener("mouseenter", handleEnterView);
-        el.addEventListener("mouseleave", handleLeaveView);
-      });
-
-      // Interactive elements
-      document.querySelectorAll<HTMLElement>(
-        "a, button, input, textarea, [role='button'], [tabindex='0']"
-      ).forEach((el) => {
-        el.addEventListener("mouseenter", handleEnterInteractive);
-        el.addEventListener("mouseleave", handleLeaveInteractive);
       });
     };
-
-    // Initial attach + re-attach after DOM changes via MutationObserver
-    attachDelegated();
-    const observer = new MutationObserver(() => attachDelegated());
-    observer.observe(document.body, { childList: true, subtree: true });
 
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScrollSync, { passive: true });
     document.body.addEventListener("mouseleave", handleMouseLeave);
     document.body.addEventListener("mouseenter", handleMouseEnter);
 
+    // Sync with Lenis smooth-scroll updates
+    const lenis = (window as any).lenis;
+    if (lenis && typeof lenis.on === "function") {
+      lenis.on("scroll", handleScrollSync);
+    }
+
     return () => {
-      observer.disconnect();
+      if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScrollSync);
       document.body.removeEventListener("mouseleave", handleMouseLeave);
       document.body.removeEventListener("mouseenter", handleMouseEnter);
+      if (lenis && typeof lenis.off === "function") {
+        lenis.off("scroll", handleScrollSync);
+      }
     };
   }, [reducedMotion]);
 
@@ -161,7 +192,7 @@ export function CustomCursor() {
       {/* ── Inner neon green dot ─────────────────────────────────────── */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[10000] w-2 h-2 bg-[#8cff2e] rounded-full shadow-[0_0_10px_#8cff2e] transition-opacity duration-300 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[10000] w-2 h-2 bg-[#8cff2e] rounded-full shadow-[0_0_10px_#8cff2e] transition-opacity duration-150 ${
           isVisible && !isView ? "opacity-100" : "opacity-0"
         }`}
         style={{
@@ -173,7 +204,7 @@ export function CustomCursor() {
       {/* ── Interactive Follower Sphere ──────────── */}
       <div
         ref={ringRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center text-center transition-all duration-300 ease-out ${
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full flex items-center justify-center text-center transition-[width,height,background-color,border-color,box-shadow,opacity] duration-150 ease-out ${
           isVisible ? "opacity-100" : "opacity-0"
         } ${
           isView
@@ -193,8 +224,8 @@ export function CustomCursor() {
       >
         {isView && (
           <div className="flex flex-col items-center justify-center text-center font-mono font-bold text-[11px] leading-tight tracking-wider uppercase text-white select-none">
-            <span>View</span>
-            <span>Case Study</span>
+            <span>{viewText.line1}</span>
+            <span>{viewText.line2}</span>
           </div>
         )}
       </div>

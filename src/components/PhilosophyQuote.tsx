@@ -298,7 +298,7 @@ export function PhilosophyQuote() {
     <section
       ref={sectionRef}
       id="philosophy"
-      className="relative w-full px-6 lg:px-12 border-y border-white/10 overflow-hidden bg-slate-950/40 select-none scroll-mt-24"
+      className="relative w-full px-6 sm:px-10 lg:px-16 xl:px-20 border-y border-white/10 overflow-hidden bg-slate-950/40 select-none scroll-mt-24"
       style={{
         paddingTop: "clamp(48px, 5vw, 80px)",
         paddingBottom: "clamp(72px, 7vw, 110px)",
@@ -349,20 +349,20 @@ export function PhilosophyQuote() {
         <HazyMark size={400} opacity={0.04} parallax={false} decorative={true} />
       </div>
 
-      <div className="max-w-[1100px] mx-auto px-6 md:px-12 w-full space-y-6 sm:space-y-8 text-center relative z-10">
+      <div className="max-w-[1536px] mx-auto w-full space-y-6 sm:space-y-8 text-center relative z-10">
         {/* Section Eyebrow */}
         <div
           ref={eyebrowRef}
-          className="text-xs font-mono text-[#8cff2e] tracking-[0.3em] uppercase flex items-center justify-center gap-2"
+          className="text-xs font-mono text-[#8cff2e] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
           <span>[ 04 // TECHNICAL PHILOSOPHY ]</span>
         </div>
 
         {/* Glass Card Container (Depth & Grain overlay) */}
         <div
           ref={cardRef}
-          className="p-8 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/80 backdrop-blur-2xl shadow-2xl space-y-8 max-w-4xl mx-auto relative overflow-hidden"
+          className="p-6 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/80 backdrop-blur-2xl shadow-2xl space-y-8 max-w-5xl mx-auto relative overflow-hidden"
         >
           {/* Subtle card internal radial bloom */}
           <div
@@ -403,9 +403,8 @@ export function PhilosophyQuote() {
                   ref={(el) => {
                     wordsLine2Ref.current[idx] = el;
                   }}
-                  className={`inline-block transition-colors duration-150 ${
-                    item.isAccent ? "font-black" : ""
-                  }`}
+                  className={`inline-block transition-colors duration-150 ${item.isAccent ? "font-black" : ""
+                    }`}
                 >
                   {item.text}
                 </span>

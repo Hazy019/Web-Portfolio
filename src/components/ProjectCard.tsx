@@ -168,6 +168,7 @@ export function ProjectCard({
           <div
             className="relative aspect-[16/10] w-full overflow-hidden p-3 sm:p-4 cursor-pointer flex items-center justify-center"
             data-cursor="view"
+            data-cursor-text={project.liveUrl ? "VIEW\nPROJECT" : "VIEW\nCASE STUDY"}
             style={{
               background: "radial-gradient(ellipse at 50% 20%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 9, 14, 0.95) 75%)",
             }}

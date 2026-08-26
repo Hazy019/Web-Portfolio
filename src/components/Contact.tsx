@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
-import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck } from "lucide-react";
+import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck, ArrowUpRight } from "lucide-react";
 import { FitText } from "./FitText";
 
 export function Contact() {
@@ -95,7 +95,7 @@ export function Contact() {
             },
           ]}
         />
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10 space-y-8">
+        <div className="max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full relative z-10 space-y-8">
           {/* Section Header */}
           <motion.div
             initial={reducedMotion ? undefined : { y: 20, opacity: 0 }}
@@ -108,7 +108,7 @@ export function Contact() {
               <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
               <span>[ 05 // TRUST & VALIDATION ]</span>
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white">
+            <h2 className="font-display text-2xl sm:text-5xl font-extrabold text-white">
               Endorsements & <span className="text-white/80">Proof.</span>
             </h2>
           </motion.div>
@@ -243,7 +243,7 @@ export function Contact() {
           ]}
         />
 
-        <div className="max-w-[1280px] mx-auto px-6 md:px-12 w-full relative z-10">
+        <div className="max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full relative z-10">
           {/* ── 2-Column Grid (12-Col System: Balanced 6-Col Content / 6-Col Form) ────────────────── */}
           <motion.div
             variants={reducedMotion ? undefined : containerVariants}
@@ -269,7 +269,7 @@ export function Contact() {
                 whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-[clamp(2.5rem,4vw,3.5rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
+                className="font-display text-[clamp(1.90rem,4vw,4rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
               >
                 <span>Let&apos;s build</span>
                 <FitText
@@ -290,77 +290,77 @@ export function Contact() {
                 message.
               </motion.p>
 
-              {/* Social Link Pills */}
+              {/* Social Link Cards: Unified Layout, Anti-Wrapping Architecture, and Cyber-Glass Styling */}
               <motion.div
                 variants={reducedMotion ? undefined : itemVariants}
                 className="space-y-3 font-mono text-sm max-w-xl"
               >
-                <a
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-[#8cff2e]" />
-                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">Email</span>
-                  </div>
-                  <span className="text-white group-hover:text-[#8cff2e] transition-colors font-medium">
-                    santillankyrell@gmail.com →
-                  </span>
-                </a>
+                {[
+                  {
+                    id: "email",
+                    label: "Email",
+                    value: "santillankyrell@gmail.com",
+                    href: "https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com",
+                    icon: <Mail className="w-4 h-4 text-[#8cff2e]" />,
+                  },
+                  {
+                    id: "whatsapp",
+                    label: "WhatsApp",
+                    value: "+63 991 244 3422",
+                    href: "https://wa.me/639912443422?text=Hello%20Kyrell%2C%20I%27d%20like%20to%20connect%20regarding%20a%20project!",
+                    ariaLabel: "Contact Kyrell on WhatsApp",
+                    icon: (
+                      <svg
+                        className="w-4 h-4 text-[#8cff2e] fill-current"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.979-.276-.1-.477-.15-.678.15-.2.301-.777.979-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.424-1.496-.895-.798-1.5-1.784-1.675-2.085-.176-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.151-.176.201-.301.301-.502.1-.201.05-.377-.025-.527-.075-.15-.678-1.634-.929-2.238-.244-.588-.493-.509-.678-.518l-.577-.01c-.201 0-.527.075-.803.377s-1.054 1.03-1.054 2.511 1.079 2.912 1.23 3.113c.15.201 2.124 3.243 5.145 4.549.719.311 1.281.497 1.719.636.723.23 1.381.197 1.902.12.58-.087 1.78-.728 2.03-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351zM12.042 2c-5.522 0-10 4.477-10 10 0 1.764.459 3.423 1.261 4.871L2 22l5.301-1.258A9.957 9.957 0 0012.042 22c5.523 0 10-4.477 10-10s-4.477-10-10-10z" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    id: "github",
+                    label: "GitHub",
+                    value: "@hazy019",
+                    href: "https://github.com/Hazy019",
+                    icon: <Github className="w-4 h-4 text-[#8cff2e]" />,
+                  },
+                  {
+                    id: "linkedin",
+                    label: "LinkedIn",
+                    value: "Kyrell Santillan",
+                    href: "https://linkedin.com/in/kyrell-santillan",
+                    icon: <Linkedin className="w-4 h-4 text-[#8cff2e]" />,
+                  },
+                ].map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.ariaLabel}
+                    className="flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-[#8cff2e]/40 hover:bg-[#161a26] transition-all duration-300 text-slate-200 group shadow-lg"
+                  >
+                    {/* Left: Icon Badge & Channel Label */}
+                    <div className="flex items-center gap-3 shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-[#8cff2e]/30 group-hover:bg-[#8cff2e]/10 group-hover:shadow-[0_0_12px_rgba(140,255,46,0.15)] transition-all duration-300">
+                        {item.icon}
+                      </div>
+                      <span className="text-[#94A3B8] text-xs font-mono uppercase tracking-wider font-semibold group-hover:text-slate-200 transition-colors">
+                        {item.label}
+                      </span>
+                    </div>
 
-                <a
-                  href="https://wa.me/639912443422?text=Hello%20Kyrell%2C%20I%27d%20like%20to%20connect%20regarding%20a%20project!"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Contact Kyrell on WhatsApp"
-                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <svg
-                      className="w-4 h-4 text-[#25D366] fill-current"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path d="M17.472 14.382c-.301-.15-1.78-.879-2.056-.979-.276-.1-.477-.15-.678.15-.2.301-.777.979-.953 1.18-.175.201-.351.226-.652.075-.301-.15-1.272-.469-2.424-1.496-.895-.798-1.5-1.784-1.675-2.085-.176-.301-.019-.464.132-.614.136-.135.301-.351.451-.527.151-.176.201-.301.301-.502.1-.201.05-.377-.025-.527-.075-.15-.678-1.634-.929-2.238-.244-.588-.493-.509-.678-.518l-.577-.01c-.201 0-.527.075-.803.377s-1.054 1.03-1.054 2.511 1.079 2.912 1.23 3.113c.15.201 2.124 3.243 5.145 4.549.719.311 1.281.497 1.719.636.723.23 1.381.197 1.902.12.58-.087 1.78-.728 2.03-1.431.251-.703.251-1.305.176-1.431-.075-.126-.276-.201-.577-.351zM12.042 2c-5.522 0-10 4.477-10 10 0 1.764.459 3.423 1.261 4.871L2 22l5.301-1.258A9.957 9.957 0 0012.042 22c5.523 0 10-4.477 10-10s-4.477-10-10-10z" />
-                    </svg>
-                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">WhatsApp</span>
-                  </div>
-                  <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
-                    +63 991 244 3422 →
-                  </span>
-                </a>
-
-                <a
-                  href="https://github.com/Hazy019"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <Github className="w-4 h-4 text-[#8cff2e]" />
-                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">GitHub</span>
-                  </div>
-                  <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
-                    @hazy019 →
-                  </span>
-                </a>
-
-                <a
-                  href="https://linkedin.com/in/kyrell-santillan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-white/30 hover:bg-white/5 transition-all text-slate-200 group shadow-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <Linkedin className="w-4 h-4 text-[#8cff2e]" />
-                    <span className="text-[#94A3B8] text-xs uppercase tracking-wider">LinkedIn</span>
-                  </div>
-                  <span className="text-slate-300 group-hover:text-white transition-colors font-medium">
-                    Kyrell Santillan →
-                  </span>
-                </a>
+                    {/* Right: Value & Dynamic Arrow (Anti-Wrapping Protected) */}
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 justify-end overflow-hidden">
+                      <span className="text-slate-200 group-hover:text-white font-mono text-xs sm:text-sm font-medium transition-colors truncate">
+                        {item.value}
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-[#8cff2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-250 shrink-0" />
+                    </div>
+                  </a>
+                ))}
               </motion.div>
             </div>
 
@@ -368,7 +368,7 @@ export function Contact() {
             <motion.div variants={reducedMotion ? undefined : formVariants} className="lg:col-span-6 min-w-0 w-full mx-auto lg:mx-0 relative z-10">
               <form
                 onSubmit={handleSubmit}
-                className="p-8 sm:p-10 md:p-12 rounded-2xl border border-white/10 bg-[#12151E] backdrop-blur-xl space-y-6 shadow-2xl"
+                className="p-6 sm:p-10 md:p-12 rounded-2xl border border-white/10 bg-[#12151E] backdrop-blur-xl space-y-6 shadow-2xl"
               >
                 <div className="space-y-2">
                   <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
@@ -428,8 +428,8 @@ export function Contact() {
       </section>
 
       {/* ── Standalone Footer Ribbon (Clear separation mt-16/lg:mt-24 & Tight vertical padding py-4/py-5) ────── */}
-      <footer className="w-full mt-6 lg:mt-6 border-t border-white/10 bg-[#07090E] py-6 sm:py-7 px-12 lg:px-24 relative z-10">
-        <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#94A3B8] gap-3">
+      <footer className="w-full mt-6 lg:mt-6 border-t border-white/10 bg-[#07090E] py-6 sm:py-7 px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10">
+        <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#94A3B8] gap-3">
           <div className="font-display text-base font-extrabold text-white">
             H<span className="text-[#8cff2e]">AZY</span>
           </div>

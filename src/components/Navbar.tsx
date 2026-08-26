@@ -160,8 +160,8 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
       <div
         className={`pointer-events-auto flex items-center justify-between border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isCompact
-            ? "gap-2.5 sm:gap-6 px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full"
-            : "gap-3 sm:gap-8 px-4 py-2.5 sm:px-7 sm:py-3 rounded-full"
+            ? "gap-2 sm:gap-6 px-2.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full"
+            : "gap-2.5 sm:gap-8 px-3 py-2 sm:px-7 sm:py-3 rounded-full"
         } ${
           scrolled
             ? "bg-[#07090E]/90 border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
@@ -173,25 +173,25 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
         }}
       >
         {/* Left Cluster: Brand Logo, Wordmark & Live Status Badge */}
-        <div className="flex items-center gap-2.5 sm:gap-3.5 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3.5 shrink-0">
           <a
             href="#intro"
-            className="flex items-center gap-2.5 group shrink-0"
+            className="flex items-center gap-2 group shrink-0"
             aria-label="HAZY — Back to Top"
           >
             <div className="w-8 h-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center group-hover:border-[#8cff2e] transition-colors shrink-0">
               <Image
                 src="/logo.png"
                 alt="HAZY Mark"
-                width={22}
-                height={22}
+                width={20}
+                height={20}
                 className="object-contain"
               />
             </div>
             <span
               className={`font-display font-extrabold text-base tracking-wider text-white whitespace-nowrap overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isCompact
-                  ? "max-w-0 opacity-0 -translate-x-2 pointer-events-none"
+                  ? "w-0 max-w-0 opacity-0 -translate-x-2 pointer-events-none"
                   : "max-w-[100px] opacity-100 translate-x-0"
               }`}
             >
@@ -234,7 +234,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
         </nav>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           <a
             href="/Kyrell_Santillan_Resume.pdf"
             download
@@ -253,14 +253,14 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
             className={`rounded-full bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-all shadow-lg flex items-center justify-center gap-1.5 ${
               isCompact
                 ? "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 p-0"
-                : "px-3.5 py-1.5 sm:px-4 sm:py-2"
+                : "px-3 py-1.5 sm:px-4 sm:py-2"
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5 shrink-0" />
             <span
               className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isCompact
-                  ? "max-w-0 opacity-0 hidden sm:inline sm:max-w-[40px] sm:opacity-100"
+                  ? "w-0 max-w-0 opacity-0 hidden sm:inline sm:max-w-[40px] sm:opacity-100"
                   : "max-w-[50px] opacity-100 inline"
               }`}
             >
@@ -271,7 +271,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-full border border-white/15 bg-white/5 text-slate-200 hover:text-white transition-colors cursor-pointer"
+            className="lg:hidden w-8 h-8 flex items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-200 hover:text-white transition-colors cursor-pointer"
             aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
           >
             {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}

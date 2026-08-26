@@ -13,6 +13,21 @@ import { motion } from "framer-motion";
 
 const CYCLING_TERMS = ["BUILD", "ARCHITECT", "SYSTEMS", "THOUGHTFULLY"];
 
+const CRITICAL_CACHE_ASSETS = [
+  "/Shortsautomation_mockup_preview.webp",
+  "/DTI_Queue_mockup_preview.webp",
+  "/Polycon_mockup_preview.webp",
+  "/IDEE-CLI_mockup_preview.webp",
+  "/Sentinel_mockup_preview.webp",
+  "/SpellGate_mockup_preview.webp",
+  "/ClientEcho_mockup_preview.webp",
+  "/Certificate/Foundation of Cybersecurity.png",
+  "/Certificate/Play it Safe Mange Security Risks.png",
+  "/Certificate/Foundation of User Experience (UX) Design.png",
+  "/Certificate/Legacy Responsive Web Design V8.png",
+  "/logo.png",
+];
+
 interface LoaderProps {
   onComplete: () => void;
 }
@@ -23,6 +38,14 @@ export function Loader({ onComplete }: LoaderProps) {
   const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
+    // Eagerly preload and warm-cache all critical images in background worker threads
+    if (typeof window !== "undefined") {
+      CRITICAL_CACHE_ASSETS.forEach((src) => {
+        const img = new window.Image();
+        img.src = src;
+      });
+    }
+
     // Check session storage flag for repeat visits
     if (typeof window !== "undefined") {
       const visited = sessionStorage.getItem("hazy_visited");
@@ -97,35 +120,41 @@ export function Loader({ onComplete }: LoaderProps) {
 
       {/* ── Loader Content Overlay (Top-Right Counter & Bottom-Left Terms) ──── */}
       <div
-        className={`relative z-10 w-full h-full max-w-[1280px] mx-auto px-6 md:px-12 py-12 sm:py-16 flex flex-col justify-between transition-opacity duration-300 ${
+        className={`relative z-10 w-full h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between transition-opacity duration-300 ${
           isExiting ? "opacity-0" : "opacity-100"
         }`}
       >
-        {/* Top-Right: Minimalist Percentage Counter */}
+        {/* Top-Right: Minimalist Technical Percentage Counter */}
         <div className="self-end text-right">
-          <div className="font-mono text-5xl sm:text-7xl font-extrabold text-white tracking-tighter tabular-nums">
+          <div className="font-mono text-5xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter tabular-nums leading-none">
             {String(progress).padStart(3, "0")}
-            <span className="text-[#8cff2e] text-3xl sm:text-5xl font-light ml-1">%</span>
+            <span className="text-[#8cff2e] text-3xl sm:text-5xl md:text-6xl font-light ml-1 sm:ml-1.5">
+              %
+            </span>
           </div>
-          <div className="text-[11px] font-mono text-slate-400 tracking-widest uppercase mt-1">
-            [ LOADING HAZY // {progress < 100 ? "IN_PROGRESS" : "COMPLETE"} ]
+          <div className="text-[11px] sm:text-xs md:text-sm font-mono text-slate-300 tracking-[0.2em] uppercase mt-2 font-medium">
+            [ LOADING HAZY //{" "}
+            <span className={progress >= 100 ? "text-[#8cff2e] font-semibold" : "text-slate-100"}>
+              {progress < 100 ? "IN_PROGRESS" : "COMPLETE"}
+            </span>{" "}
+            ]
           </div>
         </div>
 
         {/* Bottom-Left: Cycling Terms */}
-        <div className="self-start space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-[#8cff2e] tracking-widest uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse" />
+        <div className="self-start space-y-1.5 sm:space-y-2">
+          <div className="flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono text-[#8cff2e] tracking-[0.2em] uppercase font-semibold">
+            <span className="w-2 h-2 rounded-full bg-[#8cff2e] shadow-[0_0_10px_#8cff2e] animate-pulse" />
             <span>STATE: {CYCLING_TERMS[currentTermIndex]}</span>
           </div>
-          <div className="overflow-hidden h-10 sm:h-14 flex items-center">
+          <div className="overflow-hidden h-12 sm:h-16 md:h-20 lg:h-24 flex items-center">
             <motion.div
               key={currentTermIndex}
-              initial={{ y: 24, opacity: 0 }}
+              initial={{ y: 35, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -24, opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="font-display text-[clamp(1.35rem,5.5vw,3rem)] font-extrabold text-white tracking-tight uppercase whitespace-nowrap leading-none"
+              exit={{ y: -35, opacity: 0 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display text-[clamp(1.85rem,4.8vw,4.25rem)] font-extrabold text-white tracking-tight uppercase whitespace-nowrap leading-none"
             >
               {CYCLING_TERMS[currentTermIndex]}
             </motion.div>
