@@ -256,7 +256,7 @@ export function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden border-t border-white/10 bg-[#07090E] scroll-mt-24"
+      className="relative px-6 sm:px-10 lg:px-16 xl:px-20 overflow-hidden border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] scroll-mt-24"
       style={{
         paddingTop: "var(--section-gap, 140px)",
         paddingBottom: "clamp(48px, 5vw, 80px)",
@@ -272,16 +272,15 @@ export function About() {
           transition={{ duration: 0.6 }}
           className="space-y-3"
         >
-          <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest">
-            <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
             <span>[ 03 // PERSPECTIVE & EXPERIENCE ]</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-white">
-            Tailored <span className="text-white/80">Perspective.</span>
+          <h2 className="font-display text-3xl sm:text-5xl font-extrabold text-[var(--text-primary)]">
+            Tailored <span className="opacity-80">Perspective.</span>
           </h2>
         </motion.div>
 
-        {/* ── Mobile role selector (< lg): 100% visible responsive segmented grid (no truncation/clipping) ── */}
         {/* ── Mobile role selector (< lg): Aerodynamic Cyber Pills with Auto-Centering Scroll-into-view ── */}
         <motion.div
           initial={reducedMotion ? undefined : { y: 16, opacity: 0 }}
@@ -292,7 +291,7 @@ export function About() {
         >
           {/* Row 1: Persona role pill carousel with center-lock scrolling */}
           <div className="space-y-2.5">
-            <div className="text-xs font-mono text-[#94A3B8] uppercase tracking-wider px-0.5">
+            <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider px-0.5">
               Select Role View:
             </div>
 
@@ -316,16 +315,16 @@ export function About() {
                         });
                       }}
                       className={`snap-center shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full border font-mono text-xs sm:text-sm whitespace-nowrap transition-all duration-300 ${isActive
-                        ? "bg-[#12151E] border-[#8cff2e] text-white shadow-[0_0_18px_rgba(140,255,46,0.22)] ring-1 ring-[#8cff2e]/40 font-bold"
-                        : "bg-[#07090E]/90 border-white/10 text-[#94A3B8] hover:text-white hover:border-white/25 font-medium"
+                        ? "bg-[var(--bg-card)] border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[var(--glass-shadow)] ring-1 ring-[var(--accent-primary)]/40 font-bold"
+                        : "bg-[var(--bg-panel)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)] font-medium"
                         }`}
                     >
-                      <span className={isActive ? "text-[#8cff2e]" : "text-slate-400"}>
+                      <span className={isActive ? "text-[var(--accent-primary)]" : "text-[var(--text-muted)]"}>
                         {role.icon}
                       </span>
                       <span>{role.label}</span>
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] shadow-[0_0_8px_#8cff2e] shrink-0 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] shadow-[0_0_8px_var(--accent-primary)] shrink-0 animate-pulse" />
                       )}
                     </motion.button>
                   );
@@ -336,7 +335,7 @@ export function About() {
 
           {/* Row 2: Reference topic pill */}
           <div className="space-y-2.5">
-            <div className="text-xs font-mono text-[#94A3B8] uppercase tracking-wider px-0.5">
+            <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider px-0.5">
               Reference:
             </div>
             <div
@@ -359,16 +358,16 @@ export function About() {
                         });
                       }}
                       className={`snap-center shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full border font-mono text-xs sm:text-sm whitespace-nowrap transition-all duration-300 ${isActive
-                        ? "bg-[#12151E] border-[#8cff2e] text-white shadow-[0_0_18px_rgba(140,255,46,0.22)] ring-1 ring-[#8cff2e]/40 font-bold"
-                        : "bg-[#07090E]/90 border-white/10 text-[#94A3B8] hover:text-white hover:border-white/25 font-medium"
+                        ? "bg-[var(--bg-card)] border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[var(--glass-shadow)] ring-1 ring-[var(--accent-primary)]/40 font-bold"
+                        : "bg-[var(--bg-panel)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--border-subtle)] font-medium"
                         }`}
                     >
-                      <span className={isActive ? "text-[#8cff2e]" : "text-slate-400"}>
+                      <span className={isActive ? "text-[var(--accent-primary)]" : "text-[var(--text-muted)]"}>
                         {role.icon}
                       </span>
                       <span>{role.label}</span>
                       {isActive && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] shadow-[0_0_8px_#8cff2e] shrink-0 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] shadow-[0_0_8px_var(--accent-primary)] shrink-0 animate-pulse" />
                       )}
                     </motion.button>
                   );
@@ -390,7 +389,7 @@ export function About() {
           >
             {/* Group 1: Audience Personas */}
             <div className="space-y-2">
-              <div className="text-xs font-mono text-[#94A3B8] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+              <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1.5 flex items-center gap-2">
                 <span>Select Role View:</span>
               </div>
 
@@ -402,15 +401,15 @@ export function About() {
                       key={role.id}
                       onClick={() => setActiveRole(role.id)}
                       className={`relative flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all duration-300 font-mono text-sm group ${isActive
-                        ? "bg-[#12151E] border-white/30 text-white shadow-xl"
-                        : "bg-[#07090E] border-white/10 text-[#94A3B8] hover:text-white hover:border-white/20"
+                        ? "bg-[var(--bg-card)] border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[var(--glass-shadow)]"
+                        : "bg-[var(--bg-panel)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/40"
                         }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className={isActive ? "text-[#8cff2e]" : "text-slate-500"}>
+                        <span className={isActive ? "text-[var(--accent-primary)]" : "text-[var(--text-muted)]"}>
                           {role.icon}
                         </span>
-                        <span className={isActive ? "font-bold text-white text-base" : "font-medium text-sm"}>
+                        <span className={isActive ? "font-bold text-[var(--text-primary)] text-base" : "font-medium text-sm"}>
                           {role.label}
                         </span>
                       </div>
@@ -420,10 +419,10 @@ export function About() {
                         {isActive ? (
                           <motion.span
                             layoutId="roleIndicatorDot"
-                            className="w-2.5 h-2.5 rounded-full bg-[#8cff2e] shadow-[0_0_8px_#8cff2e]"
+                            className="w-2.5 h-2.5 rounded-full bg-[var(--accent-primary)] shadow-[0_0_8px_var(--accent-primary)]"
                           />
                         ) : (
-                          <span className="text-xs text-slate-600 group-hover:text-slate-400">→</span>
+                          <span className="text-xs text-[var(--text-muted)] group-hover:text-[var(--text-primary)]">→</span>
                         )}
                       </div>
                     </button>
@@ -433,8 +432,8 @@ export function About() {
             </div>
 
             {/* Group 2: Reference & Architecture Topics */}
-            <div className="space-y-2 pt-2 border-t border-white/10">
-              <div className="text-xs font-mono text-[#94A3B8] uppercase tracking-wider mb-1.5 flex items-center gap-2">
+            <div className="space-y-2 pt-2 border-t border-[var(--border-subtle)]">
+              <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider mb-1.5 flex items-center gap-2">
                 <span>Reference:</span>
               </div>
 
@@ -446,15 +445,15 @@ export function About() {
                       key={role.id}
                       onClick={() => setActiveRole(role.id)}
                       className={`relative flex items-center justify-between p-4 sm:p-5 rounded-2xl border text-left transition-all duration-300 font-mono text-sm group ${isActive
-                        ? "bg-[#12151E] border-white/30 text-white shadow-xl"
-                        : "bg-[#07090E] border-white/10 text-[#94A3B8] hover:text-white hover:border-white/20"
+                        ? "bg-[var(--bg-card)] border-[var(--accent-primary)] text-[var(--text-primary)] shadow-[var(--glass-shadow)]"
+                        : "bg-[var(--bg-panel)] border-[var(--border-subtle)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/40"
                         }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className={isActive ? "text-[#8cff2e]" : "text-slate-500"}>
+                        <span className={isActive ? "text-[var(--accent-primary)]" : "text-[var(--text-muted)]"}>
                           {role.icon}
                         </span>
-                        <span className={isActive ? "font-bold text-white text-base" : "font-medium text-sm"}>
+                        <span className={isActive ? "font-bold text-[var(--text-primary)] text-base" : "font-medium text-sm"}>
                           {role.label}
                         </span>
                       </div>
@@ -464,10 +463,10 @@ export function About() {
                         {isActive ? (
                           <motion.span
                             layoutId="roleIndicatorDot"
-                            className="w-2.5 h-2.5 rounded-full bg-[#8cff2e] shadow-[0_0_8px_#8cff2e]"
+                            className="w-2.5 h-2.5 rounded-full bg-[var(--accent-primary)] shadow-[0_0_8px_var(--accent-primary)]"
                           />
                         ) : (
-                          <span className="text-xs text-slate-600 group-hover:text-slate-400">→</span>
+                          <span className="text-xs text-[var(--text-muted)] group-hover:text-[var(--text-primary)]">→</span>
                         )}
                       </div>
                     </button>
@@ -477,14 +476,14 @@ export function About() {
             </div>
 
             {/* Resume Callout */}
-            <div className="p-5 rounded-2xl bg-[#12151E] border border-white/10 space-y-2.5 mt-1">
-              <div className="text-xs font-mono text-[#94A3B8]">
+            <div className="p-5 rounded-2xl bg-[var(--bg-card)] border border-[var(--border-subtle)] space-y-2.5 mt-1 shadow-[var(--glass-shadow)]">
+              <div className="text-xs font-mono text-[var(--text-muted)]">
                 Official Credentials & PDF CV:
               </div>
               <a
                 href="/Kyrell_Santillan_Resume.pdf"
                 download
-                className="inline-flex items-center gap-2 text-sm font-mono font-bold text-[#8cff2e] hover:underline"
+                className="inline-flex items-center gap-2 text-sm font-mono font-bold text-[var(--accent-primary)] hover:underline"
               >
                 <span>Download Resume (PDF)</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -509,16 +508,16 @@ export function About() {
                   animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                   exit={reducedMotion ? undefined : { opacity: 0, y: -16 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="p-6 sm:p-10 rounded-2xl bg-[#12151E] border border-white/10 backdrop-blur-xl space-y-8 shadow-2xl relative overflow-hidden"
+                  className="p-6 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] backdrop-blur-xl space-y-8 shadow-[var(--glass-shadow)] relative overflow-hidden"
                 >
                   <div>
-                    <div className="text-xs font-mono text-[#8cff2e] uppercase tracking-widest mb-2">
+                    <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest mb-2">
                       [ VERIFIED CREDENTIALS & ACCREDITATIONS ]
                     </div>
-                    <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-white leading-tight">
+                    <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-[var(--text-primary)] leading-tight">
                       Official Certifications & Engineering Accreditations
                     </h3>
-                    <p className="text-slate-200 text-base sm:text-[17px] leading-[1.6] font-normal mt-2">
+                    <p className="text-[var(--text-secondary)] text-base sm:text-[17px] leading-[1.6] font-normal mt-2">
                       Industry-recognized engineering qualifications verified by Google and freeCodeCamp spanning cybersecurity, defensive systems, UX architecture, and modern web development.
                     </p>
                   </div>
@@ -529,10 +528,10 @@ export function About() {
                       <div
                         key={cert.id}
                         onClick={() => setSelectedCertificate(cert)}
-                        className="p-4 rounded-xl bg-white/[0.02] border border-white/10 hover:border-[#8cff2e]/40 hover:bg-white/[0.04] transition-all duration-300 group cursor-pointer flex flex-col justify-between space-y-3.5 shadow-lg"
+                        className="p-4 rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)] hover:border-[var(--accent-primary)]/40 hover:bg-white/[0.04] transition-all duration-300 group cursor-pointer flex flex-col justify-between space-y-3.5 shadow-lg"
                       >
                         {/* Certificate Image Frame */}
-                        <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-white/10 bg-[#07090E] group-hover:border-[#8cff2e]/30 transition-all">
+                        <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-primary)] group-hover:border-[var(--accent-primary)]/30 transition-all">
                           <Image
                             src={cert.image}
                             alt={cert.title}
@@ -541,7 +540,7 @@ export function About() {
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#12151E]/90 border border-[#8cff2e] text-[#8cff2e] text-xs font-mono font-bold shadow-lg">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--bg-panel)] border border-[var(--accent-primary)] text-[var(--accent-primary)] text-xs font-mono font-bold shadow-lg">
                               <ZoomIn className="w-3.5 h-3.5" />
                               <span>View Certificate</span>
                             </span>
@@ -551,15 +550,15 @@ export function About() {
                         {/* Certificate Meta */}
                         <div className="space-y-2">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="px-2 py-0.5 rounded bg-[#8cff2e]/10 border border-[#8cff2e]/30 text-[#8cff2e] text-[10px] font-mono font-bold uppercase tracking-wider">
+                            <span className="px-2 py-0.5 rounded bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/30 text-[var(--accent-primary)] text-[10px] font-mono font-bold uppercase tracking-wider">
                               {cert.issuerTag}
                             </span>
-                            <span className="text-[11px] font-mono text-slate-400">
+                            <span className="text-[11px] font-mono text-[var(--text-muted)]">
                               {cert.category}
                             </span>
                           </div>
 
-                          <h4 className="font-sans font-bold text-white text-sm sm:text-base leading-snug group-hover:text-[#8cff2e] transition-colors">
+                          <h4 className="font-sans font-bold text-[var(--text-primary)] text-sm sm:text-base leading-snug group-hover:text-[var(--accent-primary)] transition-colors">
                             {cert.title}
                           </h4>
 
@@ -567,7 +566,7 @@ export function About() {
                             {cert.skills.map((skill) => (
                               <span
                                 key={skill}
-                                className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-slate-300"
+                                className="px-2 py-0.5 rounded bg-white/5 border border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-secondary)]"
                               >
                                 {skill}
                               </span>
@@ -579,12 +578,12 @@ export function About() {
                   </div>
 
                   {/* Verified Footer Status */}
-                  <div className="pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e]">
-                      <ShieldCheck className="w-4 h-4 text-[#8cff2e]" />
+                  <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between flex-wrap gap-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)]">
+                      <ShieldCheck className="w-4 h-4 text-[var(--accent-primary)]" />
                       <span className="font-bold">4 ACCREDITED CERTIFICATIONS</span>
                     </div>
-                    <span className="text-xs font-mono text-slate-500">[ 100% VERIFIED ]</span>
+                    <span className="text-xs font-mono text-[var(--text-muted)]">[ 100% VERIFIED ]</span>
                   </div>
                 </motion.div>
               ) : activeRole === "stack" ? (
@@ -595,16 +594,16 @@ export function About() {
                   animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                   exit={reducedMotion ? undefined : { opacity: 0, y: -16 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="p-6 sm:p-10 rounded-2xl bg-[#12151E] border border-white/10 backdrop-blur-xl space-y-8 shadow-2xl relative overflow-hidden"
+                  className="p-6 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] backdrop-blur-xl space-y-8 shadow-[var(--glass-shadow)] relative overflow-hidden"
                 >
                   <div>
-                    <div className="text-xs font-mono text-[#8cff2e] uppercase tracking-widest mb-2">
+                    <div className="text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest mb-2">
                       [ SYSTEM ARCHITECTURE & TOOLING ]
                     </div>
-                    <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-white leading-tight">
+                    <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-[var(--text-primary)] leading-tight">
                       Production Tech Stack & Framework Architecture
                     </h3>
-                    <p className="text-slate-200 text-base sm:text-[17px] leading-[1.6] font-normal mt-2">
+                    <p className="text-[var(--text-secondary)] text-base sm:text-[17px] leading-[1.6] font-normal mt-2">
                       Comprehensive runtimes, frameworks, and infrastructure tools utilized across 6+ shipped production applications.
                     </p>
                   </div>
@@ -614,9 +613,9 @@ export function About() {
                     {TECH_CATEGORIES.map((cat, idx) => (
                       <div
                         key={idx}
-                        className="p-5 rounded-xl bg-white/[0.02] border border-white/10 space-y-3"
+                        className="p-5 rounded-2xl bg-white/[0.02] border border-[var(--border-subtle)] space-y-3"
                       >
-                        <div className="flex items-center gap-2 font-mono text-xs text-white font-bold uppercase tracking-wider">
+                        <div className="flex items-center gap-2 font-mono text-xs text-[var(--text-primary)] font-bold uppercase tracking-wider">
                           {cat.icon}
                           <span>{cat.title}</span>
                         </div>
@@ -624,7 +623,7 @@ export function About() {
                           {cat.skills.map((skill) => (
                             <span
                               key={skill}
-                              className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs font-mono text-slate-300 font-medium"
+                              className="px-2.5 py-1 rounded-md bg-white/5 border border-[var(--border-subtle)] text-xs font-mono text-[var(--text-secondary)] font-medium"
                             >
                               {skill}
                             </span>
@@ -635,12 +634,12 @@ export function About() {
                   </div>
 
                   {/* Stack Reference Footer */}
-                  <div className="pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e]">
-                      <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+                  <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between flex-wrap gap-3">
+                    <div className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)]">
+                      <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
                       <span className="font-bold">PRODUCTION TOOLCHAIN</span>
                     </div>
-                    <span className="text-xs font-mono text-slate-500">[ 100% SHIPPED CODE ]</span>
+                    <span className="text-xs font-mono text-[var(--text-muted)]">[ 100% SHIPPED CODE ]</span>
                   </div>
                 </motion.div>
               ) : (
@@ -651,21 +650,21 @@ export function About() {
                   animate={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                   exit={reducedMotion ? undefined : { opacity: 0, y: -16 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="p-6 sm:p-10 rounded-2xl bg-[#12151E] border border-white/10 backdrop-blur-xl space-y-8 shadow-2xl relative overflow-hidden"
+                  className="p-6 sm:p-10 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] backdrop-blur-xl space-y-8 shadow-[var(--glass-shadow)] relative overflow-hidden"
                 >
                   {/* 28px Headline Copy */}
-                  <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-white leading-tight">
+                  <h3 className="font-display text-2xl sm:text-[28px] font-extrabold text-[var(--text-primary)] leading-tight">
                     {PERSONA_CONTENT[activeRole].headline}
                   </h3>
 
                   {/* 18px Body Copy */}
-                  <p className="text-slate-200 text-lg sm:text-[18px] leading-[1.6] font-normal">
+                  <p className="text-[var(--text-secondary)] text-lg sm:text-[18px] leading-[1.6] font-normal">
                     {PERSONA_CONTENT[activeRole].body}
                   </p>
 
                   {/* ── Highlights List: Generous horizontal gap and clean vertical padding ── */}
                   <div className="space-y-4 pt-2">
-                    <div className="text-xs font-mono text-[#94A3B8] uppercase tracking-widest">
+                    <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-widest">
                       Core Capability Highlights:
                     </div>
                     {/* 2-col desktop with generous 32px–48px horizontal gap, 1-col mobile */}
@@ -673,9 +672,9 @@ export function About() {
                       {PERSONA_CONTENT[activeRole].points.map((pt, i) => (
                         <div
                           key={i}
-                          className="flex items-start gap-3.5 py-3.5 border-b border-white/[0.08] text-sm sm:text-[15px] text-slate-300 leading-relaxed"
+                          className="flex items-start gap-3.5 py-3.5 border-b border-[var(--border-subtle)] text-sm sm:text-[15px] text-[var(--text-secondary)] leading-relaxed"
                         >
-                          <CheckCircle2 className="w-4 h-4 text-[#8cff2e] shrink-0 mt-1" />
+                          <CheckCircle2 className="w-4 h-4 text-[var(--accent-primary)] shrink-0 mt-1" />
                           <span className="font-light leading-relaxed">{pt}</span>
                         </div>
                       ))}
@@ -683,14 +682,14 @@ export function About() {
                   </div>
 
                   {/* Telemetry Specs Grid & Action Link */}
-                  <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                  <div className="pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full sm:w-auto flex-1">
                       {PERSONA_CONTENT[activeRole].specs.map((sp, i) => (
                         <div key={i} className="space-y-1">
-                          <div className="text-[11px] font-mono text-[#94A3B8] uppercase">
+                          <div className="text-[11px] font-mono text-[var(--text-muted)] uppercase">
                             {sp.key}
                           </div>
-                          <div className="text-xs font-mono font-semibold text-white">
+                          <div className="text-xs font-mono font-semibold text-[var(--text-primary)]">
                             {sp.value}
                           </div>
                         </div>
@@ -702,7 +701,7 @@ export function About() {
                         href="#contact"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
-                        className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-white text-[#07090E] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-all text-center flex items-center justify-center gap-2 shrink-0 shadow-md cursor-pointer"
+                        className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-primary)] hover:bg-[var(--accent-primary)] hover:text-white font-mono font-bold text-xs transition-all text-center flex items-center justify-center gap-2 shrink-0 shadow-md cursor-pointer"
                       >
                         <span>Discuss a Project</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -732,27 +731,27 @@ export function About() {
               exit={{ scale: 0.92, opacity: 0, y: 20 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl bg-[#12151E] border border-white/20 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-3xl bg-[var(--bg-panel)] border border-[var(--border-subtle)] rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col"
             >
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded bg-[#8cff2e]/10 border border-[#8cff2e]/30 text-[#8cff2e] text-xs font-mono font-bold">
+                    <span className="px-2 py-0.5 rounded bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/30 text-[var(--accent-primary)] text-xs font-mono font-bold">
                       {selectedCertificate.issuerTag}
                     </span>
-                    <span className="text-xs font-mono text-slate-400">
+                    <span className="text-xs font-mono text-[var(--text-muted)]">
                       {selectedCertificate.category}
                     </span>
                   </div>
-                  <h3 className="font-sans font-bold text-white text-lg sm:text-xl">
+                  <h3 className="font-sans font-bold text-[var(--text-primary)] text-lg sm:text-xl">
                     {selectedCertificate.title}
                   </h3>
                 </div>
 
                 <button
                   onClick={() => setSelectedCertificate(null)}
-                  className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                  className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-[var(--text-muted)] hover:text-[var(--text-primary)] border border-[var(--border-subtle)] transition-colors cursor-pointer"
                   aria-label="Close certificate modal"
                 >
                   <X className="w-5 h-5" />
@@ -760,7 +759,7 @@ export function About() {
               </div>
 
               {/* Certificate Full Image Display */}
-              <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden border border-white/10 bg-black flex-1 min-h-0">
+              <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] bg-[var(--bg-primary)] flex-1 min-h-0">
                 <Image
                   src={selectedCertificate.image}
                   alt={selectedCertificate.title}
@@ -771,18 +770,18 @@ export function About() {
               </div>
 
               {/* Skills Footer */}
-              <div className="flex items-center justify-between flex-wrap gap-2 pt-1 text-xs font-mono text-slate-400">
+              <div className="flex items-center justify-between flex-wrap gap-2 pt-1 text-xs font-mono text-[var(--text-muted)]">
                 <div className="flex flex-wrap gap-1.5">
                   {selectedCertificate.skills.map((skill) => (
                     <span
                       key={skill}
-                      className="px-2.5 py-1 rounded bg-white/5 border border-white/10 text-slate-200"
+                      className="px-2.5 py-1 rounded bg-white/5 border border-[var(--border-subtle)] text-[var(--text-secondary)]"
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
-                <span className="text-[#8cff2e] font-semibold">
+                <span className="text-[var(--accent-primary)] font-semibold">
                   Verified Qualification
                 </span>
               </div>

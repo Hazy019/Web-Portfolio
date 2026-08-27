@@ -74,10 +74,10 @@ export function Contact() {
 
   return (
     <>
-      {/* ── Trust & Validation Section (§36 Two-Tier Hierarchy) ────── */}
+      {/* ── Trust & Validation Section ────── */}
       <section
         id="testimonial"
-        className="relative border-t border-white/10 bg-[#07090E] overflow-hidden"
+        className="relative border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] overflow-hidden"
         style={{
           paddingTop: "var(--section-gap, 140px)",
           paddingBottom: "clamp(60px, 6vw, 100px)",
@@ -86,7 +86,7 @@ export function Contact() {
         <AmbientOrbs
           orbs={[
             {
-              color: "radial-gradient(circle, rgba(140,255,46,0.08) 0%, transparent 70%)",
+              color: "radial-gradient(circle, var(--accent-primary) 0%, transparent 70%)",
               size: "500px",
               top: "-20%",
               right: "-5%",
@@ -104,64 +104,58 @@ export function Contact() {
             transition={{ duration: 0.6 }}
             className="space-y-3"
           >
-            <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+            <div className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
               <span>[ 05 // TRUST & VALIDATION ]</span>
             </div>
-            <h2 className="font-display text-2xl sm:text-5xl font-extrabold text-white">
-              Endorsements & <span className="text-white/80">Proof.</span>
+            <h2 className="font-display text-2xl sm:text-5xl font-extrabold text-[var(--text-primary)]">
+              Endorsements & <span className="opacity-80">Proof.</span>
             </h2>
           </motion.div>
 
-          {/* Primary Tier: Formal Academic Recommendation (High Prominence) */}
+          {/* Primary Tier: Formal Academic Recommendation */}
           <motion.div
             initial={reducedMotion ? undefined : { opacity: 0, y: 35 }}
             whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              background: "rgba(13, 16, 23, 0.75)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-            }}
-            className="p-8 sm:p-10 md:p-12 rounded-2xl shadow-2xl relative overflow-hidden"
+            className="p-8 sm:p-10 md:p-12 rounded-3xl bg-[var(--bg-card)] border border-[var(--border-subtle)] backdrop-blur-xl shadow-[var(--glass-shadow)] relative overflow-hidden"
           >
             {/* Subtle internal accent ambient glow */}
             <div
               aria-hidden="true"
               className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full pointer-events-none opacity-25"
               style={{
-                background: "radial-gradient(circle, rgba(140,255,46,0.4) 0%, transparent 70%)",
+                background: "radial-gradient(circle, var(--accent-primary) 0%, transparent 70%)",
                 filter: "blur(40px)",
               }}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               {/* Left Author Metadata */}
-              <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-white/10 pb-6 lg:pb-0 lg:pr-8">
+              <div className="lg:col-span-5 space-y-4 border-b lg:border-b-0 lg:border-r border-[var(--border-subtle)] pb-6 lg:pb-0 lg:pr-8">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full border border-[#8cff2e]/30 bg-gradient-to-br from-[#8cff2e]/10 via-slate-900 to-slate-950 flex items-center justify-center flex-shrink-0 relative shadow-[0_0_20px_rgba(140,255,46,0.15)] ring-1 ring-white/10">
-                    <GraduationCap className="w-6 h-6 text-[#8cff2e]" />
-                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-[#8cff2e] ring-2 ring-[#030712] flex items-center justify-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#030712]" />
+                  <div className="w-14 h-14 rounded-full border border-[var(--accent-primary)]/30 bg-[var(--bg-panel)] flex items-center justify-center flex-shrink-0 relative shadow-[0_0_20px_var(--accent-primary)] ring-1 ring-[var(--border-subtle)]">
+                    <GraduationCap className="w-6 h-6 text-[var(--accent-primary)]" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-[var(--accent-primary)] ring-2 ring-[var(--bg-primary)] flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[var(--bg-primary)]" />
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-sans font-bold text-white text-base sm:text-lg leading-tight">
+                    <h4 className="font-sans font-bold text-[var(--text-primary)] text-base sm:text-lg leading-tight">
                       Prof. Jose Mari
                     </h4>
-                    <p className="font-mono text-xs text-[#8cff2e] tracking-wider uppercase">
+                    <p className="font-mono text-xs text-[var(--accent-primary)] tracking-wider uppercase">
                       Technical Adviser
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <div className="text-xs text-white/80 font-medium">
+                  <div className="text-xs text-[var(--text-primary)]/80 font-medium">
                     Technological Institute of the Philippines
                   </div>
-                  <div className="font-mono text-xs text-[#94A3B8] opacity-60 uppercase tracking-wider font-medium">
+                  <div className="font-mono text-xs text-[var(--text-muted)] opacity-80 uppercase tracking-wider font-medium">
                     CS Department Faculty
                   </div>
                 </div>
@@ -170,61 +164,61 @@ export function Contact() {
               {/* Right Quotation */}
               <div className="lg:col-span-7 space-y-4">
                 <div className="flex items-center gap-3">
-                  <span className="text-[#8cff2e] font-serif text-4xl leading-none select-none font-bold">
+                  <span className="text-[var(--accent-primary)] font-serif text-4xl leading-none select-none font-bold">
                     &ldquo;
                   </span>
-                  <span className="font-mono text-xs text-[#8cff2e] tracking-widest uppercase">
+                  <span className="font-mono text-xs text-[var(--accent-primary)] tracking-widest uppercase">
                     Formal Academic Recommendation
                   </span>
                 </div>
 
-                <p className="font-sans text-sm sm:text-base md:text-lg text-slate-200 leading-relaxed italic">
+                <p className="font-sans text-sm sm:text-base md:text-lg text-[var(--text-secondary)] leading-relaxed italic">
                   &ldquo;Kyrell demonstrated exceptional technical initiative and architecture skills during the development of critical departmental systems. His ability to turn complex logistical queue requirements into high-throughput, fault-tolerant web software is outstanding for a software engineer.&rdquo;
                 </p>
 
-                <div className="pt-2 flex items-center justify-between text-xs font-mono text-white/60">
+                <div className="pt-2 flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
                   <span>CAPSTONE EVALUATION</span>
-                  <span className="text-[#8cff2e] font-semibold">SCORE: 1.00 (EXCELLENT)</span>
+                  <span className="text-[var(--accent-primary)] font-semibold">SCORE: 1.00 (EXCELLENT)</span>
                 </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Secondary Tier: Client & Stakeholder Proof (Visually Demoted §36) */}
+          {/* Secondary Tier: Client & Stakeholder Proof */}
           <motion.div
             initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
             whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="p-5 sm:p-6 rounded-xl border border-white/[0.06] bg-[#0d1017]/50 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono"
+            className="p-5 sm:p-6 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono shadow-md"
           >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#8cff2e] shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-white/5 border border-[var(--border-subtle)] flex items-center justify-center text-[var(--accent-primary)] shrink-0">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div className="space-y-0.5">
-                <div className="text-white font-semibold tracking-wide flex items-center gap-2">
+                <div className="text-[var(--text-primary)] font-semibold tracking-wide flex items-center gap-2">
                   <span>Client & Stakeholder Proof</span>
-                  <span className="text-[10px] text-slate-500 font-normal">[ SYSTEM VALIDATION ]</span>
+                  <span className="text-[10px] text-[var(--text-muted)] font-normal">[ SYSTEM VALIDATION ]</span>
                 </div>
-                <div className="text-[#94A3B8] text-[11px]">
+                <div className="text-[var(--text-muted)] text-[11px]">
                   Government & SaaS deliverables validated in live production with zero downtime.
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] text-slate-400 self-end sm:self-center">
+            <div className="flex items-center gap-2 text-[11px] text-[var(--text-muted)] self-end sm:self-center">
               <span>POWERED BY</span>
-              <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white font-bold">ClientEcho Engine</span>
+              <span className="px-2 py-0.5 rounded-lg bg-white/5 border border-[var(--border-subtle)] text-[var(--text-primary)] font-bold">ClientEcho Engine</span>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ── Contact Form Section (#contact anchor target with scroll-margin-top) ────── */}
+      {/* ── Contact Form Section ────── */}
       <section
         id="contact"
-        className="relative border-t border-white/10 bg-[#07090E] overflow-hidden scroll-mt-28"
+        className="relative border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] overflow-hidden scroll-mt-28"
         style={{
           paddingTop: "var(--section-gap, 140px)",
           paddingBottom: "var(--section-gap, 140px)",
@@ -233,7 +227,7 @@ export function Contact() {
         <AmbientOrbs
           orbs={[
             {
-              color: "radial-gradient(circle, rgba(140,255,46,0.06) 0%, transparent 70%)",
+              color: "radial-gradient(circle, var(--accent-primary) 0%, transparent 70%)",
               size: "450px",
               bottom: "5%",
               left: "-8%",
@@ -244,7 +238,7 @@ export function Contact() {
         />
 
         <div className="max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 w-full relative z-10">
-          {/* ── 2-Column Grid (12-Col System: Balanced 6-Col Content / 6-Col Form) ────────────────── */}
+          {/* ── 2-Column Grid ────────────────── */}
           <motion.div
             variants={reducedMotion ? undefined : containerVariants}
             initial="hidden"
@@ -252,30 +246,30 @@ export function Contact() {
             viewport={{ once: true, amount: 0.2 }}
             className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pt-4 items-start"
           >
-            {/* Left Column: Heading (Fluid Clamp clamp(1.75rem, 4vw, 3.5rem)), Copy & Social Pills */}
+            {/* Left Column */}
             <div className="lg:col-span-6 space-y-8 min-w-0 overflow-visible relative z-20">
               {/* Eyebrow Badge */}
               <motion.div
                 variants={reducedMotion ? undefined : itemVariants}
-                className="inline-flex items-center gap-2 text-xs font-mono text-[#8cff2e] uppercase tracking-widest"
+                className="inline-flex items-center gap-2 text-xs font-mono text-[var(--accent-primary)] uppercase tracking-widest"
               >
-                <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
                 <span>[ 06 // CONTACT & INQUIRIES ]</span>
               </motion.div>
 
-              {/* Headline Display Fluid Clamp Sizing with Auto-Fitting Rotating Suffix */}
+              {/* Headline Display */}
               <motion.h2
                 initial={reducedMotion ? undefined : { opacity: 0, y: 20 }}
                 whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-[clamp(1.90rem,4vw,4rem)] font-extrabold text-white leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
+                className="font-display text-[clamp(1.90rem,4vw,4rem)] font-extrabold text-[var(--text-primary)] leading-[1.1] tracking-tight break-words overflow-visible relative z-20"
               >
                 <span>Let&apos;s build</span>
                 <FitText
                   minFontSize={16}
                   containerClassName="overflow-visible relative z-20"
-                  className="text-white/80 transition-all duration-300 block pb-1 overflow-visible relative z-20"
+                  className="opacity-80 transition-all duration-300 block pb-1 overflow-visible relative z-20"
                 >
                   {rotatingWords[wordIdx]}
                 </FitText>
@@ -283,14 +277,14 @@ export function Contact() {
 
               <motion.p
                 variants={reducedMotion ? undefined : itemVariants}
-                className="text-[#94A3B8] text-base sm:text-lg leading-[1.6] font-normal max-w-xl"
+                className="text-[var(--text-muted)] text-base sm:text-lg leading-[1.6] font-normal max-w-xl"
               >
                 Open to full-time engineering roles, contract projects, and research opportunities.
                 Based in the Philippines (UTC+8) and available remotely worldwide. I respond to every
                 message.
               </motion.p>
 
-              {/* Social Link Cards: Unified Layout, Anti-Wrapping Architecture, and Cyber-Glass Styling */}
+              {/* Social Link Cards */}
               <motion.div
                 variants={reducedMotion ? undefined : itemVariants}
                 className="space-y-3 font-mono text-sm max-w-xl"
@@ -301,7 +295,7 @@ export function Contact() {
                     label: "Email",
                     value: "santillankyrell@gmail.com",
                     href: "https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com",
-                    icon: <Mail className="w-4 h-4 text-[#8cff2e]" />,
+                    icon: <Mail className="w-4 h-4 text-[var(--accent-primary)]" />,
                   },
                   {
                     id: "whatsapp",
@@ -311,7 +305,7 @@ export function Contact() {
                     ariaLabel: "Contact Kyrell on WhatsApp",
                     icon: (
                       <svg
-                        className="w-4 h-4 text-[#8cff2e] fill-current"
+                        className="w-4 h-4 text-[var(--accent-primary)] fill-current"
                         viewBox="0 0 24 24"
                         aria-hidden="true"
                       >
@@ -324,14 +318,14 @@ export function Contact() {
                     label: "GitHub",
                     value: "@hazy019",
                     href: "https://github.com/Hazy019",
-                    icon: <Github className="w-4 h-4 text-[#8cff2e]" />,
+                    icon: <Github className="w-4 h-4 text-[var(--accent-primary)]" />,
                   },
                   {
                     id: "linkedin",
                     label: "LinkedIn",
                     value: "Kyrell Santillan",
                     href: "https://linkedin.com/in/kyrell-santillan",
-                    icon: <Linkedin className="w-4 h-4 text-[#8cff2e]" />,
+                    icon: <Linkedin className="w-4 h-4 text-[var(--accent-primary)]" />,
                   },
                 ].map((item) => (
                   <a
@@ -340,24 +334,24 @@ export function Contact() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.ariaLabel}
-                    className="flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-white/10 bg-[#12151E] hover:border-[#8cff2e]/40 hover:bg-[#161a26] transition-all duration-300 text-slate-200 group shadow-lg"
+                    className="flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-[var(--accent-primary)]/40 transition-all duration-300 text-[var(--text-secondary)] group shadow-md"
                   >
-                    {/* Left: Icon Badge & Channel Label */}
+                    {/* Left */}
                     <div className="flex items-center gap-3 shrink-0">
-                      <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-[#8cff2e]/30 group-hover:bg-[#8cff2e]/10 group-hover:shadow-[0_0_12px_rgba(140,255,46,0.15)] transition-all duration-300">
+                      <div className="w-8 h-8 rounded-xl bg-white/5 border border-[var(--border-subtle)] flex items-center justify-center group-hover:border-[var(--accent-primary)]/30 group-hover:bg-[var(--accent-primary)]/10 transition-all duration-300">
                         {item.icon}
                       </div>
-                      <span className="text-[#94A3B8] text-xs font-mono uppercase tracking-wider font-semibold group-hover:text-slate-200 transition-colors">
+                      <span className="text-[var(--text-muted)] text-xs font-mono uppercase tracking-wider font-semibold group-hover:text-[var(--text-primary)] transition-colors">
                         {item.label}
                       </span>
                     </div>
 
-                    {/* Right: Value & Dynamic Arrow (Anti-Wrapping Protected) */}
+                    {/* Right */}
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 justify-end overflow-hidden">
-                      <span className="text-slate-200 group-hover:text-white font-mono text-xs sm:text-sm font-medium transition-colors truncate">
+                      <span className="text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] font-mono text-xs sm:text-sm font-medium transition-colors truncate">
                         {item.value}
                       </span>
-                      <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-[#8cff2e] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-250 shrink-0" />
+                      <ArrowUpRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[var(--accent-primary)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-250 shrink-0" />
                     </div>
                   </a>
                 ))}
@@ -368,41 +362,41 @@ export function Contact() {
             <motion.div variants={reducedMotion ? undefined : formVariants} className="lg:col-span-6 min-w-0 w-full mx-auto lg:mx-0 relative z-10">
               <form
                 onSubmit={handleSubmit}
-                className="p-6 sm:p-10 md:p-12 rounded-2xl border border-white/10 bg-[#12151E] backdrop-blur-xl space-y-6 shadow-2xl"
+                className="p-6 sm:p-10 md:p-12 rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-xl space-y-6 shadow-[var(--glass-shadow)]"
               >
                 <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
                     Your Name
                   </label>
                   <input
                     type="text"
                     required
                     placeholder="Jane Doe"
-                    className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                    className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
                     Email Address
                   </label>
                   <input
                     type="email"
                     required
                     placeholder="jane@company.com"
-                    className="w-full px-4 h-[52px] rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                    className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[#94A3B8] uppercase tracking-wider font-medium">
+                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
                     Message
                   </label>
                   <textarea
                     rows={4}
                     required
                     placeholder="How can I help you build?"
-                    className="w-full p-4 rounded-xl border border-white/10 bg-[#07090E] text-white placeholder:text-slate-600 focus:outline-none focus:border-[#8cff2e] focus:ring-1 focus:ring-[#8cff2e]/30 transition-all text-sm font-sans"
+                    className="w-full p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
                   />
                 </div>
 
@@ -410,15 +404,15 @@ export function Contact() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-4 rounded-xl bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-white font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   <span>{submitted ? "Message Transmitted!" : "Send Message"}</span>
                 </motion.button>
 
                 {/* Direct Data-Handling Trust Note */}
-                <p className="text-[11px] font-mono text-slate-500 text-center flex items-center justify-center gap-1.5 pt-1">
-                  <Lock className="w-3 h-3 text-[#8cff2e]/70 shrink-0" />
+                <p className="text-[11px] font-mono text-[var(--text-muted)] text-center flex items-center justify-center gap-1.5 pt-1">
+                  <Lock className="w-3 h-3 text-[var(--accent-primary)]/70 shrink-0" />
                   <span>Direct transmission to inbox only. Zero tracking, no third-party data broker storage.</span>
                 </p>
               </form>
@@ -427,11 +421,11 @@ export function Contact() {
         </div>
       </section>
 
-      {/* ── Standalone Footer Ribbon (Clear separation mt-16/lg:mt-24 & Tight vertical padding py-4/py-5) ────── */}
-      <footer className="w-full mt-6 lg:mt-6 border-t border-white/10 bg-[#07090E] py-6 sm:py-7 px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10">
-        <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#94A3B8] gap-3">
-          <div className="font-display text-base font-extrabold text-white">
-            H<span className="text-[#8cff2e]">AZY</span>
+      {/* ── Standalone Footer Ribbon ────── */}
+      <footer className="w-full mt-6 lg:mt-6 border-t border-[var(--border-subtle)] bg-[var(--bg-primary)] py-6 sm:py-7 px-6 sm:px-10 lg:px-16 xl:px-20 relative z-10">
+        <div className="max-w-[1536px] mx-auto flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[var(--text-muted)] gap-3">
+          <div className="font-display text-base font-extrabold text-[var(--text-primary)]">
+            H<span className="text-[var(--accent-primary)]">AZY</span>
           </div>
           <div>© 2026 Kyrell Santillan · Built with obsession 🇵🇭</div>
         </div>

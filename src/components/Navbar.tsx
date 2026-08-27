@@ -11,16 +11,18 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileText, MessageSquare, Menu, X } from "lucide-react";
+import { FileText, MessageSquare, Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
 
 interface NavbarProps {
   activeSection: string;
-  theme: "dark" | "light";
-  onToggleTheme: () => void;
+  theme?: "dark" | "light";
+  onToggleTheme?: () => void;
   isModalOpen?: boolean;
 }
 
-export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = false }: NavbarProps) {
+export function Navbar({ activeSection, isModalOpen = false }: NavbarProps) {
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -160,12 +162,12 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
       <div
         className={`pointer-events-auto flex items-center justify-between border transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isCompact
-            ? "gap-2 sm:gap-6 px-2.5 py-1.5 sm:px-5 sm:py-2.5 rounded-full"
-            : "gap-2.5 sm:gap-8 px-3 py-2 sm:px-7 sm:py-3 rounded-full"
+            ? "gap-2 sm:gap-4 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full"
+            : "gap-2.5 sm:gap-6 px-3 py-2 sm:px-6 sm:py-2.5 rounded-full"
         } ${
           scrolled
-            ? "bg-[#07090E]/90 border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
-            : "bg-[#07090E]/80 border-white/10 shadow-2xl"
+            ? "bg-[var(--bg-panel)] border-[var(--border-subtle)] shadow-[var(--glass-shadow)]"
+            : "bg-[var(--bg-panel)] border-[var(--border-subtle)] shadow-xl"
         }`}
         style={{
           backdropFilter: "blur(16px)",
@@ -173,13 +175,13 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
         }}
       >
         {/* Left Cluster: Brand Logo, Wordmark & Live Status Badge */}
-        <div className="flex items-center gap-2 sm:gap-3.5 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <a
             href="#intro"
             className="flex items-center gap-2 group shrink-0"
             aria-label="HAZY — Back to Top"
           >
-            <div className="w-8 h-8 rounded-full bg-white/5 border border-white/15 flex items-center justify-center group-hover:border-[#8cff2e] transition-colors shrink-0">
+            <div className="w-8 h-8 rounded-full bg-white/5 border border-[var(--border-subtle)] flex items-center justify-center group-hover:border-[var(--accent-primary)] transition-colors shrink-0">
               <Image
                 src="/logo.png"
                 alt="HAZY Mark"
@@ -189,24 +191,24 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
               />
             </div>
             <span
-              className={`font-display font-extrabold text-base tracking-wider text-white whitespace-nowrap overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`font-display font-extrabold text-base tracking-wider text-[var(--text-primary)] whitespace-nowrap overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isCompact
                   ? "w-0 max-w-0 opacity-0 -translate-x-2 pointer-events-none"
                   : "max-w-[100px] opacity-100 translate-x-0"
               }`}
             >
-              H<span className="text-[#8cff2e]">AZY</span>
+              H<span className="text-[var(--accent-primary)]">AZY</span>
             </span>
           </a>
 
-          {/* Live Status Telemetry (§35) */}
-          <div className="hidden md:flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-[#8cff2e] tracking-wider shrink-0 font-semibold">
+          {/* Live Status Telemetry */}
+          <div className="hidden md:flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono text-[var(--accent-primary)] tracking-wider shrink-0 font-semibold">
             <span>[ ONLINE ]</span>
           </div>
         </div>
 
         {/* Center Sliding Pill Navigation (Desktop lg:flex) */}
-        <nav className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-white/10 relative">
+        <nav className="hidden lg:flex items-center gap-1 bg-white/5 p-1 rounded-full border border-[var(--border-subtle)] relative">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
@@ -215,14 +217,14 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
                 href={`#${item.id}`}
                 onClick={(e) => handleNavClick(e, item.id)}
                 className={`relative flex items-center gap-2 py-1.5 px-4 rounded-full text-sm font-medium z-10 transition-colors duration-200 ${
-                  isActive ? "text-white font-bold" : "text-[#94A3B8] hover:text-white"
+                  isActive ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 {/* Smooth Sliding Pill Background */}
                 {isActive && (
                   <motion.div
                     layoutId="navbarActivePill"
-                    className="absolute inset-0 bg-white/15 border border-white/20 rounded-full shadow-lg z-[-1]"
+                    className="absolute inset-0 bg-white/15 border border-[var(--border-subtle)] rounded-full shadow-lg z-[-1]"
                     transition={{ type: "spring", stiffness: 400, damping: 32 }}
                   />
                 )}
@@ -234,34 +236,49 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
         </nav>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Theme Toggle Button with Micro-Spring Physics */}
+          <motion.button
+            onClick={toggleTheme}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            className="w-8 h-8 rounded-full border border-[var(--border-subtle)] bg-white/5 hover:bg-white/10 text-[var(--text-primary)] flex items-center justify-center transition-colors cursor-pointer relative"
+          >
+            {theme === "dark" ? (
+              <Sun className="w-3.5 h-3.5 text-[#8cff2e] transition-transform duration-300 rotate-0 hover:rotate-45" />
+            ) : (
+              <Moon className="w-3.5 h-3.5 text-[#059669] transition-transform duration-300 rotate-0 hover:-rotate-12" />
+            )}
+          </motion.button>
+
           <a
             href="/Kyrell_Santillan_Resume.pdf"
             download
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 text-slate-200 font-mono text-xs font-medium transition-all hover:border-white/30"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border-subtle)] bg-white/5 hover:bg-white/10 text-[var(--text-secondary)] font-mono text-xs font-medium transition-all hover:border-[var(--accent-primary)]/40"
           >
-            <FileText className="w-3.5 h-3.5 text-[#8cff2e]" />
+            <FileText className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
             <span>CV</span>
           </a>
 
-          {/* Talk / Message Button with Universal Chat-Bubble Icon & Progressive Label Disclosure */}
+          {/* Talk / Message Button with Universal Chat-Bubble Icon */}
           <a
             href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Talk to Kyrell (Contact)"
-            className={`rounded-full bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-all shadow-lg flex items-center justify-center gap-1.5 ${
+            className={`rounded-full bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-white font-mono font-bold text-xs transition-all duration-300 shadow-lg flex items-center justify-center ${
               isCompact
-                ? "w-8 h-8 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 p-0"
-                : "px-3 py-1.5 sm:px-4 sm:py-2"
+                ? "w-8 h-8 p-0 gap-0 shrink-0"
+                : "h-8 px-3.5 py-1.5 gap-1.5 shrink-0"
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5 shrink-0" />
             <span
-              className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              className={`overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] whitespace-nowrap ${
                 isCompact
-                  ? "w-0 max-w-0 opacity-0 hidden sm:inline sm:max-w-[40px] sm:opacity-100"
-                  : "max-w-[50px] opacity-100 inline"
+                  ? "w-0 max-w-0 opacity-0 -translate-x-1 pointer-events-none hidden"
+                  : "max-w-[45px] opacity-100 inline"
               }`}
             >
               Talk
@@ -271,7 +288,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden w-8 h-8 flex items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-200 hover:text-white transition-colors cursor-pointer"
+            className="lg:hidden w-8 h-8 flex items-center justify-center rounded-full border border-[var(--border-subtle)] bg-white/5 text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors cursor-pointer"
             aria-label={isOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
           >
             {isOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -287,11 +304,20 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.97 }}
             transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="pointer-events-auto absolute top-20 left-4 right-4 bg-[#07090E]/95 backdrop-blur-2xl border border-white/15 p-6 rounded-2xl space-y-4 shadow-2xl max-w-md mx-auto z-50"
+            className="pointer-events-auto absolute top-20 left-4 right-4 bg-[var(--bg-panel)] backdrop-blur-2xl border border-[var(--border-subtle)] p-6 rounded-3xl space-y-4 shadow-2xl max-w-md mx-auto z-50"
           >
-            <div className="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-xs text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-[var(--border-subtle)] font-mono text-xs text-[var(--text-primary)]">
               <span>[ SYSTEM NAV ]</span>
-              <span className="text-[#94A3B8]">{navItems.length} SECTIONS</span>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--border-subtle)] bg-white/5 text-xs text-[var(--text-primary)]"
+                >
+                  {theme === "dark" ? <Sun className="w-3 h-3 text-[#8cff2e]" /> : <Moon className="w-3 h-3 text-[#2563eb]" />}
+                  <span className="capitalize">{theme === "dark" ? "Light" : "Dark"} Mode</span>
+                </button>
+                <span className="text-[var(--text-muted)]">{navItems.length} SECTIONS</span>
+              </div>
             </div>
 
             <nav className="flex flex-col gap-2">
@@ -302,8 +328,8 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
                   onClick={(e) => handleNavClick(e, item.id)}
                   className={`flex items-center justify-between py-3 px-4 rounded-xl font-mono text-sm transition-all duration-200 ${
                     activeSection === item.id
-                      ? "text-white bg-white/10 font-bold border border-white/20"
-                      : "text-[#94A3B8] hover:bg-white/5 hover:text-white"
+                      ? "text-[var(--text-primary)] bg-white/10 font-bold border border-[var(--border-subtle)]"
+                      : "text-[var(--text-muted)] hover:bg-white/5 hover:text-[var(--text-primary)]"
                   }`}
                 >
                   <span>{item.label}</span>
@@ -312,11 +338,11 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
               ))}
             </nav>
 
-            <div className="flex gap-2 pt-2 border-t border-white/10">
+            <div className="flex gap-2 pt-2 border-t border-[var(--border-subtle)]">
               <a
                 href="/Kyrell_Santillan_Resume.pdf"
                 download
-                className="flex-1 py-2.5 text-center rounded-xl border border-white/15 bg-white/5 text-slate-200 font-mono text-xs hover:border-white/30 transition-colors"
+                className="flex-1 py-2.5 text-center rounded-xl border border-[var(--border-subtle)] bg-white/5 text-[var(--text-secondary)] font-mono text-xs hover:border-[var(--accent-primary)]/40 transition-colors"
               >
                 Resume
               </a>
@@ -324,7 +350,7 @@ export function Navbar({ activeSection, theme, onToggleTheme, isModalOpen = fals
                 href="https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2.5 text-center rounded-xl bg-white hover:bg-[#8cff2e] text-[#07090E] font-mono font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 text-center rounded-xl bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-white font-mono font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>Contact</span>

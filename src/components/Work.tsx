@@ -212,13 +212,13 @@ export function Work({ onOpenDoc }: WorkProps) {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden w-full py-[80px] lg:py-8 lg:h-dvh bg-[#07090E] select-none flex flex-col justify-between scroll-mt-24"
+      className="relative overflow-hidden w-full py-[80px] lg:py-8 lg:h-dvh bg-[var(--bg-primary)] select-none flex flex-col justify-between scroll-mt-24"
       aria-label="Selected Projects — Showcase Track"
     >
       <AmbientOrbs
         orbs={[
           {
-            color: "radial-gradient(circle, rgba(140,255,46,1) 0%, transparent 70%)",
+            color: "radial-gradient(circle, var(--accent-primary) 0%, transparent 70%)",
             size: "700px",
             top: "-20%",
             right: "-10%",
@@ -238,22 +238,22 @@ export function Work({ onOpenDoc }: WorkProps) {
       {/* Section Header */}
       <div className="relative z-20 w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 mb-8 lg:mb-0 flex items-end justify-between">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 font-mono text-xs text-[#8cff2e] uppercase tracking-widest">
-            <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+          <div className="inline-flex items-center gap-2 font-mono text-xs text-[var(--accent-primary)] uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
             Selected Projects [ 02 ]
           </div>
-          <h2 className="font-display text-3xl lg:text-5xl font-extrabold text-[#ffffff]">
-            Selected <span className="text-white/80">Work.</span>
+          <h2 className="font-display text-3xl lg:text-5xl font-extrabold text-[var(--text-primary)]">
+            Selected <span className="opacity-80">Work.</span>
           </h2>
         </div>
 
-        <div className="hidden sm:flex items-center gap-3 font-mono text-xs text-[#94A3B8]">
-          <span className="w-2 h-2 rounded-full bg-[#8cff2e]" />
+        <div className="hidden sm:flex items-center gap-3 font-mono text-xs text-[var(--text-muted)]">
+          <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)]" />
           <span>[ 01 / {String(totalProjects).padStart(2, "0")} START TO END ]</span>
         </div>
       </div>
 
-      {/* Persistent Project Track: Responsive Vertical Stack on Mobile/Tablet (<1024px), Pinned Horizontal Focus-Pull on Desktop (>=1024px) */}
+      {/* Persistent Project Track */}
       <div
         ref={trackRef}
         id="project-track"
@@ -267,15 +267,15 @@ export function Work({ onOpenDoc }: WorkProps) {
               onClick={() => {
                 if (!isActive && window.innerWidth >= 1024) navigateToIndex(idx);
               }}
-              className={`project-card-item w-full lg:w-[88vw] lg:max-w-[1100px] shrink-0 bg-[#0d1017] rounded-[16px] p-6 lg:p-8 backdrop-blur-xl border border-white/[0.08] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
-                ? "opacity-100 scale-100 shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-20 lg:hover:-translate-y-1"
+              className={`project-card-item w-full lg:w-[88vw] lg:max-w-[1100px] shrink-0 bg-[var(--bg-card)] rounded-3xl p-6 lg:p-8 backdrop-blur-xl border border-[var(--border-subtle)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isActive
+                ? "opacity-100 scale-100 shadow-[var(--glass-shadow)] z-20 lg:hover:-translate-y-1"
                 : "opacity-100 lg:opacity-40 scale-100 lg:scale-[0.92] lg:blur-[1px] lg:grayscale-[40%] cursor-pointer lg:hover:opacity-60 z-10"
                 }`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-                {/* Media Frame (~60%) */}
+                {/* Media Frame */}
                 <div
-                  className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[16/9.5] w-full rounded-[14px] overflow-hidden border border-white/[0.12] cursor-pointer group flex items-center justify-center bg-[#07090e] shadow-2xl"
+                  className="lg:col-span-7 relative aspect-[16/10] sm:aspect-[16/9.5] w-full rounded-2xl overflow-hidden border border-[var(--border-subtle)] cursor-pointer group flex items-center justify-center bg-[var(--bg-secondary)] shadow-2xl"
                   data-cursor="view"
                   data-cursor-text={project.liveUrl ? "VIEW\nPROJECT" : "VIEW\nCASE STUDY"}
                   onClick={(e) => {
@@ -294,16 +294,16 @@ export function Work({ onOpenDoc }: WorkProps) {
                       fill
                       sizes="(max-width: 1024px) 100vw, 750px"
                       className="object-cover object-center scale-[1.04] group-hover:scale-[1.09] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                      priority={idx === 0}
+                      priority={true}
                     />
                   </div>
 
                   {/* Subtle bottom gradient to blend cleanly with card depth */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090E]/50 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)]/40 via-transparent to-transparent pointer-events-none" />
 
                   <div className="absolute top-4 right-4 z-10">
                     <span
-                      className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-white/20 bg-[#07090E]/90 text-[#ffffff] backdrop-blur-md uppercase shadow-md"
+                      className="text-[11px] font-mono font-bold px-3 py-1 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-panel)] text-[var(--text-primary)] backdrop-blur-md uppercase shadow-md"
                       style={{ borderColor: project.accentBorder }}
                     >
                       {project.status}
@@ -311,21 +311,21 @@ export function Work({ onOpenDoc }: WorkProps) {
                   </div>
                 </div>
 
-                {/* System Specs (~40%) */}
+                {/* System Specs */}
                 <div className="lg:col-span-5 flex flex-col justify-between gap-4">
                   <div className="space-y-2">
                     <div
                       className="inline-flex items-center gap-2 font-mono text-xs lg:text-sm font-bold uppercase tracking-wider"
-                      style={{ color: project.nativeAccent || "#8cff2e" }}
+                      style={{ color: project.nativeAccent || "var(--accent-primary)" }}
                     >
                       [ {project.num} ] {project.ghostType || project.type}
                     </div>
 
-                    <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-[#ffffff] leading-tight">
+                    <h3 className="font-display text-2xl lg:text-3xl font-extrabold text-[var(--text-primary)] leading-tight">
                       {project.title}
                     </h3>
 
-                    <p className="text-[#94A3B8] text-sm lg:text-base leading-relaxed line-clamp-3">
+                    <p className="text-[var(--text-muted)] text-sm lg:text-base leading-relaxed line-clamp-3">
                       {project.narrative}
                     </p>
                   </div>
@@ -335,7 +335,7 @@ export function Work({ onOpenDoc }: WorkProps) {
                     {project.stack.slice(0, 5).map((tech) => (
                       <span
                         key={tech}
-                        className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-white/10 bg-white/5 text-slate-300 font-medium"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-mono rounded-full border border-[var(--border-subtle)] bg-white/5 text-[var(--text-secondary)] font-medium"
                       >
                         <TechIcon name={tech} />
                         <span>{tech}</span>
@@ -344,13 +344,13 @@ export function Work({ onOpenDoc }: WorkProps) {
                   </div>
 
                   {/* CTA Buttons */}
-                  <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-white/[0.08]">
+                  <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-[var(--border-subtle)]">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onOpenDoc(project.id);
                       }}
-                      className="px-5 py-2.5 rounded-xl bg-white text-[#0d1017] font-mono font-bold text-xs hover:bg-[#8cff2e] transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
+                      className="px-5 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg-primary)] hover:bg-[var(--accent-primary)] hover:text-white font-mono font-bold text-xs transition-colors inline-flex items-center gap-2 shadow-lg cursor-pointer"
                       aria-label={`View full specs for ${project.title}`}
                     >
                       View Full Specs
@@ -363,7 +363,7 @@ export function Work({ onOpenDoc }: WorkProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="px-4 py-2.5 rounded-xl border border-white/15 bg-transparent text-slate-300 hover:text-white hover:border-white/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--border-subtle)] bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/40 font-mono text-xs transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                       >
                         <Github className="w-3.5 h-3.5" /> Repo
                       </a>
@@ -375,10 +375,10 @@ export function Work({ onOpenDoc }: WorkProps) {
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="px-4 py-2.5 rounded-xl border border-[#8cff2e]/50 bg-[#8cff2e]/10 text-[#8cff2e] hover:bg-[#8cff2e]/20 hover:border-[#8cff2e] font-mono text-xs transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-[0_0_12px_rgba(140,255,46,0.08)]"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--accent-primary)]/50 bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] hover:bg-[var(--accent-primary)]/20 hover:border-[var(--accent-primary)] font-mono text-xs transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-[0_0_12px_rgba(37,99,235,0.08)]"
                         aria-label={`View live demo for ${project.title}`}
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#8cff2e] animate-pulse shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent-primary)] animate-pulse shrink-0" />
                         <ExternalLink className="w-3.5 h-3.5" />
                         Live ↗
                       </a>
@@ -391,11 +391,11 @@ export function Work({ onOpenDoc }: WorkProps) {
         })}
       </div>
 
-      {/* Synchronized Navigation & Controls Bar (Visible on Desktop) */}
+      {/* Synchronized Navigation & Controls Bar */}
       <div className="relative z-20 hidden lg:flex w-full max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20 items-center justify-between mt-4">
         {/* Active Index & Status Indicator */}
-        <div className="flex items-center gap-4 font-mono text-xs text-white">
-          <span className="text-[#8cff2e] font-bold text-sm tracking-widest">
+        <div className="flex items-center gap-4 font-mono text-xs text-[var(--text-primary)]">
+          <span className="text-[var(--accent-primary)] font-bold text-sm tracking-widest">
             {String(activeIndex + 1).padStart(2, "0")} / {String(totalProjects).padStart(2, "0")}
           </span>
           <div className="flex items-center gap-2">
@@ -405,21 +405,21 @@ export function Work({ onOpenDoc }: WorkProps) {
                 onClick={() => navigateToIndex(idx)}
                 aria-label={`Go to project ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${idx === activeIndex
-                  ? "w-7 bg-[#8cff2e] shadow-[0_0_10px_rgba(140,255,46,0.5)]"
-                  : "w-2 bg-white/20 hover:bg-white/40"
+                  ? "w-7 bg-[var(--accent-primary)] shadow-[0_0_10px_var(--accent-primary)]"
+                  : "w-2 bg-[var(--text-muted)]/30 hover:bg-[var(--text-muted)]/60"
                   }`}
               />
             ))}
           </div>
         </div>
 
-        {/* Arrow Controls [ < ] [ > ] */}
+        {/* Arrow Controls */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigateToIndex(activeIndex - 1)}
             disabled={activeIndex === 0}
             aria-label="Previous project"
-            className="w-10 h-10 rounded-xl border border-white/15 bg-[#0d1017]/90 text-white flex items-center justify-center hover:border-[#8cff2e] hover:text-[#8cff2e] disabled:opacity-30 disabled:hover:border-white/15 disabled:hover:text-white transition-all cursor-pointer font-mono text-xs"
+            className="w-10 h-10 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] disabled:opacity-30 disabled:hover:border-[var(--border-subtle)] disabled:hover:text-[var(--text-primary)] transition-all cursor-pointer font-mono text-xs"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -427,7 +427,7 @@ export function Work({ onOpenDoc }: WorkProps) {
             onClick={() => navigateToIndex(activeIndex + 1)}
             disabled={activeIndex === totalProjects - 1}
             aria-label="Next project"
-            className="w-10 h-10 rounded-xl border border-white/15 bg-[#0d1017]/90 text-[#ffffff] flex items-center justify-center hover:border-[#8cff2e] hover:text-[#8cff2e] disabled:opacity-30 disabled:hover:border-white/15 disabled:hover:text-white transition-all cursor-pointer font-mono text-xs"
+            className="w-10 h-10 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-primary)] flex items-center justify-center hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] disabled:opacity-30 disabled:hover:border-[var(--border-subtle)] disabled:hover:text-[var(--text-primary)] transition-all cursor-pointer font-mono text-xs"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

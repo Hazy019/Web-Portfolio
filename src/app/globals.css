@@ -2,50 +2,126 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+:root,
+[data-theme="dark"] {
+  /* DARK MODE (Default System) */
   --bg-primary: #07090e;
-  --bg-secondary: #12151e;
+  --bg-secondary: #0d111a;
+  --bg-card: rgba(15, 23, 42, 0.65);
   --bg-panel: rgba(18, 21, 30, 0.85);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --text-main: #ffffff;
-  --text-primary: #ffffff;
+  --text-primary: #f8fafc;
+  --text-main: #f8fafc;
   --text-secondary: rgba(240, 242, 248, 0.78);
   --text-muted: #94a3b8;
+  --accent-primary: #8cff2e;
   --accent-green: #8cff2e;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-color: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+  --grid-color: rgba(140, 255, 46, 0.04);
+  --grid-color-dense: rgba(140, 255, 46, 0.08);
   
-  /* Section Spacing Rhythm Token (Phase 19) */
+  /* Section Spacing Rhythm Token */
   --section-gap: clamp(80px, 8vw, 140px);
   --section-gap-mobile: 80px;
   --section-gap-desktop: 140px;
   
+  /* Motion Curves */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-theme: cubic-bezier(0.76, 0, 0.24, 1);
   --dur-fast: 200ms;
   --dur-base: 500ms;
   --dur-slow: 900ms;
   --stagger: 80ms;
+  color-scheme: dark;
 }
 
 [data-theme="light"] {
+  /* LIGHT MODE SPECIFICATION (High-Chroma Cyber Emerald) */
   --bg-primary: #f8fafc;
   --bg-secondary: #f1f5f9;
-  --bg-panel: rgba(255, 255, 255, 0.85);
-  --border-color: rgba(0, 0, 0, 0.1);
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-panel: rgba(255, 255, 255, 0.88);
+  --text-primary: #0f172a;
   --text-main: #0f172a;
-  --text-muted: #475569;
-  --accent-green: #16a34a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent-primary: #059669; /* High-Chroma Cyber Emerald */
+  --accent-green: #059669;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --glass-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06);
+  --grid-color: rgba(5, 150, 105, 0.04);
+  --grid-color-dense: rgba(5, 150, 105, 0.07);
+  color-scheme: light;
+}
+
+/* Zero-latency theme switch override to eliminate color-fade flicker on handover */
+html.theme-instant-switch,
+html.theme-instant-switch *,
+html.theme-instant-switch *::before,
+html.theme-instant-switch *::after {
+  transition: none !important;
+  animation-duration: 0s !important;
+}
+
+/* Zero-overhead GPU & hit-testing optimization for theme transition overlay */
+#theme-transition-overlay,
+#theme-transition-overlay * {
+  pointer-events: none !important;
+  user-select: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+#theme-transition-overlay .laser-edge {
+  box-shadow: 0 0 16px currentColor, 0 0 32px currentColor !important;
+}
+
+/* ─── Dual-Theme Switching Logo Support ───────────────────────────────────── */
+.theme-logo-light {
+  display: none !important;
+}
+.theme-logo-dark {
+  display: block !important;
+}
+
+[data-theme="light"] .theme-logo-light,
+html[data-theme="light"] .theme-logo-light,
+body[data-theme="light"] .theme-logo-light {
+  display: block !important;
+}
+
+[data-theme="light"] .theme-logo-dark,
+html[data-theme="light"] .theme-logo-dark,
+body[data-theme="light"] .theme-logo-dark {
+  display: none !important;
+}
+
+[data-theme="dark"] .theme-logo-light,
+html[data-theme="dark"] .theme-logo-light,
+body[data-theme="dark"] .theme-logo-light {
+  display: none !important;
+}
+
+[data-theme="dark"] .theme-logo-dark,
+html[data-theme="dark"] .theme-logo-dark,
+body[data-theme="dark"] .theme-logo-dark {
+  display: block !important;
 }
 
 /* Prevent layout shift when body scroll is locked (modal open).
-   The scrollbar disappearing previously caused a ~15px jump.
    scrollbar-gutter: stable reserves the scrollbar space even when hidden. */
 html {
   scrollbar-gutter: stable;
+  background-color: var(--bg-primary);
 }
 
 body {
   background-color: var(--bg-primary);
-  color: var(--text-main);
+  color: var(--text-primary);
   font-family: var(--font-manrope), sans-serif;
   overflow-x: hidden;
   margin: 0;
@@ -55,6 +131,20 @@ body {
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
     radial-gradient(ellipse 60% 40% at 90% 80%, rgba(140, 255, 46, 0.03) 0%, transparent 50%);
   background-attachment: fixed;
+}
+
+[data-theme="light"] body,
+body[data-theme="light"] {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(5, 150, 105, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(5, 150, 105, 0.02) 0%, transparent 50%);
+}
+
+[data-theme="dark"] body,
+body[data-theme="dark"] {
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(140, 255, 46, 0.03) 0%, transparent 50%);
 }
 
 /* All headings sit in solid, crisp, high-contrast type without text-shadow or glow */
@@ -68,8 +158,8 @@ h1, h2, h3, h4, h5, h6, blockquote {
   position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(140, 255, 46, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(140, 255, 46, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 1;
@@ -80,15 +170,15 @@ h1, h2, h3, h4, h5, h6, blockquote {
   position: absolute;
   inset: 0;
   background-image: 
-    linear-gradient(to right, rgba(140, 255, 46, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(140, 255, 46, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-color-dense) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color-dense) 1px, transparent 1px);
   background-size: 200px 200px;
 }
 
 .noise-overlay {
   position: fixed;
   inset: 0;
-  opacity: 0.045;
+  opacity: 0.035;
   mix-blend-mode: overlay;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -102,29 +192,33 @@ h1, h2, h3, h4, h5, h6, blockquote {
 }
 
 .accent-txt {
-  color: var(--accent-green);
+  color: var(--accent-primary);
 }
 
-/* GLOW BUDGET: HERO ACCENT WORD WITH NEON GLOW */
+/* GLOW BUDGET: HERO ACCENT WORD WITH NEON / COBALT GLOW */
 .hero-glow-word {
-  -webkit-text-stroke: 1.5px var(--accent-green);
+  -webkit-text-stroke: 1.5px var(--accent-primary);
   color: transparent;
   text-shadow: 0 0 25px rgba(140, 255, 46, 0.45);
 }
 
-/* Glassmorphism Panel with Ambient Glowing Border */
+[data-theme="light"] .hero-glow-word {
+  text-shadow: 0 0 25px rgba(5, 150, 105, 0.35);
+}
+
+/* Glassmorphism Panel with Ambient Adaptive Border */
 .glass-panel {
   background: var(--bg-panel);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(140, 255, 46, 0.06);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--glass-shadow);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-panel:hover {
-  border-color: rgba(140, 255, 46, 0.28);
-  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px -5px rgba(140, 255, 46, 0.15);
+  border-color: var(--accent-primary);
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.3), 0 0 25px -5px var(--accent-primary);
 }
 
 /* Custom Reticle Loader Iris Exit */

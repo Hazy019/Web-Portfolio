@@ -33,7 +33,7 @@ export function Marquee() {
 
   return (
     <section
-      className="group w-full py-4 md:py-5 mb-[80px] lg:mb-[120px] border-y border-[#8cff2e]/20 bg-[#0d1017]/90 backdrop-blur-xl overflow-hidden select-none relative z-20 shadow-[0_0_30px_rgba(140,255,46,0.08)]"
+      className="group w-full py-4 md:py-5 mb-[80px] lg:mb-[120px] border-y border-[var(--border-subtle)] bg-[var(--bg-panel)] backdrop-blur-xl overflow-hidden select-none relative z-20 shadow-[var(--glass-shadow)]"
       aria-label="Technical Capabilities and Ticker Banner"
     >
       {/* ── Row 1: Category Track (Monospace 13px, Opacity 60%) ───────────── */}
@@ -48,12 +48,12 @@ export function Marquee() {
             style={{ display: "inline-flex", flexShrink: 0, whiteSpace: "nowrap" }}
           >
             <span
-              className="font-mono text-[11px] md:text-[13px] uppercase tracking-[0.18em] text-white/60 font-semibold"
+              className="font-mono text-[11px] md:text-[13px] uppercase tracking-[0.18em] text-[var(--text-muted)] font-semibold"
               style={{ whiteSpace: "nowrap" }}
             >
               {item}
             </span>
-            <span className="text-[#8cff2e] text-[10px] md:text-[12px] font-bold select-none opacity-80">
+            <span className="text-[var(--accent-primary)] text-[10px] md:text-[12px] font-bold select-none opacity-80">
               ✦
             </span>
           </div>
@@ -72,12 +72,12 @@ export function Marquee() {
             style={{ display: "inline-flex", flexShrink: 0, whiteSpace: "nowrap" }}
           >
             <span
-              className="font-display font-extrabold text-[15px] md:text-[19px] uppercase tracking-wider text-white opacity-100"
+              className="font-display font-extrabold text-[15px] md:text-[19px] uppercase tracking-wider text-[var(--text-primary)] opacity-100"
               style={{ whiteSpace: "nowrap" }}
             >
               {item}
             </span>
-            <span className="text-[#8cff2e] text-[12px] md:text-[14px] font-bold select-none">
+            <span className="text-[var(--accent-primary)] text-[12px] md:text-[14px] font-bold select-none">
               ✦
             </span>
           </div>

@@ -298,14 +298,14 @@ export function PhilosophyQuote() {
     <section
       ref={sectionRef}
       id="philosophy"
-      className="relative w-full px-6 sm:px-10 lg:px-16 xl:px-20 border-y border-white/10 overflow-hidden bg-slate-950/40 select-none scroll-mt-24"
+      className="relative w-full px-6 sm:px-10 lg:px-16 xl:px-20 border-y border-[var(--border-subtle)] overflow-hidden bg-[var(--bg-primary)] select-none scroll-mt-24"
       style={{
         paddingTop: "clamp(48px, 5vw, 80px)",
         paddingBottom: "clamp(72px, 7vw, 110px)",
       }}
       aria-label="Technical philosophy"
     >
-      {/* Ambient Depth Glow (Controlled strictly via opacity/scale, within 3–4% opacity) */}
+      {/* Ambient Depth Glow */}
       <div
         ref={glowRef}
         aria-hidden="true"
@@ -315,7 +315,7 @@ export function PhilosophyQuote() {
           className="w-[600px] h-[400px] rounded-full"
           style={{
             background:
-              "radial-gradient(circle, rgba(140,255,46,0.6) 0%, rgba(59,130,246,0.4) 50%, transparent 70%)",
+              "radial-gradient(circle, var(--accent-primary) 0%, rgba(59,130,246,0.4) 50%, transparent 70%)",
             filter: "blur(60px)",
           }}
         />
@@ -324,7 +324,7 @@ export function PhilosophyQuote() {
       <AmbientOrbs
         orbs={[
           {
-            color: "radial-gradient(circle, rgba(140,255,46,1) 0%, transparent 70%)",
+            color: "radial-gradient(circle, var(--accent-primary) 0%, transparent 70%)",
             size: "800px",
             top: "-30%",
             left: "50%",
@@ -353,16 +353,16 @@ export function PhilosophyQuote() {
         {/* Section Eyebrow */}
         <div
           ref={eyebrowRef}
-          className="text-xs font-mono text-[#8cff2e] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
+          className="text-xs font-mono text-[var(--accent-primary)] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
         >
-          <span className="w-2 h-2 rounded-full bg-[#8cff2e] animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-[var(--accent-primary)] animate-pulse" />
           <span>[ 04 // TECHNICAL PHILOSOPHY ]</span>
         </div>
 
-        {/* Glass Card Container (Depth & Grain overlay) */}
+        {/* Glass Card Container */}
         <div
           ref={cardRef}
-          className="p-6 sm:p-12 md:p-16 rounded-2xl border border-white/10 bg-[#0d1017]/80 backdrop-blur-2xl shadow-2xl space-y-8 max-w-5xl mx-auto relative overflow-hidden"
+          className="p-6 sm:p-12 md:p-16 rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-2xl shadow-[var(--glass-shadow)] space-y-8 max-w-5xl mx-auto relative overflow-hidden"
         >
           {/* Subtle card internal radial bloom */}
           <div
@@ -375,7 +375,7 @@ export function PhilosophyQuote() {
             ref={iconRef}
             className="flex justify-center relative z-10"
           >
-            <Quote className="w-10 h-10 text-[#8cff2e]/80" />
+            <Quote className="w-10 h-10 text-[var(--accent-primary)] opacity-80" />
           </div>
 
           {/* Editorial Display Quote with Scrubbed Word Illumination */}
@@ -388,7 +388,7 @@ export function PhilosophyQuote() {
                   ref={(el) => {
                     wordsLine1Ref.current[idx] = el;
                   }}
-                  className="inline-block transition-colors duration-150"
+                  className="inline-block transition-colors duration-150 text-[var(--text-muted)]"
                 >
                   {word}
                 </span>
@@ -403,7 +403,7 @@ export function PhilosophyQuote() {
                   ref={(el) => {
                     wordsLine2Ref.current[idx] = el;
                   }}
-                  className={`inline-block transition-colors duration-150 ${item.isAccent ? "font-black" : ""
+                  className={`inline-block transition-colors duration-150 text-[var(--text-muted)] ${item.isAccent ? "font-black" : ""
                     }`}
                 >
                   {item.text}
@@ -415,10 +415,10 @@ export function PhilosophyQuote() {
           {/* Author Subtitle Tag in Technical Monospace Tier */}
           <div
             ref={attributionRef}
-            className="font-mono text-xs sm:text-sm text-[#8cff2e] tracking-widest uppercase pt-4 border-t border-white/10 flex items-center justify-center gap-2 font-semibold relative z-10"
+            className="font-mono text-xs sm:text-sm text-[var(--accent-primary)] tracking-widest uppercase pt-4 border-t border-[var(--border-subtle)] flex items-center justify-center gap-2 font-semibold relative z-10"
           >
             <span>— STEVE JOBS</span>
-            <span className="text-white/60">[ INSPIRATION ]</span>
+            <span className="text-[var(--text-muted)]">[ INSPIRATION ]</span>
           </div>
         </div>
       </div>

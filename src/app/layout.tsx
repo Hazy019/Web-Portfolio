@@ -95,6 +95,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from "@/context/ThemeContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -166,14 +168,21 @@ export default function RootLayout({
       <head>
         <meta name="google-site-verification" content="ZL-rIBLn4dRYbQvp5nrjL1SfCtzVrel-UX-sP3Pl9ME" />
         <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("hazy_theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t);}else if(window.matchMedia("(prefers-color-scheme: light)").matches){document.documentElement.setAttribute("data-theme","light");}else{document.documentElement.setAttribute("data-theme","dark");}}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body suppressHydrationWarning className="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
-        <LenisProvider>
-          {children}
-        </LenisProvider>
+        <ThemeProvider>
+          <LenisProvider>
+            {children}
+          </LenisProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

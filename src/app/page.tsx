@@ -164,7 +164,7 @@ export default function Home() {
 
   return (
     <ErrorBoundary>
-      <main className="min-h-screen bg-[#07090e] text-slate-100 relative">
+      <main className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] relative">
         <Loader onComplete={() => setIsLoaded(true)} />
         <CustomCursor />
 
@@ -176,8 +176,6 @@ export default function Home() {
         {/* Floating Minimal Pill Progress Indicator */}
         <Navbar
           activeSection={activeSection}
-          theme={theme}
-          onToggleTheme={toggleTheme}
           isModalOpen={!!activeModalId}
         />
 

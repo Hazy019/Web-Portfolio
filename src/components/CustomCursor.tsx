@@ -71,7 +71,7 @@ export function CustomCursor() {
 
     // ── Instant Target Evaluation & State Resolution ────────────────────────
     const evaluateTarget = (target: HTMLElement | null) => {
-      if (!target) {
+      if (!target || target.closest?.("#theme-transition-overlay")) {
         if (modeRef.current !== "default") {
           modeRef.current = "default";
           setCursorMode("default");
@@ -124,11 +124,25 @@ export function CustomCursor() {
       }
     };
 
-    // ── Mouse Move Handler (Instant 120fps Position + Target Update) ─────────
+    // ── Mouse Move Handler (Instant 120fps Position + Decoupled Target Inspection) ──
+    let targetRaf: number | null = null;
+    let pendingTarget: HTMLElement | null = null;
+
+    const scheduleTargetEvaluation = (target: HTMLElement | null) => {
+      pendingTarget = target;
+      if (targetRaf === null) {
+        targetRaf = requestAnimationFrame(() => {
+          targetRaf = null;
+          evaluateTarget(pendingTarget);
+        });
+      }
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       const { clientX: x, clientY: y } = e;
       lastPosRef.current = { x, y };
 
+      // 1. Direct hardware GPU position tracking (0ms latency, zero DOM queries)
       xDotTo(x);
       yDotTo(y);
       xRingTo(x);
@@ -139,11 +153,11 @@ export function CustomCursor() {
         setIsVisible(true);
       }
 
-      evaluateTarget(e.target as HTMLElement);
+      // 2. Schedule DOM target inspection on RAF (prevents main-thread choking)
+      scheduleTargetEvaluation(e.target as HTMLElement);
     };
 
     // ── Scroll / Pinned Translation Target Re-evaluator ─────────────────────
-    // When user scrolls or carousel translates, elements shift under cursor.
     let scrollRaf: number | null = null;
     const handleScrollSync = () => {
       if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
@@ -171,6 +185,7 @@ export function CustomCursor() {
     }
 
     return () => {
+      if (targetRaf !== null) cancelAnimationFrame(targetRaf);
       if (scrollRaf !== null) cancelAnimationFrame(scrollRaf);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScrollSync);
@@ -189,10 +204,10 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* ── Inner neon green dot ─────────────────────────────────────── */}
+      {/* ── Inner accent dot ─────────────────────────────────────── */}
       <div
         ref={dotRef}
-        className={`fixed top-0 left-0 pointer-events-none z-[10000] w-2 h-2 bg-[#8cff2e] rounded-full shadow-[0_0_10px_#8cff2e] transition-opacity duration-150 ${
+        className={`fixed top-0 left-0 pointer-events-none z-[10000] w-2 h-2 bg-[var(--accent-primary)] rounded-full shadow-[0_0_10px_var(--accent-primary)] transition-opacity duration-150 ${
           isVisible && !isView ? "opacity-100" : "opacity-0"
         }`}
         style={{
@@ -208,18 +223,14 @@ export function CustomCursor() {
           isVisible ? "opacity-100" : "opacity-0"
         } ${
           isView
-            ? "w-[116px] h-[116px] shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
+            ? "w-[116px] h-[116px] shadow-[var(--glass-shadow)] bg-[var(--bg-card)]/80 border border-[var(--border-subtle)] backdrop-blur-md"
             : isHover
-            ? "w-12 h-12 border-[#8cff2e]/80 bg-[#8cff2e]/10 scale-110 shadow-[0_0_20px_rgba(140,255,46,0.2)]"
-            : "w-8 h-8 border-white/20"
+            ? "w-12 h-12 border-[var(--accent-primary)]/80 bg-[var(--accent-primary)]/10 scale-110 shadow-[0_0_20px_var(--accent-primary)]"
+            : "w-8 h-8 border-[var(--border-subtle)]"
         }`}
         style={{
           transform: "translate3d(-50%, -50%, 0)",
           willChange: "transform",
-          background: isView ? "rgba(8, 10, 15, 0.45)" : undefined,
-          backdropFilter: isView ? "blur(12px) saturate(180%)" : undefined,
-          WebkitBackdropFilter: isView ? "blur(12px) saturate(180%)" : undefined,
-          border: isView ? "1px solid rgba(255, 255, 255, 0.15)" : undefined,
         }}
       >
         {isView && (
