@@ -178,19 +178,19 @@ export function Loader({ onComplete }: LoaderProps) {
 
       {/* ── Loader Content Overlay (Top-Right Counter & Bottom-Left Terms) ──── */}
       <div
-        className={`relative z-10 w-full h-full p-6 sm:p-10 md:p-14 lg:p-16 xl:p-20 flex flex-col justify-between transition-opacity duration-300 ${
+        className={`relative z-10 w-full h-full p-6 sm:p-8 md:p-12 lg:p-14 xl:p-16 flex flex-col justify-between transition-opacity duration-300 ${
           isExiting ? "opacity-0" : "opacity-100"
         }`}
       >
         {/* Top-Right: Minimalist Technical Percentage Counter */}
         <div className="self-end text-right">
-          <div className="font-mono text-5xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[11.5rem] font-black text-[var(--text-primary)] tracking-tighter tabular-nums leading-none">
+          <div className="font-mono text-4xl sm:text-6xl md:text-7xl lg:text-[5rem] xl:text-[5.75rem] 2xl:text-[6.25rem] font-extrabold text-[var(--text-primary)] tracking-tighter tabular-nums leading-none">
             {String(progress).padStart(3, "0")}
-            <span className="text-[var(--accent-primary)] text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light ml-1 sm:ml-2">
+            <span className="text-[var(--accent-primary)] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light ml-1 sm:ml-2">
               %
             </span>
           </div>
-          <div className="text-[11px] sm:text-xs md:text-sm lg:text-base font-mono text-[var(--text-muted)] tracking-[0.25em] uppercase mt-2 sm:mt-4 font-medium">
+          <div className="text-[10px] sm:text-xs md:text-sm font-mono text-[var(--text-muted)] tracking-[0.2em] uppercase mt-2 sm:mt-3 font-medium">
             [ LOADING HAZY //{" "}
             <span className={progress >= 100 ? "text-[var(--accent-primary)] font-semibold" : "text-[var(--text-primary)]"}>
               {progress < 100 ? "IN_PROGRESS" : "COMPLETE"}
@@ -200,19 +200,19 @@ export function Loader({ onComplete }: LoaderProps) {
         </div>
 
         {/* Bottom-Left: Cycling Terms */}
-        <div className="self-start space-y-2 sm:space-y-3">
-          <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm lg:text-base font-mono text-[var(--accent-primary)] tracking-[0.25em] uppercase font-semibold">
-            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[var(--accent-primary)] shadow-[0_0_12px_var(--accent-primary)] animate-pulse" />
+        <div className="self-start space-y-2 sm:space-y-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm font-mono text-[var(--accent-primary)] tracking-[0.2em] uppercase font-semibold">
+            <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[var(--accent-primary)] shadow-[0_0_10px_var(--accent-primary)] animate-pulse" />
             <span>STATE: {CYCLING_TERMS[currentTermIndex]}</span>
           </div>
-          <div className="overflow-hidden h-14 sm:h-20 md:h-28 lg:h-36 xl:h-44 flex items-center">
+          <div className="overflow-hidden h-10 sm:h-14 md:h-18 lg:h-20 xl:h-24 flex items-center">
             <motion.div
               key={currentTermIndex}
-              initial={{ y: 55, opacity: 0 }}
+              initial={{ y: 35, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -55, opacity: 0 }}
+              exit={{ y: -35, opacity: 0 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display text-[clamp(2.25rem,6.5vw,7.5rem)] lg:text-[6rem] xl:text-[7.5rem] 2xl:text-[8.5rem] font-extrabold text-[var(--text-primary)] tracking-tight uppercase whitespace-nowrap leading-none"
+              className="font-display text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] xl:text-[4.75rem] 2xl:text-[5.25rem] font-extrabold text-[var(--text-primary)] tracking-tight uppercase whitespace-nowrap leading-none"
             >
               {CYCLING_TERMS[currentTermIndex]}
             </motion.div>
