@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" fill="none">
+  <defs>
+    <filter id="glow-dark" x="40" y="-5" width="40" height="40" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Pulse Line (Crisp Luminous Silver-White for Dark Mode) -->
+  <path
+    d="M10 54 H26 L33 44 L41 68 L48 54 L60 22 L72 82 L82 44 L90 62 L96 54 H110"
+    stroke="#F8FAFC"
+    stroke-width="4.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Apex Beacon Dot (Radiant Neon Ember) -->
+  <circle
+    cx="60"
+    cy="12"
+    r="5.5"
+    fill="#FF6B35"
+    filter="url(#glow-dark)"
+  />
+</svg>

@@ -211,6 +211,77 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+        {/*
+         * SSR Identity Block — Server-rendered rich text for Googlebot.
+         *
+         * WHY THIS EXISTS:
+         * The entire page.tsx is a "use client" component, meaning all content
+         * (Hero, Work, About, Contact) renders after JavaScript executes.
+         * Googlebot smartphone has a ~5s render budget. If the JS preloader
+         * animation runs longer, Googlebot captures an empty DOM and marks the
+         * page as "Crawled – currently not indexed" (thin content).
+         *
+         * This block is injected by the Server Component layout into the initial
+         * HTML payload — Googlebot reads it at byte 0, before any JS runs.
+         * It is visually hidden from users but semantically indexable.
+         */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: 0,
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+            border: 0,
+          }}
+        >
+          <h1>Kyrell Santillan (Hazy019) — Software Developer &amp; Systems Architect</h1>
+          <p>
+            Official portfolio of Kyrell Santillan, also known as Hazy019. Computer Science
+            graduate from STI West Negros University in Bacolod City, Negros Occidental,
+            Philippines. Specializing in government infrastructure software, AI automation
+            pipelines, full-stack web development, and cybersecurity engineering.
+          </p>
+          <h2>Featured Projects by Kyrell Santillan</h2>
+          <ul>
+            <li>
+              DTI Local Queue &amp; Ticket Management System — Government infrastructure
+              real-time WebSocket queue ticketing system built for the Department of Trade
+              and Industry of the Philippines.
+            </li>
+            <li>
+              YouTube Shorts Automated Video Pipeline — Fully automated video rendering
+              pipeline using PyQt6, AWS Lambda, Remotion, and Reddit API integration.
+            </li>
+            <li>
+              Polycon — Consultation &amp; Learning Management System — Full-stack LMS
+              with real-time consultation scheduling and AI-powered session transcription
+              via AssemblyAI.
+            </li>
+            <li>
+              SpellGate — Screen-Time Access Control Kiosk — Walk-up kiosk system gating
+              non-technical user access behind a real-time spell-check validation layer.
+            </li>
+            <li>
+              IDEE-CLI — Developer Architecture Tool — Command-line interface for automated
+              project scaffolding and architecture validation.
+            </li>
+            <li>
+              SentinelView — Cyber Threat Visualiser — Real-time cybersecurity threat
+              visualizer simulating network log ingestion and threat pattern rule matching.
+            </li>
+          </ul>
+          <p>
+            Contact Kyrell Santillan at santillankyrell@gmail.com. GitHub: github.com/Hazy019.
+            LinkedIn: linkedin.com/in/kyrell-santillan. Portfolio: hazy.cosedevs.com.
+            Available for full-time engineering roles, contract projects, and research
+            opportunities. Based in the Philippines (UTC+8), available remotely worldwide.
+          </p>
+        </div>
         <ThemeProvider>
           <LenisProvider>
             {children}
