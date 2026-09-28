@@ -65,6 +65,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://hazy.cosedevs.com/",
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     type: "website",
     title: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
@@ -131,8 +142,12 @@ export default function RootLayout({
         },
         sameAs: [
           "https://github.com/Hazy019",
+          "https://www.linkedin.com/in/kyrell-santillan",
           "https://linkedin.com/in/kyrell-santillan",
           "https://spellgate-eb1e8.web.app",
+          "https://star-history.com/#Hazy019",
+          "https://yhype.me/github/users/Hazy019",
+          "https://fbiego.com/commits-board/philippines",
         ],
         knowsAbout: [
           "Software Engineering",
