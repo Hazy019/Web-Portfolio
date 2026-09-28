@@ -179,9 +179,10 @@ export function Hero() {
         </motion.div>
 
         {/* Primary Headline: The Undisputed Focal Point */}
-        <div
+        <h1
           className="space-y-1 sm:space-y-2 font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.8rem] xl:text-[6.4rem] font-extrabold tracking-tight leading-[0.94] text-[var(--text-primary)]"
         >
+          <span className="sr-only">Kyrell Santillan (Hazy019) — Systems Architect &amp; Software Developer</span>
           {/* Clipped Line 1 */}
           <div className="overflow-hidden">
             <div ref={word1Ref}>Building</div>
@@ -199,7 +200,7 @@ export function Hero() {
               <span className="text-[var(--accent-primary)] animate-pulse ml-2 sm:ml-3 font-normal text-[0.85em]">▍</span>
             </div>
           </div>
-        </div>
+        </h1>
 
         {/* Human Narrative & Value Proposition Grid */}
         <div

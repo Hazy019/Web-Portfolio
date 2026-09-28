@@ -6,7 +6,7 @@
 
   *Premier Engineering & Systems Architecture Portfolio of Kyrell Santillan (HAZY) — CS Graduate & Full-Stack Developer from the Philippines.*
 
-  [Live Demo](https://hazyfactory.vercel.app/) · [GitHub](https://github.com/Hazy019) · [LinkedIn](https://linkedin.com/in/kyrell-santillan)
+  [Live Demo](https://hazy.cosedevs.com/) · [GitHub](https://github.com/Hazy019) · [LinkedIn](https://linkedin.com/in/kyrell-santillan)
 </div>
 
 <hr />
