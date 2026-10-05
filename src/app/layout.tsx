@@ -126,7 +126,7 @@ export default function RootLayout({
         "@type": "Person",
         "@id": "https://hazy.cosedevs.com/#person",
         name: "Kyrell Santillan",
-        alternateName: ["Hazy019", "HAZY", "kyrell santillan", "hazy019"],
+        alternateName: ["Hazy019", "HAZY", "kyrell santillan", "Kyrell Santillan", "hazy019"],
         jobTitle: "Software Developer & Systems Architect",
         url: "https://hazy.cosedevs.com/",
         image: "https://hazy.cosedevs.com/logo.png",
@@ -145,9 +145,11 @@ export default function RootLayout({
           "https://www.linkedin.com/in/kyrell-santillan",
           "https://linkedin.com/in/kyrell-santillan",
           "https://spellgate-eb1e8.web.app",
-          "https://star-history.com/#Hazy019",
-          "https://yhype.me/github/users/Hazy019",
-          "https://fbiego.com/commits-board/philippines",
+          "https://www.star-history.com/hazy019",
+          "https://www.facebook.com/profile.php?id=61592218332539",
+          "https://pyra-keep-alive-web.vercel.app",
+          "https://idee-cli.vercel.app",
+          "https://shortsautomations.vercel.app",
         ],
         knowsAbout: [
           "Software Engineering",
@@ -166,7 +168,7 @@ export default function RootLayout({
         name: "YouTube Shorts Automated Video Pipeline",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
         description: "Automated video generation pipeline using PyQt6, AWS Lambda, Remotion, and Reddit API.",
-        url: "https://github.com/Hazy019/AutoShorts-AI",
+        url: "https://shortsautomations.vercel.app",
       },
       {
         "@type": "CreativeWork",
@@ -183,14 +185,42 @@ export default function RootLayout({
         url: "https://github.com/Hazy019/DTI-Queue-System",
       },
       {
+        "@type": "CreativeWork",
+        name: "Pyra Keep-Alive Web",
+        author: { "@id": "https://hazy.cosedevs.com/#person" },
+        description: "Keep-alive web application using PyQt6, AWS Lambda, Remotion, and Reddit API.",
+        url: "https://pyra-keep-alive-web.vercel.app",
+      },
+      {
+        "@type": "CreativeWork",
+        name: "Idée CLI",
+        author: { "@id": "https://hazy.cosedevs.com/#person" },
+        description: "Command-line interface for idea management using PyQt6, AWS Lambda, Remotion, and Reddit API.",
+        url: "https://idee-cli.vercel.app",
+      },
+      {
         "@type": "WebSite",
         "@id": "https://hazy.cosedevs.com/#website",
         url: "https://hazy.cosedevs.com/",
         name: "Kyrell Santillan (Hazy019) Portfolio",
         description:
-          "Official portfolio of Kyrell Santillan (Hazy019), CS graduate from STI West Negros University building government infrastructure, automation, and thoughtful systems.",
+          "Kyrell Santillan (Hazy019), CS graduate from STI West Negros University building government infrastructure, automation, and thoughtful systems.",
         publisher: {
           "@id": "https://hazy.cosedevs.com/#person",
+        },
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://hazy.cosedevs.com/#webpage",
+        "url": "https://hazy.cosedevs.com/",
+        "name": "Kyrell Santillan (Hazy019) Portfolio",
+        "description":
+          "Kyrell Santillan (Hazy019), CS graduate from STI West Negros University building government infrastructure, automation, and thoughtful systems.",
+        "publisher": {
+          "@id": "https://hazy.cosedevs.com/#person",
+        },
+        "isPartOf": {
+          "@id": "https://hazy.cosedevs.com/#website",
         },
       },
     ],
@@ -241,7 +271,7 @@ export default function RootLayout({
         >
           <h1>Kyrell Santillan (Hazy019) — Software Developer &amp; Systems Architect</h1>
           <p>
-            Official portfolio of Kyrell Santillan, also known as Hazy019. Computer Science
+            Kyrell Santillan, also known as Hazy019. Computer Science
             graduate from STI West Negros University in Bacolod City, Negros Occidental,
             Philippines. Specializing in government infrastructure software, AI automation
             pipelines, full-stack web development, and cybersecurity engineering.
