@@ -96,7 +96,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
     description:
-      "Official portfolio of Kyrell Santillan (Hazy019), building government infrastructure, automation pipelines, and AI-driven systems.",
+      "Kyrell Santillan (Hazy019), building government infrastructure, automation pipelines, and AI-driven systems.",
     images: ["/logo.png"],
     creator: "@hazy019",
   },
@@ -163,6 +163,7 @@ export default function RootLayout({
           "https://github.com/Hazy019",
           "https://www.linkedin.com/in/kyrell-santillan",
           "https://www.facebook.com/profile.php?id=61592218332539",
+          "https://www.youtube.com/@Hazy_Insight",
           "https://pyra-keep-alive-web.vercel.app",
           "https://idee-cli.vercel.app",
           "https://shortsautomations.vercel.app",
