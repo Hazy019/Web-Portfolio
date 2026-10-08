@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
-import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck, ArrowUpRight, CheckCircle2, AlertCircle, Loader2, RotateCcw } from "lucide-react";
+import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck, ArrowUpRight, CheckCircle2, AlertCircle, Loader2, RotateCcw, Copy, Check, ExternalLink } from "lucide-react";
 import { FitText } from "./FitText";
 
 export function Contact() {
@@ -29,9 +29,11 @@ export function Contact() {
     message: "",
     honeypot: "",
   });
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "delivered" | "requires_direct" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
   const [mailtoFallback, setMailtoFallback] = useState("");
+  const [gmailWebUrl, setGmailWebUrl] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -52,63 +54,78 @@ export function Contact() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (status === "submitting") return;
 
     setStatus("submitting");
     setStatusMessage("");
 
+    const accessKey =
+      process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "561f288d-b6f5-45b9-9df8-42eb2aa8616f";
+
+    const formElement = e.currentTarget;
+    const submissionData = new FormData(formElement);
+    submissionData.append("access_key", accessKey);
+    submissionData.append("from_name", "HAZY Portfolio Inquiries");
+    submissionData.append(
+      "subject",
+      `[Portfolio Inquiry] From ${formData.name || "Portfolio Visitor"}`
+    );
+
     try {
-      const res = await fetch("/api/contact", {
+      // 1. Direct Web3Forms submission from the browser
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: submissionData,
       });
 
       const data = await res.json().catch(() => null);
 
       if (res.ok && data?.success) {
-        setStatus("success");
+        setStatus("delivered");
         setStatusMessage(
-          data?.message || "Message transmitted successfully! Kyrell will respond promptly."
+          "Message transmitted directly to Kyrell's inbox! Kyrell has received your inquiry and will respond promptly."
         );
-        if (data?.mailtoFallback) {
-          setMailtoFallback(data.mailtoFallback);
-        }
         setFormData({ name: "", email: "", message: "", honeypot: "" });
       } else {
         const errMsg =
-          data?.error ||
-          "Transmission encountered an issue. Please try again or reach out via direct email.";
+          data?.message ||
+          "Transmission encountered an issue. You can transmit directly via Gmail or Mail client below.";
         setStatus("error");
         setStatusMessage(errMsg);
 
         const recipient = "santillankyrell@gmail.com";
-        const fallback = `mailto:${recipient}?subject=${encodeURIComponent(
-          `Inquiry from ${formData.name || "Portfolio Visitor"}`
-        )}&body=${encodeURIComponent(
-          `From: ${formData.name} (${formData.email})\n\n${formData.message}`
-        )}`;
-        setMailtoFallback(fallback);
+        const subject = encodeURIComponent(`Inquiry from ${formData.name || "Portfolio Visitor"}`);
+        const body = encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`);
+        setMailtoFallback(`mailto:${recipient}?subject=${subject}&body=${body}`);
+        setGmailWebUrl(`https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`);
       }
-    } catch {
+    } catch (err) {
+      console.warn("Direct Web3Forms dispatch error:", err);
       setStatus("error");
-      setStatusMessage("Network error during transmission. Please use the direct mail fallback below.");
+      setStatusMessage("Network error during transmission. Please use direct email dispatch below.");
       const recipient = "santillankyrell@gmail.com";
-      const fallback = `mailto:${recipient}?subject=${encodeURIComponent(
-        `Inquiry from ${formData.name || "Portfolio Visitor"}`
-      )}&body=${encodeURIComponent(
-        `From: ${formData.name} (${formData.email})\n\n${formData.message}`
-      )}`;
-      setMailtoFallback(fallback);
+      const subject = encodeURIComponent(`Inquiry from ${formData.name || "Portfolio Visitor"}`);
+      const body = encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`);
+      setMailtoFallback(`mailto:${recipient}?subject=${subject}&body=${body}`);
+      setGmailWebUrl(`https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`);
     }
+  };
+
+  const handleCopy = () => {
+    const textToCopy = `Sender: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   };
 
   const handleResetForm = () => {
     setStatus("idle");
     setStatusMessage("");
     setMailtoFallback("");
+    setGmailWebUrl("");
+    setFormData({ name: "", email: "", message: "", honeypot: "" });
   };
 
   const containerVariants = {
@@ -435,7 +452,8 @@ export function Contact() {
             {/* Right Column: Contact Form Box */}
             <motion.div variants={reducedMotion ? undefined : formVariants} className="lg:col-span-6 min-w-0 w-full mx-auto lg:mx-0 relative z-10">
               <div className="p-6 sm:p-10 md:p-12 rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-xl shadow-[var(--glass-shadow)] transition-all">
-                {status === "success" ? (
+                {/* STATE 1: Delivered via third party */}
+                {status === "delivered" ? (
                   <div className="py-8 flex flex-col items-center text-center space-y-5 animate-fade-in">
                     <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)]/15 border border-[var(--accent-primary)]/30 flex items-center justify-center text-[var(--accent-primary)] shadow-[0_0_25px_rgba(140,255,46,0.2)]">
                       <CheckCircle2 className="w-9 h-9" />
@@ -445,7 +463,7 @@ export function Contact() {
                         Message Transmitted!
                       </h3>
                       <p className="text-[var(--text-muted)] text-sm max-w-md mx-auto leading-relaxed">
-                        {statusMessage || "Thank you for reaching out. Kyrell has received your transmission and will respond promptly."}
+                        {statusMessage || "Delivered directly to Kyrell's inbox. You will receive a response promptly."}
                       </p>
                     </div>
 
@@ -458,33 +476,80 @@ export function Contact() {
                         <RotateCcw className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
                         <span>Send Another Message</span>
                       </button>
+                    </div>
+                  </div>
+                ) : status === "requires_direct" ? (
+                  /* STATE 2: 1-Click Direct Delivery (Guaranteed 100% Deliverability) */
+                  <div className="py-6 flex flex-col items-center text-center space-y-5 animate-fade-in">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)]/15 border border-[var(--accent-primary)]/30 flex items-center justify-center text-[var(--accent-primary)] shadow-[0_0_25px_rgba(140,255,46,0.2)]">
+                      <Send className="w-8 h-8" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-display text-2xl font-bold text-[var(--text-primary)]">
+                        Message Formatted!
+                      </h3>
+                      <p className="text-[var(--text-muted)] text-sm max-w-md mx-auto leading-relaxed">
+                        To transmit with zero latency and 100% deliverability directly to{" "}
+                        <span className="text-[var(--text-primary)] font-mono">santillankyrell@gmail.com</span>, select your preferred dispatch option below:
+                      </p>
+                    </div>
+
+                    <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-center max-w-md">
+                      {gmailWebUrl && (
+                        <a
+                          href={gmailWebUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 px-5 py-3.5 rounded-xl bg-[var(--accent-primary)] text-black hover:brightness-110 font-mono text-xs font-bold flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(140,255,46,0.25)]"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          <span>Send via Gmail Web</span>
+                        </a>
+                      )}
 
                       {mailtoFallback && (
                         <a
                           href={mailtoFallback}
-                          className="px-6 py-3 rounded-xl bg-[var(--accent-primary)]/10 hover:bg-[var(--accent-primary)]/20 border border-[var(--accent-primary)]/40 text-[var(--accent-primary)] font-mono text-xs font-semibold flex items-center gap-2 transition-all"
+                          className="flex-1 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-[var(--border-subtle)] text-[var(--text-primary)] font-mono text-xs font-semibold flex items-center justify-center gap-2 transition-all"
                         >
-                          <Mail className="w-3.5 h-3.5" />
-                          <span>Open in Mail App</span>
+                          <Mail className="w-4 h-4 text-[var(--accent-primary)]" />
+                          <span>Default Mail App</span>
                         </a>
                       )}
+                    </div>
+
+                    <div className="pt-2 flex items-center gap-3 text-xs font-mono">
+                      <button
+                        type="button"
+                        onClick={handleCopy}
+                        className="text-[var(--text-muted)] hover:text-[var(--text-primary)] flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+                            <span className="text-[var(--accent-primary)]">Copied to Clipboard</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copy Message Text</span>
+                          </>
+                        )}
+                      </button>
+                      <span className="text-[var(--border-subtle)]">·</span>
+                      <button
+                        type="button"
+                        onClick={() => setStatus("idle")}
+                        className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                      >
+                        Edit Inputs
+                      </button>
                     </div>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6" noValidate={false}>
-                    {/* Honeypot Anti-Spam Field (hidden from genuine users) */}
-                    <div className="hidden" aria-hidden="true">
-                      <label htmlFor="contact-hp">Leave this empty</label>
-                      <input
-                        id="contact-hp"
-                        type="text"
-                        name="honeypot"
-                        tabIndex={-1}
-                        autoComplete="off"
-                        value={formData.honeypot}
-                        onChange={handleInputChange}
-                      />
-                    </div>
+                    {/* Web3Forms Botcheck Honeypot */}
+                    <input type="checkbox" name="botcheck" className="hidden" style={{ display: "none" }} />
 
                     {/* Error Banner */}
                     {status === "error" && (
@@ -586,6 +651,20 @@ export function Contact() {
                         </>
                       )}
                     </motion.button>
+
+                    {/* Instant Direct Dispatch Alternative */}
+                    <div className="flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)] border-t border-[var(--border-subtle)]/60 pt-3">
+                      <span>Direct email client option:</span>
+                      <a
+                        href={`https://mail.google.com/mail/?view=cm&fs=1&to=santillankyrell@gmail.com${formData.name ? `&su=${encodeURIComponent(`Inquiry from ${formData.name}`)}` : ""}${formData.message ? `&body=${encodeURIComponent(formData.message)}` : ""}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[var(--accent-primary)] hover:underline inline-flex items-center gap-1 font-semibold"
+                      >
+                        <span>Compose in Gmail</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </div>
 
                     {/* Direct Data-Handling Trust Note */}
                     <p className="text-[11px] font-mono text-[var(--text-muted)] text-center flex items-center justify-center gap-1.5 pt-1">
