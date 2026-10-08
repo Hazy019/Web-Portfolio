@@ -113,7 +113,11 @@ export async function POST(req: Request) {
     let deliveryMethod = "none";
 
     // 5. THIRD-PARTY DISPATCH CHANNEL 1: Web3Forms API
-    const web3Key = process.env.WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_KEY;
+    const web3Key =
+      process.env.WEB3FORMS_ACCESS_KEY ||
+      process.env.WEB3FORMS_KEY ||
+      process.env.NEXT_PUBLIC_WEB3FORMS_KEY ||
+      "561f288d-b6f5-45b9-9df8-42eb2aa8616f";
     if (!delivered && web3Key) {
       try {
         const w3Res = await fetch("https://api.web3forms.com/submit", {

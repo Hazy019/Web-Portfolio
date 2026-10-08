@@ -62,7 +62,9 @@ export function Contact() {
     setStatusMessage("");
 
     const accessKey =
-      process.env.WEB3FORMS_KEY || "561f288d-b6f5-45b9-9df8-42eb2aa8616f";
+      process.env.NEXT_PUBLIC_WEB3FORMS_KEY ||
+      process.env.WEB3FORMS_KEY ||
+      "561f288d-b6f5-45b9-9df8-42eb2aa8616f";
 
     const formElement = e.currentTarget;
     const submissionData = new FormData(formElement);
