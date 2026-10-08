@@ -14,14 +14,24 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { AmbientOrbs } from "./AmbientOrbs";
-import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { Mail, Github, Linkedin, Send, Quote, GraduationCap, Lock, ShieldCheck, ArrowUpRight, CheckCircle2, AlertCircle, Loader2, RotateCcw } from "lucide-react";
 import { FitText } from "./FitText";
 
 export function Contact() {
   const reducedMotion = useReducedMotion();
   const rotatingWords = ["something.", "extraordinary.", "resilient.", "defensible."];
   const [wordIdx, setWordIdx] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
+
+  // Contact Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+    honeypot: "",
+  });
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
+  const [mailtoFallback, setMailtoFallback] = useState("");
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -31,10 +41,74 @@ export function Contact() {
     return () => clearInterval(interval);
   }, [reducedMotion, rotatingWords.length]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (status === "error") {
+      setStatus("idle");
+      setStatusMessage("");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
+    if (status === "submitting") return;
+
+    setStatus("submitting");
+    setStatusMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (res.ok && data?.success) {
+        setStatus("success");
+        setStatusMessage(
+          data?.message || "Message transmitted successfully! Kyrell will respond promptly."
+        );
+        if (data?.mailtoFallback) {
+          setMailtoFallback(data.mailtoFallback);
+        }
+        setFormData({ name: "", email: "", message: "", honeypot: "" });
+      } else {
+        const errMsg =
+          data?.error ||
+          "Transmission encountered an issue. Please try again or reach out via direct email.";
+        setStatus("error");
+        setStatusMessage(errMsg);
+
+        const recipient = "santillankyrell@gmail.com";
+        const fallback = `mailto:${recipient}?subject=${encodeURIComponent(
+          `Inquiry from ${formData.name || "Portfolio Visitor"}`
+        )}&body=${encodeURIComponent(
+          `From: ${formData.name} (${formData.email})\n\n${formData.message}`
+        )}`;
+        setMailtoFallback(fallback);
+      }
+    } catch {
+      setStatus("error");
+      setStatusMessage("Network error during transmission. Please use the direct mail fallback below.");
+      const recipient = "santillankyrell@gmail.com";
+      const fallback = `mailto:${recipient}?subject=${encodeURIComponent(
+        `Inquiry from ${formData.name || "Portfolio Visitor"}`
+      )}&body=${encodeURIComponent(
+        `From: ${formData.name} (${formData.email})\n\n${formData.message}`
+      )}`;
+      setMailtoFallback(fallback);
+    }
+  };
+
+  const handleResetForm = () => {
+    setStatus("idle");
+    setStatusMessage("");
+    setMailtoFallback("");
   };
 
   const containerVariants = {
@@ -360,62 +434,167 @@ export function Contact() {
 
             {/* Right Column: Contact Form Box */}
             <motion.div variants={reducedMotion ? undefined : formVariants} className="lg:col-span-6 min-w-0 w-full mx-auto lg:mx-0 relative z-10">
-              <form
-                onSubmit={handleSubmit}
-                className="p-6 sm:p-10 md:p-12 rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-xl space-y-6 shadow-[var(--glass-shadow)]"
-              >
-                <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Jane Doe"
-                    className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
-                  />
-                </div>
+              <div className="p-6 sm:p-10 md:p-12 rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-xl shadow-[var(--glass-shadow)] transition-all">
+                {status === "success" ? (
+                  <div className="py-8 flex flex-col items-center text-center space-y-5 animate-fade-in">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)]/15 border border-[var(--accent-primary)]/30 flex items-center justify-center text-[var(--accent-primary)] shadow-[0_0_25px_rgba(140,255,46,0.2)]">
+                      <CheckCircle2 className="w-9 h-9" />
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-display text-2xl font-bold text-[var(--text-primary)]">
+                        Message Transmitted!
+                      </h3>
+                      <p className="text-[var(--text-muted)] text-sm max-w-md mx-auto leading-relaxed">
+                        {statusMessage || "Thank you for reaching out. Kyrell has received your transmission and will respond promptly."}
+                      </p>
+                    </div>
 
-                <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="jane@company.com"
-                    className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
-                  />
-                </div>
+                    <div className="pt-3 flex flex-col sm:flex-row items-center gap-3 w-full justify-center">
+                      <button
+                        type="button"
+                        onClick={handleResetForm}
+                        className="px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-[var(--border-subtle)] text-[var(--text-primary)] font-mono text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5 text-[var(--accent-primary)]" />
+                        <span>Send Another Message</span>
+                      </button>
 
-                <div className="space-y-2">
-                  <label className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium">
-                    Message
-                  </label>
-                  <textarea
-                    rows={4}
-                    required
-                    placeholder="How can I help you build?"
-                    className="w-full p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans"
-                  />
-                </div>
+                      {mailtoFallback && (
+                        <a
+                          href={mailtoFallback}
+                          className="px-6 py-3 rounded-xl bg-[var(--accent-primary)]/10 hover:bg-[var(--accent-primary)]/20 border border-[var(--accent-primary)]/40 text-[var(--accent-primary)] font-mono text-xs font-semibold flex items-center gap-2 transition-all"
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          <span>Open in Mail App</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-6" noValidate={false}>
+                    {/* Honeypot Anti-Spam Field (hidden from genuine users) */}
+                    <div className="hidden" aria-hidden="true">
+                      <label htmlFor="contact-hp">Leave this empty</label>
+                      <input
+                        id="contact-hp"
+                        type="text"
+                        name="honeypot"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        value={formData.honeypot}
+                        onChange={handleInputChange}
+                      />
+                    </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  className="w-full py-4 rounded-xl bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-white font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>{submitted ? "Message Transmitted!" : "Send Message"}</span>
-                </motion.button>
+                    {/* Error Banner */}
+                    {status === "error" && (
+                      <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 text-xs sm:text-sm flex flex-col gap-2">
+                        <div className="flex items-start gap-2.5">
+                          <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                          <span className="font-sans leading-relaxed">{statusMessage}</span>
+                        </div>
+                        {mailtoFallback && (
+                          <div className="pt-1 pl-6">
+                            <a
+                              href={mailtoFallback}
+                              className="inline-flex items-center gap-1.5 text-[var(--accent-primary)] hover:underline font-mono text-xs font-semibold"
+                            >
+                              <span>Send via default mail client instead</span>
+                              <ArrowUpRight className="w-3.5 h-3.5" />
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-                {/* Direct Data-Handling Trust Note */}
-                <p className="text-[11px] font-mono text-[var(--text-muted)] text-center flex items-center justify-center gap-1.5 pt-1">
-                  <Lock className="w-3 h-3 text-[var(--accent-primary)]/70 shrink-0" />
-                  <span>Direct transmission to inbox only. Zero tracking, no third-party data broker storage.</span>
-                </p>
-              </form>
+                    <div className="space-y-2">
+                      <label
+                        htmlFor="contact-name"
+                        className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium block"
+                      >
+                        Your Name
+                      </label>
+                      <input
+                        id="contact-name"
+                        name="name"
+                        type="text"
+                        required
+                        disabled={status === "submitting"}
+                        placeholder="Jane Doe"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans disabled:opacity-50"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label
+                        htmlFor="contact-email"
+                        className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium block"
+                      >
+                        Email Address
+                      </label>
+                      <input
+                        id="contact-email"
+                        name="email"
+                        type="email"
+                        required
+                        disabled={status === "submitting"}
+                        placeholder="jane@company.com"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full px-4 h-[52px] rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans disabled:opacity-50"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label
+                        htmlFor="contact-message"
+                        className="text-xs sm:text-sm font-mono text-[var(--text-muted)] uppercase tracking-wider font-medium block"
+                      >
+                        Message
+                      </label>
+                      <textarea
+                        id="contact-message"
+                        name="message"
+                        rows={4}
+                        required
+                        disabled={status === "submitting"}
+                        placeholder="How can I help you build?"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        className="w-full p-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)]/60 focus:outline-none focus:border-[var(--accent-primary)] focus:ring-1 focus:ring-[var(--accent-primary)]/30 transition-all text-sm font-sans disabled:opacity-50 resize-y min-h-[120px]"
+                      />
+                    </div>
+
+                    <motion.button
+                      whileHover={status === "submitting" ? undefined : { scale: 1.02 }}
+                      whileTap={status === "submitting" ? undefined : { scale: 0.98 }}
+                      type="submit"
+                      disabled={status === "submitting"}
+                      className="w-full py-4 rounded-xl bg-[var(--text-primary)] hover:bg-[var(--accent-primary)] text-[var(--bg-primary)] hover:text-black font-mono font-bold text-base transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
+                    >
+                      {status === "submitting" ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin text-current" />
+                          <span>Transmitting Message...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          <span>Send Message</span>
+                        </>
+                      )}
+                    </motion.button>
+
+                    {/* Direct Data-Handling Trust Note */}
+                    <p className="text-[11px] font-mono text-[var(--text-muted)] text-center flex items-center justify-center gap-1.5 pt-1">
+                      <Lock className="w-3 h-3 text-[var(--accent-primary)]/70 shrink-0" />
+                      <span>Direct transmission to inbox only. Zero tracking, no third-party data broker storage.</span>
+                    </p>
+                  </form>
+                )}
+              </div>
             </motion.div>
           </motion.div>
         </div>
