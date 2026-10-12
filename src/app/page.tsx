@@ -80,6 +80,11 @@ export default function Home() {
     ];
 
     const handleScroll = () => {
+      // Block hash writes while initial scroll restore is in progress.
+      // LenisProvider sets __hazyRestoring = true on mount and clears it after
+      // the deterministic hash restore completes post-ScrollTrigger.refresh().
+      const isRestoring = !!(window as any).__hazyRestoring;
+
       // Bottom of page guarantee: if near bottom, always activate contact
       const isAtBottom =
         window.innerHeight + window.scrollY >=
@@ -89,7 +94,7 @@ export default function Home() {
         if (activeSectionRef.current !== "contact") {
           activeSectionRef.current = "contact";
           setActiveSection("contact");
-          if (typeof window !== "undefined" && window.history?.replaceState) {
+          if (!isRestoring && typeof window !== "undefined" && window.history?.replaceState) {
             window.history.replaceState(null, "", "#contact");
           }
         }
@@ -115,7 +120,7 @@ export default function Home() {
         setActiveSection(matchedNavId);
 
         // Update URL hash dynamically without history pollution
-        if (typeof window !== "undefined" && window.history?.replaceState) {
+        if (!isRestoring && typeof window !== "undefined" && window.history?.replaceState) {
           const newHash =
             matchedNavId === "intro"
               ? window.location.pathname + window.location.search

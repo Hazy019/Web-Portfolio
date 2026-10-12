@@ -212,7 +212,7 @@ export function Work({ onOpenDoc }: WorkProps) {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative overflow-hidden w-full py-[80px] lg:py-8 lg:h-dvh bg-[var(--bg-primary)] select-none flex flex-col justify-between scroll-mt-24"
+      className="relative overflow-hidden w-full py-[80px] lg:pt-[88px] lg:pb-8 lg:h-dvh bg-[var(--bg-primary)] select-none flex flex-col justify-between scroll-mt-24"
       aria-label="Selected Projects — Showcase Track"
     >
       <AmbientOrbs

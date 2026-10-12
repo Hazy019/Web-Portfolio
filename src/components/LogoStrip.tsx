@@ -56,6 +56,12 @@ const LOGO_ITEMS: RealLogoItem[] = [
     src: "/ClientEcho_logo.png",
     srcLight: "/ClientEcho_logo Dark.png",
   },
+  {
+    id: "pyra",
+    name: "Pyra",
+    src: "/pyra_logo light.svg",
+    srcLight: "/pyra_logo dark.svg",
+  },
 ];
 
 interface LogoStripProps {

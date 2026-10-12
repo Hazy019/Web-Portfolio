@@ -31,39 +31,22 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
+  // Title: under 60 chars, name-first for entity recognition.
+  // TODO(owner): Confirm title preference — "Software Engineer" ranks better
+  //              for recent graduates than "Systems Architect". See PR notes.
+  title: "Kyrell Santillan — Software Engineer | HAZY",
   description:
-    "Kyrell Santillan (Hazy019) — Software Engineer & Systems Architect from Bacolod City, Philippines. Building government infrastructure, autonomous AI pipelines, and high-uptime cloud systems.",
-  keywords: [
-    "Kyrell Santillan",
-    "kyrell santillan",
-    "Kyrell",
-    "kyrell",
-    "Hazy019",
-    "hazy019",
-    "HAZY",
-    "hazy",
-    "STI West Negros University",
-    "CS graduate",
-    "software developer",
-    "Philippines",
-    "Bacolod City",
-    "Negros Occidental",
-    "YouTube Shorts automation",
-    "DTI queue system",
-    "SentinelView",
-    "SpellGate",
-    "Polycon",
-    "Systems Architect",
-    "Full-Stack Engineer",
-    "cosedevs",
-  ],
-  authors: [{ name: "Kyrell Santillan", url: "https://hazy.cosedevs.com/" }],
+    "Kyrell Santillan (Hazy019) — Software Engineer from the Philippines. Built the DTI government queue system, an autonomous YouTube Shorts pipeline, and 6 more shipped products.",
+  // NOTE: meta keywords deliberately omitted — Google ignores them and
+  // stuffing case variants is a spam signal. Entity authority comes from
+  // consistent on-page text and sameAs structured data, not keywords.
+  authors: [{ name: "Kyrell Santillan", url: "https://hazy.cosedevs.com" }],
   creator: "Kyrell Santillan",
   publisher: "Kyrell Santillan",
-  metadataBase: new URL("https://hazy.cosedevs.com/"),
+  metadataBase: new URL("https://hazy.cosedevs.com"),
   alternates: {
-    canonical: "https://hazy.cosedevs.com/",
+    // Self-referential canonical on every page — no trailing slash.
+    canonical: "https://hazy.cosedevs.com",
   },
   robots: {
     index: true,
@@ -78,25 +61,28 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
+    title: "Kyrell Santillan — Software Engineer | HAZY",
     description:
-      "I build systems the way architects design buildings — failure modes first, elegance second. Government infrastructure, AI automation pipelines, and defensible web applications.",
-    url: "https://hazy.cosedevs.com/",
-    siteName: "Kyrell Santillan (Hazy019) · Portfolio",
+      "I build software behind things like a government queue system and a fully automated video channel. Failure modes first, elegance second.",
+    url: "https://hazy.cosedevs.com",
+    siteName: "Kyrell Santillan · Portfolio",
     images: [
       {
+        // TODO(owner): Generate a 1200×630 OG card image (opengraph-image.tsx)
+        // and replace this with the generated path. 512×512 logo renders
+        // as a small square preview — not optimal for social sharing.
         url: "/logo.png",
         width: 512,
         height: 512,
-        alt: "Kyrell Santillan (Hazy019) Logo",
+        alt: "Kyrell Santillan (Hazy019) — Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
+    title: "Kyrell Santillan — Software Engineer | HAZY",
     description:
-      "Kyrell Santillan (Hazy019), building government infrastructure, automation pipelines, and AI-driven systems.",
+      "Built a government queue system, an autonomous video pipeline, and 6 more shipped products. Based in the Philippines.",
     images: ["/logo.png"],
     creator: "@hazy019",
   },
@@ -318,21 +304,21 @@ export default function RootLayout({
          * This block guarantees high-density semantic entity recognition,
          * verified projects, credentials, and indexing signals.
          */}
+        {/*
+         * SSR Identity Block — Server-rendered rich text for Googlebot & AI Overviews.
+         *
+         * WHY: Googlebot reads HTML before JS hydration. This block provides
+         * semantic entity text that is visible to screen readers and crawlers.
+         *
+         * IMPORTANT: aria-hidden was removed. Visually hiding content while hiding
+         * it from assistive technology is a cloaking risk. sr-only makes it
+         * visible to screen readers (and thus to Google) without affecting layout.
+         * This is the correct approach for SEO-critical content.
+         */}
         <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            width: "1px",
-            height: "1px",
-            padding: 0,
-            margin: "-1px",
-            overflow: "hidden",
-            clip: "rect(0,0,0,0)",
-            whiteSpace: "nowrap",
-            border: 0,
-          }}
+          className="sr-only"
         >
-          <h1>Kyrell Santillan (Hazy019) — Software Developer &amp; Systems Architect</h1>
+          <h2>Kyrell Santillan (Hazy019) — Software Engineer &amp; Systems Architect</h2>
           <p>
             Kyrell Santillan, known online as Hazy019. Software Engineer and Systems Architect
             based in Bacolod City, Negros Occidental, Philippines. Computer Science graduate from

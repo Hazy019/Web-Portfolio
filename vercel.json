@@ -1,3 +1,22 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "hazyfactory.vercel.app" }],
+      "destination": "https://hazy.cosedevs.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "hazy-dev.vercel.app" }],
+      "destination": "https://hazy.cosedevs.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*/",
+      "destination": "/:path*",
+      "permanent": true
+    }
+  ]
 }

@@ -39,15 +39,15 @@ if (typeof window !== "undefined") {
 }
 
 const LINE_1_WORDS = [
-  "DESIGN", "IS", "NOT", "JUST", "WHAT", "IT", "LOOKS", "LIKE", "AND", "FEELS", "LIKE."
+  "FAILURE", "MODES", "FIRST,", "ELEGANCE", "SECOND."
 ];
 
 const LINE_2_WORDS = [
-  { text: "DESIGN", isAccent: false },
-  { text: "IS", isAccent: false },
-  { text: "HOW", isAccent: true },
+  { text: "BUILD", isAccent: false },
+  { text: "FOR", isAccent: false },
+  { text: "WHEN", isAccent: true },
   { text: "IT", isAccent: true },
-  { text: "WORKS.", isAccent: true },
+  { text: "BREAKS.", isAccent: true },
 ];
 
 export function PhilosophyQuote() {
@@ -417,8 +417,8 @@ export function PhilosophyQuote() {
             ref={attributionRef}
             className="font-mono text-xs sm:text-sm text-[var(--accent-primary)] tracking-widest uppercase pt-4 border-t border-[var(--border-subtle)] flex items-center justify-center gap-2 font-semibold relative z-10"
           >
-            <span>— STEVE JOBS</span>
-            <span className="text-[var(--text-muted)]">[ INSPIRATION ]</span>
+            <span>— KYRELL SANTILLAN</span>
+            <span className="text-[var(--text-muted)]">[ ENGINEERING PRINCIPLE ]</span>
           </div>
         </div>
       </div>

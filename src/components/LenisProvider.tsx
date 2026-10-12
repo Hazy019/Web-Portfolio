@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * LenisProvider — Global smooth scroll + GSAP ScrollTrigger bridge (§1–2 v9)
+ * LenisProvider — Global smooth scroll + GSAP ScrollTrigger bridge (v10)
  *
  * Responsibilities:
  *   1. Instantiate Lenis with inertial ease physics.
@@ -9,6 +9,21 @@
  *      reads from Lenis's virtual scroll offset rather than the native window scroll.
  *   3. Drive a thin right-edge progress indicator as a scrollbar replacement.
  *   4. prefers-reduced-motion: skip Lenis entirely, leave native scroll in place.
+ *
+ * SCROLL-RESTORATION FIX (v10):
+ *   The site's pinned horizontal-scroll Projects section inserts a large pin-spacer
+ *   that only exists AFTER hydration + loader + ScrollTrigger creation. On reload,
+ *   the browser's native scroll restoration fires against the short, pre-pin layout.
+ *   Then pin-spacer grows the document, scroll offset stays the same, and the visitor
+ *   is physically inside the Projects range. Scrollspy then overwrites the hash.
+ *
+ *   Fix:
+ *   1. Set history.scrollRestoration = 'manual' at module scope.
+ *   2. Poll for window.__hazyLoaded (set by Loader.onComplete).
+ *   3. After loader done: await fonts.ready + ScrollTrigger.clearScrollMemory()
+ *      + ScrollTrigger.refresh().
+ *   4. Then scroll to hash element with Lenis, immediate, AFTER pin-spacers exist.
+ *   5. Expose window.__hazyRestoring so scrollspy blocks hash writes during restore.
  *
  * HYDRATION FIX (v9): ScrollTrigger.normalizeScroll(true) was removed from module
  * scope. It caused a hydration mismatch by injecting `touch-action: pan-x` on
@@ -34,13 +49,34 @@ if (typeof window !== "undefined") {
   // It mutated document.documentElement.style.touchAction synchronously,
   // causing a React hydration mismatch (touch-action: pan-x on <html>/<body>).
   // Lenis handles smooth scroll; this call was redundant and harmful.
+
+  // CRITICAL: Disable native scroll restoration at module scope (earliest possible
+  // point) so the browser never restores a stale scrollY before our deterministic
+  // hash-based restore runs post-pin-spacer-layout.
+  history.scrollRestoration = "manual";
 }
+
+/** Nav height + buffer for hash-scroll offset (must match Navbar fixed top). */
+const NAV_OFFSET = 80;
+
+/**
+ * Global coordination flags (set on window to allow cross-component access):
+ *   window.lenis           — the Lenis instance
+ *   window.__hazyLoaded    — set true by Loader.onComplete()
+ *   window.__hazyRestoring — true while initial hash restore is in progress;
+ *                            scrollspy must skip hash writes when this is true.
+ */
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Redundant safety: also set in module scope above, but guard for SSR edge cases.
+    if (typeof history !== "undefined") {
+      history.scrollRestoration = "manual";
+    }
+
     // Respect prefers-reduced-motion & mobile/tablet screens (< 1024px) — skip Lenis, drive progress bar via native scroll
     const isMobileOrTablet = typeof window !== "undefined" && window.innerWidth < 1024;
     const prefersReduced = typeof window !== "undefined" && window.matchMedia(
@@ -57,6 +93,22 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       };
       window.addEventListener("scroll", handleNativeScroll, { passive: true });
       handleNativeScroll();
+
+      // On mobile/reduced-motion: simple hash restore after fonts settle.
+      // No pin-spacers on mobile, so fonts.ready + one rAF is sufficient.
+      (async () => {
+        await document.fonts.ready;
+        const rawHash = decodeURIComponent(window.location.hash.slice(1));
+        if (rawHash) {
+          const el = document.getElementById(rawHash);
+          if (el) {
+            requestAnimationFrame(() => {
+              el.scrollIntoView({ behavior: "instant", block: "start" });
+            });
+          }
+        }
+      })();
+
       return () => window.removeEventListener("scroll", handleNativeScroll);
     }
 
@@ -70,6 +122,8 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     lenisRef.current = lenis;
     if (typeof window !== "undefined") {
       (window as any).lenis = lenis;
+      // Mark restoration in progress — scrollspy reads this before writing hash.
+      (window as any).__hazyRestoring = true;
     }
 
     // ── GSAP ticker drives Lenis RAF (frame-perfect sync) ────────────────────
@@ -84,17 +138,59 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       ScrollTrigger.update();
     });
 
-    // Refresh ScrollTrigger after Lenis initialization to lock frame-accurate trigger offsets
-    const refreshTimer = setTimeout(() => {
+    // ── Deterministic Hash Restore ────────────────────────────────────────────
+    //
+    // Must wait for (in order):
+    //   1. Loader done       → window.__hazyLoaded = true
+    //   2. fonts.ready       → font-driven layout shift resolved
+    //   3. ST.refresh()      → pin-spacer heights baked into scroll geometry
+    //   4. one rAF           → ST settle frame
+    //   → THEN scroll to hash element
+    //
+    let restoreAborted = false;
+
+    (async () => {
+      // Step 1: Poll for loader completion (Loader.onComplete sets __hazyLoaded)
+      await new Promise<void>((resolve) => {
+        if ((window as any).__hazyLoaded) { resolve(); return; }
+        const poll = () => {
+          if ((window as any).__hazyLoaded) { resolve(); }
+          else { requestAnimationFrame(poll); }
+        };
+        poll();
+      });
+
+      if (restoreAborted) return;
+
+      // Step 2: Fonts ready
+      await document.fonts.ready;
+
+      if (restoreAborted) return;
+
+      // Step 3: Clear stale GSAP scroll memory, then force-refresh all STs
+      // so pin-spacers are computed against the post-load document height.
+      (ScrollTrigger as any).clearScrollMemory?.();
       ScrollTrigger.refresh();
-      const hash = typeof window !== "undefined" ? window.location.hash : "";
-      if (hash) {
-        const target = document.querySelector(hash);
-        if (target) {
-          lenis.scrollTo(target as HTMLElement, { offset: -40, immediate: true });
-        }
+
+      // Step 4: One rAF for ST to finish the refresh synchronously
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+      if (restoreAborted) return;
+
+      // Step 5: Restore hash AFTER layout is final
+      const rawHash = decodeURIComponent(window.location.hash.slice(1));
+      const el = rawHash ? document.getElementById(rawHash) : null;
+
+      if (el) {
+        lenis.scrollTo(el, { immediate: true, force: true, offset: -NAV_OFFSET });
+      } else {
+        // No hash — ensure we're at the top (browser may have cached a scroll pos)
+        lenis.scrollTo(0, { immediate: true, force: true });
       }
-    }, 250);
+
+      // Step 6: Unlock scrollspy hash writes
+      (window as any).__hazyRestoring = false;
+    })();
 
     // Debounced resize handler for orientation and viewport changes
     let resizeTimer: NodeJS.Timeout | null = null;
@@ -115,11 +211,16 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
-      clearTimeout(refreshTimer);
+      restoreAborted = true;
       if (resizeTimer) clearTimeout(resizeTimer);
       window.removeEventListener("resize", handleResize);
       lenis.destroy();
       gsap.ticker.remove(gsapTicker);
+      if (typeof window !== "undefined") {
+        delete (window as any).lenis;
+        delete (window as any).__hazyRestoring;
+        delete (window as any).__hazyLoaded;
+      }
     };
   }, []);
 

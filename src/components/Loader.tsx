@@ -36,6 +36,9 @@ const CRITICAL_CACHE_ASSETS = [
   "/ClientEcho_mockup_preview.webp",
   "/ClientEcho_phone_preview.webp",
   "/ClientEcho_preview.webp",
+  "/Pyra_mockup_preview.webp",
+  "/pyra_phone_preview.png",
+  "/Pyra_preview.webp",
 
   // ── Project & Partner Logos (Light & Dark Variants) ──
   "/Shortsautomation_logo.png",
@@ -47,6 +50,8 @@ const CRITICAL_CACHE_ASSETS = [
   "/SentinelView_logo Dark.png",
   "/ClientEcho_logo.png",
   "/ClientEcho_logo Dark.png",
+  "/pyra_logo light.svg",
+  "/pyra_logo dark.svg",
   "/logo.png",
 
   // ── Verified Certificates (About Section) ──
@@ -66,10 +71,12 @@ export function Loader({ onComplete }: LoaderProps) {
   const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
-    // 1. Session check for returning users
+    // 1. Session check for returning users — skip full animation, signal loader done immediately
     if (typeof window !== "undefined") {
       const visited = sessionStorage.getItem("hazy_visited");
       if (visited) {
+        // Signal LenisProvider that loader is done so hash restore can start.
+        (window as any).__hazyLoaded = true;
         setIsHidden(true);
         onComplete();
         return;
@@ -126,6 +133,9 @@ export function Loader({ onComplete }: LoaderProps) {
           setIsExiting(true);
           if (typeof window !== "undefined") {
             sessionStorage.setItem("hazy_visited", "true");
+            // Signal LenisProvider that loader is done; hash restore can start
+            // while the curtain animation plays (page is still visually covered).
+            (window as any).__hazyLoaded = true;
           }
           // 1000ms duration + 4 * 80ms stagger = 1320ms exit curtain animation
           setTimeout(() => {

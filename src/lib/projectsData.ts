@@ -68,7 +68,7 @@ export const PROJECTS: ProjectData[] = [
     repoUrl: 'https://github.com/Hazy019/youtube-shorts-automation',
     liveUrl: 'https://shortsautomations.vercel.app/',
     outcomeBadge: '85% Lambda memory reduction',
-    narrative: 'A fault-tolerant, fully autonomous programmatic video production pipeline leveraging multi-model generative AI, stateful recovery, and serverless parallel rendering to syndicate high-retention content at scale.',
+    narrative: 'Autonomous AI video pipeline that creates, voices, and publishes daily viral shorts to YouTube and TikTok without manual work.',
     problem: 'Creating short-form content at scale requires generating scripts, recording voiceovers, sourcing B-roll, rendering video, syncing captions, and uploading to multiple platforms — every single day. Doing this manually for two independent channels was unsustainable and would require a full production team.',
     solution: 'YouTube Shorts Automation is a fully autonomous video production pipeline. It leverages multi-model generative AI, serverless parallel rendering, and stateful recovery to syndicate high-retention video content across YouTube Shorts, TikTok, and Meta (Instagram/Facebook Reels) at scale, while keeping costs minimal by integrating with free APIs (Gemini, Pexels, Pixabay).',
     steps: [
@@ -114,7 +114,7 @@ export const PROJECTS: ProjectData[] = [
     deviceFrame: 'browser',
     projectNature: 'Government internship deliverable',
     outcomeBadge: '1,800+ Active Centers · LAN-based',
-    narrative: 'The Department of Trade and Industry\'s regional branch was processing walk-ins with paper slips and a whiteboard. Rebuilt from scratch — real-time WebSocket ticket generation, role-based access, and a live admin dashboard with full audit history.',
+    narrative: 'Real-time digital queuing and ticketing platform for regional government offices to eliminate paper wait slips.',
     problem: 'The DTI Payment Office managed walk-in client flow with paper ticket slips, a whiteboard, and verbal call-outs. There was no audit trail, no way to measure wait times, no mechanism to handle multiple service lanes simultaneously, and no visibility for clients on where they stood in the queue.',
     solution: 'A self-hosted, LAN-based smart queue management system with four purpose-built interfaces: a customer Kiosk for ticket issuance, a Cashier dashboard for queue management, a public Monitor display, and an Admin panel for lane configuration and analytics.',
     steps: [
@@ -161,7 +161,7 @@ export const PROJECTS: ProjectData[] = [
     projectNature: 'Academic collaboration',
     repoUrl: 'https://github.com/xenhusk/POLYCON',
     outcomeBadge: 'Zero missed appointments since launch',
-    narrative: 'Faculty-student consultations at the polytechnic had no digital infrastructure. Polycon is a full-stack LMS with real-time scheduling, AI-powered session transcription via AssemblyAI, grade-improvement tracking, and portal access.',
+    narrative: 'Academic consultation portal with real-time scheduling, AI session transcription, and student grade tracking.',
     problem: 'Faculty-student consultations at the polytechnic were entirely unstructured. Bookings were made via text message, sessions were undocumented, grade improvement was unmeasured, and there was no way to determine whether consultations were actually helping students.',
     solution: 'Polycon — a full-stack educational consultation and learning management system. Students book sessions through a scheduling interface, faculty manage availability and session notes, and an analytics engine statistically measures consultation impact on student grades.',
     steps: [
@@ -209,7 +209,7 @@ export const PROJECTS: ProjectData[] = [
     repoUrl: 'https://github.com/Hazy019/idee-cli',
     liveUrl: 'https://idee-cli.vercel.app/',
     outcomeBadge: 'Instant project scaffolding in <3 seconds',
-    narrative: 'A high-performance developer CLI tool for opinionated project scaffolding, boilerplate generation, and security configuration setup across full-stack applications.',
+    narrative: 'Automated developer CLI that cuts project setup from 3 hours to 3 seconds with pre-configured security.',
     problem: 'Setting up new full-stack projects with strict security headers, authentication boilerplate, and consistent linting rules was repetitive and error-prone.',
     solution: 'IDEE-CLI (`npx idee-cli apply`) automates repository setup, environment config validation, and security profile application in seconds through an interactive terminal interface.',
     steps: [
@@ -255,7 +255,7 @@ export const PROJECTS: ProjectData[] = [
     projectNature: 'Self-initiated product',
     repoUrl: 'https://github.com/Hazy019/SentinelView',
     outcomeBadge: 'Sub-second alert latency · 10,000+ logs/sec',
-    narrative: 'A real-time cybersecurity threat visualiser simulating network log ingestion, detecting pattern-based threat vectors, and pushing live WebSocket alerts to a glassmorphic dashboard with a 3D attack globe.',
+    narrative: 'Cybersecurity visualizer mapping live threat vectors and security breaches onto an interactive 3D attack globe.',
     problem: 'Modern SIEMs are complex and lack accessible visual context, while demo threat dashboards rely on static mock data or ignore authentication constraints.',
     solution: 'SentinelView simulates real-time network log ingestion. A FastAPI backend processes logs in memory, detecting brute-force attempts and data exfiltration, pushing WebSocket alerts to a Next.js frontend with a 3D attack globe.',
     steps: [
@@ -303,7 +303,7 @@ export const PROJECTS: ProjectData[] = [
     repoUrl: 'https://github.com/Hazy019/SpellGate',
     liveUrl: 'https://spellgate-eb1e8.web.app/',
     outcomeBadge: 'Locks Windows shell · Real-time Firebase link',
-    narrative: 'An educational screen-time management kiosk locking down children\'s PCs behind spelling challenges generated by an AI cascade engine, complete with a real-time parent monitoring dashboard.',
+    narrative: 'Parental control kiosk that locks Windows PCs behind educational AI spelling challenges to earn playtime.',
     problem: 'Children have unmonitored screen time. Traditional parental controls feel restrictive or punitive, rather than educational, and lack real-time control features.',
     solution: 'SpellGate gamifies spelling by intercepting screen-time behind a hardware kiosk-mode lock screen (PyQt6 on Windows). Children earn playtime by solving spelling challenges, while parents monitor in real time via Firebase.',
     steps: [
@@ -351,7 +351,7 @@ export const PROJECTS: ProjectData[] = [
     liveUrl: 'https://client-echo-web.vercel.app/',
     repoUrl: 'https://github.com/Hazy019/ClientEcho',
     outcomeBadge: 'Multi-tenant · Stripe billing · Zero-CLS embeds',
-    narrative: 'A multi-tenant B2B SaaS platform for collecting, verifying, and embedding client testimonials — 1-click cryptographic magic-link approvals, Postgres row-level security per tenant, sandboxed zero-CLS embed widgets, and full Stripe billing.',
+    narrative: 'B2B SaaS platform that automates testimonial collection with 1-click magic approval links and embed widgets.',
     problem: 'Businesses collecting client testimonials relied on manual email chains, screenshot trust-signals, and copy-pasted quotes with no verifiable audit trail. Embedding testimonials caused layout shift, slowed pages, and had no real-time update mechanism.',
     solution: 'ClientEcho automates the full testimonial lifecycle — businesses invite clients via a cryptographic magic-link (one-time, time-limited), clients approve in one click with no account required, and verified testimonials are embedded via a sandboxed zero-CLS widget. Each tenant\'s data is isolated via Postgres row-level security.',
     steps: [
@@ -370,5 +370,53 @@ export const PROJECTS: ProjectData[] = [
     stack: ['Next.js 14', 'PostgreSQL (Supabase RLS)', 'Drizzle ORM', 'Stripe', 'Cloudflare Turnstile', 'Upstash Redis', 'TailwindCSS', 'Framer Motion'],
     devnotes: 'The most complex part was the multi-tenant RLS architecture: every Postgres query automatically scopes to the authenticated tenant\'s row set via a session-level set_config call, so cross-tenant data leakage is architecturally impossible rather than just policy-enforced. The embed widget is deliberately sandboxed as an iframe with a strict Content-Security-Policy to prevent XSS from the host page.',
     outcome: 'Full end-to-end testimonial lifecycle automation. Zero-CLS embeds with sub-100ms load time. Stripe billing with webhook-driven subscription state machine.'
+  },
+  {
+    id: 'pyra',
+    num: '08',
+    type: 'Cloud Infrastructure & Monitoring',
+    ghostType: 'INFRASTRUCTURE',
+    title: 'Pyra',
+    status: 'Live',
+    role: 'Lead Architect & Solo Developer',
+    timeline: '2026',
+    nativeAccent: '#E8622C',
+    accentBorder: 'rgba(232, 98, 44, 0.4)',
+    accentGlow: 'rgba(232, 98, 44, 0.18)',
+    imageSrc: '/Pyra_mockup_preview.webp',
+    screenshots: [
+      '/Pyra_mockup_preview.webp',
+      '/pyra_phone_preview.png',
+      '/Pyra_preview.webp'
+    ],
+    screenshotLabels: [
+      'Active Telemetry & Signal Monitor Dashboard',
+      'Mobile View — Health Metrics & Heartbeat',
+      'Tamper-Evident Audit Trail & Endpoint Roster'
+    ],
+    deviceFrame: 'browser',
+    projectNature: 'SaaS / Cloud Infrastructure',
+    liveUrl: 'https://pyra-keep-alive-web.vercel.app/',
+    repoUrl: 'https://github.com/Hazy019/pyra-keep-alive',
+    outcomeBadge: 'AES-256 Envelope · 60s Intervals · Zero Cold Starts',
+    narrative: 'Automated keep-alive engine that keeps free cloud databases awake 24/7 to eliminate cold-start delays.',
+    problem: 'Hobby and developer tiers on modern cloud platforms (Render, Railway, Supabase, Neon) automatically hibernate inactive databases and containers after 15 minutes of inactivity. When users finally visit, they endure 30 to 50-second cold-start latency delays or outright connection timeouts.',
+    solution: 'Pyra runs automated, scheduled keep-alive ping workers with custom HTTP payloads and authentication headers down to 60-second intervals. It keeps database connection pools warm 24/7, monitors latency telemetry, and logs every mutation in a cryptographically hash-chained audit log.',
+    steps: [
+      'User registers backend API or database health-check target with custom schedule (1m–15m intervals)',
+      'Sensitive authentication tokens and headers are encrypted at rest using AES-256-GCM envelope encryption',
+      'Distributed cron ping workers (Singapore region) dispatch HTTP heartbeats and measure microsecond response latency',
+      'Stateful failure detection triggers instant alerting with cooldown thresholds to avoid inbox flooding',
+      'All security mutations and endpoint changes are sealed into a tamper-evident, cryptographically chained audit trail'
+    ],
+    specs: [
+      { label: 'Security', value: 'AES-256-GCM Envelope Encryption (Decrypted only in worker)' },
+      { label: 'Ping Frequency', value: 'Down to 60s intervals (Singapore Worker Region)' },
+      { label: 'Multi-Tenancy', value: 'PostgreSQL Row-Level Security (Supabase RLS) + Clerk' },
+      { label: 'Audit Trail', value: 'Tamper-Evident SHA-256 Hash Chaining' }
+    ],
+    stack: ['Next.js 15', 'TypeScript', 'Supabase (PostgreSQL RLS)', 'Clerk Auth', 'TailwindCSS', 'Web Crypto API', 'Lucide Icons'],
+    devnotes: 'To ensure bank-grade security for third-party API credentials, Pyra never stores raw auth headers. Headers undergo envelope encryption using Web Crypto AES-256-GCM with a root key managed via secure environment variables. Decryption occurs exclusively in isolated ping worker memory at request execution. Multi-tenant workspace data is enforced at the database layer using Postgres Row Level Security (RLS) bound to Clerk session claims.',
+    outcome: 'Eliminated cold-start spin-up delays across connected cloud services. Sub-100ms latency telemetry tracking, multi-tenant RBAC workspaces, and zero-leakage credential isolation.'
   }
 ];
