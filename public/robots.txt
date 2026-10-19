@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /_next/
+Disallow: /private/
 
 Sitemap: https://hazy.cosedevs.com/sitemap.xml
+Host: https://hazy.cosedevs.com
+

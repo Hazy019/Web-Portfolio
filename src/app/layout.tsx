@@ -31,22 +31,49 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  // Title: under 60 chars, name-first for entity recognition.
-  // TODO(owner): Confirm title preference — "Software Engineer" ranks better
-  //              for recent graduates than "Systems Architect". See PR notes.
-  title: "Kyrell Santillan — Software Engineer | HAZY",
+  title: {
+    default: "Kyrell Santillan — Software Engineer & Systems Architect | HAZY",
+    template: "%s | Kyrell Santillan",
+  },
   description:
-    "Kyrell Santillan (Hazy019) — Software Engineer from the Philippines. Built the DTI government queue system, an autonomous YouTube Shorts pipeline, and 6 more shipped products.",
-  // NOTE: meta keywords deliberately omitted — Google ignores them and
-  // stuffing case variants is a spam signal. Entity authority comes from
-  // consistent on-page text and sameAs structured data, not keywords.
+    "Kyrell Santillan (Hazy019) is a Software Engineer & Systems Architect from Bacolod City, Philippines. Creator of the DTI government queue system, Pyra Keep-Alive, automated AI pipelines, and distributed cloud applications.",
+  keywords: [
+    "Kyrell Santillan",
+    "Kyrell",
+    "Santillan",
+    "Hazy",
+    "Hazy019",
+    "HAZY",
+    "Software Engineer",
+    "Systems Architect",
+    "Full-Stack Developer",
+    "Cloud Automation Engineer",
+    "Backend Engineer",
+    "Frontend Developer",
+    "Next.js Developer",
+    "TypeScript Engineer",
+    "Python Developer",
+    "FastAPI",
+    "AWS Lambda",
+    "Remotion React",
+    "DTI Queue System",
+    "YouTube Shorts Automation",
+    "Pyra Keep-Alive",
+    "IDEE-CLI",
+    "SentinelView",
+    "SpellGate",
+    "ClientEcho",
+    "Polycon",
+    "Bacolod City Developer",
+    "Philippines Software Engineer",
+    "cosedevs",
+  ],
   authors: [{ name: "Kyrell Santillan", url: "https://hazy.cosedevs.com" }],
   creator: "Kyrell Santillan",
   publisher: "Kyrell Santillan",
   metadataBase: new URL("https://hazy.cosedevs.com"),
   alternates: {
-    // Self-referential canonical on every page — no trailing slash.
-    canonical: "https://hazy.cosedevs.com",
+    canonical: "/",
   },
   robots: {
     index: true,
@@ -61,30 +88,30 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Kyrell Santillan — Software Engineer | HAZY",
-    description:
-      "I build software behind things like a government queue system and a fully automated video channel. Failure modes first, elegance second.",
+    locale: "en_US",
     url: "https://hazy.cosedevs.com",
     siteName: "Kyrell Santillan · Portfolio",
+    title: "Kyrell Santillan — Software Engineer & Systems Architect | HAZY",
+    description:
+      "Official portfolio of Kyrell Santillan (Hazy019) — Software Engineer & Systems Architect building mission-critical government infrastructure, automated cloud AI pipelines, and high-uptime software.",
     images: [
       {
-        // TODO(owner): Generate a 1200×630 OG card image (opengraph-image.tsx)
-        // and replace this with the generated path. 512×512 logo renders
-        // as a small square preview — not optimal for social sharing.
-        url: "/logo.png",
-        width: 512,
-        height: 512,
-        alt: "Kyrell Santillan (Hazy019) — Software Engineer",
+        url: "https://hazy.cosedevs.com/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Kyrell Santillan (Hazy019) — Software Engineer & Systems Architect",
+        type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kyrell Santillan — Software Engineer | HAZY",
+    title: "Kyrell Santillan — Software Engineer & Systems Architect | HAZY",
     description:
-      "Built a government queue system, an autonomous video pipeline, and 6 more shipped products. Based in the Philippines.",
-    images: ["/logo.png"],
+      "Software Engineer & Systems Architect building mission-critical government infrastructure, automated cloud AI pipelines, and high-uptime software.",
+    images: ["https://hazy.cosedevs.com/logo.png"],
     creator: "@hazy019",
+    site: "@hazy019",
   },
   icons: {
     icon: [
@@ -109,26 +136,41 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": "https://hazy.cosedevs.com/#website",
+        url: "https://hazy.cosedevs.com/",
+        name: "Kyrell Santillan (Hazy019) Portfolio",
+        description:
+          "Official software engineering portfolio of Kyrell Santillan (Hazy019), Software Engineer and Systems Architect from Bacolod City, Philippines.",
+        publisher: {
+          "@id": "https://hazy.cosedevs.com/#person",
+        },
+        inLanguage: "en-US",
+      },
+      {
         "@type": "ProfilePage",
         "@id": "https://hazy.cosedevs.com/#profilepage",
         url: "https://hazy.cosedevs.com/",
-        name: "Kyrell Santillan (Hazy019) — Software Developer & Systems Architect",
+        name: "Kyrell Santillan (Hazy019) — Software Engineer & Systems Architect",
         description:
-          "Official engineering profile and portfolio of Kyrell Santillan (Hazy019), Software Engineer and Systems Architect from Bacolod City, Philippines.",
-        inLanguage: "en",
-        mainEntity: {
-          "@id": "https://hazy.cosedevs.com/#person",
-        },
+          "Engineering portfolio, open-source projects, and technical case studies by Kyrell Santillan (Hazy019).",
+        inLanguage: "en-US",
         isPartOf: {
           "@id": "https://hazy.cosedevs.com/#website",
+        },
+        about: {
+          "@id": "https://hazy.cosedevs.com/#person",
+        },
+        mainEntity: {
+          "@id": "https://hazy.cosedevs.com/#person",
         },
       },
       {
         "@type": "Person",
         "@id": "https://hazy.cosedevs.com/#person",
         name: "Kyrell Santillan",
-        alternateName: ["Hazy019", "HAZY", "kyrell santillan", "Kyrell Santillan", "hazy019"],
-        jobTitle: "Software Developer & Systems Architect",
+        alternateName: ["Hazy019", "HAZY", "kyrell santillan", "Kyrell Santillan", "hazy019", "Hazy"],
+        jobTitle: "Software Engineer & Systems Architect",
         url: "https://hazy.cosedevs.com/",
         image: "https://hazy.cosedevs.com/logo.png",
         description:
@@ -151,8 +193,8 @@ export default function RootLayout({
           "https://www.facebook.com/profile.php?id=61592218332539",
           "https://www.youtube.com/@Hazy_Insight",
           "https://pyra-keep-alive-web.vercel.app",
-          "https://idee-cli.vercel.app",
           "https://shortsautomations.vercel.app",
+          "https://idee-cli.vercel.app",
           "https://spellgate-eb1e8.web.app",
           "https://client-echo-web.vercel.app",
           "https://www.star-history.com/hazy019",
@@ -160,17 +202,22 @@ export default function RootLayout({
         knowsAbout: [
           "Software Engineering",
           "Systems Architecture",
+          "Full-Stack Web Development",
           "Government Software Infrastructure",
           "Distributed Cloud Automation",
           "Keep-Alive & High Uptime Infrastructure",
           "Cybersecurity Engineering",
           "Next.js 15",
+          "React 19",
           "Python 3.12",
           "FastAPI",
           "Node.js",
-          "WebSockets",
-          "AWS Lambda",
-          "PostgreSQL & SQLite",
+          "TypeScript",
+          "WebSockets & Socket.io",
+          "AWS Lambda & S3",
+          "PostgreSQL & Supabase",
+          "SQLite & Prisma ORM",
+          "Docker",
         ],
         hasCredential: [
           {
@@ -209,74 +256,127 @@ export default function RootLayout({
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-pyra",
         name: "Pyra Keep-Alive Web",
         applicationCategory: "DeveloperApplication",
         operatingSystem: "Cloud / Web",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "Automated cloud keep-alive and uptime monitoring infrastructure service that prevents serverless APIs, free-tier cloud containers, and database backends from sleeping, with AES-256-GCM auth encryption and latency telemetry.",
         url: "https://pyra-keep-alive-web.vercel.app",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-yt-shorts",
         name: "YouTube Shorts Automated Video Pipeline",
         applicationCategory: "MultimediaApplication",
         operatingSystem: "Cloud / AWS Lambda",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "Autonomous programmatic video production pipeline leveraging multi-model generative AI (Google Gemini 3), Microsoft Edge-TTS, AWS Lambda parallel rendering with Remotion React, and stateful recovery.",
         url: "https://shortsautomations.vercel.app",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-dti-queue",
         name: "DTI Local Queue & Ticket Management System",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Self-Hosted LAN / Linux / Windows",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "Government service queue ticketing and real-time counter orchestration system with WebSocket concurrency, thermal receipt printing, and SQLite transaction safety built for the Department of Trade and Industry.",
         url: "https://github.com/Hazy019/DTI-Queue-System",
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-idee-cli",
         name: "Idée CLI",
         applicationCategory: "DeveloperApplication",
         operatingSystem: "Cross-platform (Node.js / NPX)",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "High-performance developer CLI tool for opinionated project scaffolding, boilerplate generation, and security configuration setup across full-stack applications (npx idee-cli apply).",
         url: "https://idee-cli.vercel.app",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-spellgate",
         name: "SpellGate Screen-Time Spelling Kiosk",
         applicationCategory: "EducationalApplication",
         operatingSystem: "Windows 10/11",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "Educational screen-time management kiosk locking down children's PCs behind spelling challenges generated by an AI cascade engine with a real-time parent monitoring dashboard.",
         url: "https://spellgate-eb1e8.web.app",
       },
       {
         "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-sentinelview",
         name: "SentinelView Cyber Threat Visualizer",
         applicationCategory: "SecurityApplication",
         operatingSystem: "Web / Linux",
         author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
           "Real-time cybersecurity threat visualizer and SIEM simulator streaming pattern-based intrusion alerts over WebSockets to an interactive 3D Three.js attack globe.",
         url: "https://github.com/Hazy019/SentinelView",
       },
       {
-        "@type": "WebSite",
-        "@id": "https://hazy.cosedevs.com/#website",
-        url: "https://hazy.cosedevs.com/",
-        name: "Kyrell Santillan (Hazy019) Portfolio",
+        "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-clientecho",
+        name: "ClientEcho Testimonial Platform",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Cloud / Web",
+        author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
         description:
-          "Kyrell Santillan (Hazy019) is a Software Engineer and Systems Architect from Bacolod City, Philippines, building mission-critical government infrastructure, autonomous AI automation pipelines, and high-uptime cloud systems.",
-        publisher: {
-          "@id": "https://hazy.cosedevs.com/#person",
+          "B2B SaaS platform automating testimonial capture with 1-click magic approval links, zero-CLS sandboxed embed widgets, and Postgres row-level security.",
+        url: "https://client-echo-web.vercel.app",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
         },
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://hazy.cosedevs.com/#software-polycon",
+        name: "Polycon Academic Consultation System",
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "Web / Cloud",
+        author: { "@id": "https://hazy.cosedevs.com/#person" },
+        creator: { "@id": "https://hazy.cosedevs.com/#person" },
+        publisher: { "@id": "https://hazy.cosedevs.com/#person" },
+        description:
+          "Full-stack educational consultation portal with real-time faculty booking, AI session audio transcription via AssemblyAI, and statistical grade impact analytics.",
+        url: "https://github.com/xenhusk/POLYCON",
       },
     ],
   };
@@ -296,75 +396,6 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning className="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
-        {/*
-         * SSR Identity Block — Server-rendered rich text for Googlebot & AI Overviews.
-         *
-         * WHY THIS EXISTS:
-         * Googlebot and AI search crawlers read HTML byte 0 before JS hydration.
-         * This block guarantees high-density semantic entity recognition,
-         * verified projects, credentials, and indexing signals.
-         */}
-        {/*
-         * SSR Identity Block — Server-rendered rich text for Googlebot & AI Overviews.
-         *
-         * WHY: Googlebot reads HTML before JS hydration. This block provides
-         * semantic entity text that is visible to screen readers and crawlers.
-         *
-         * IMPORTANT: aria-hidden was removed. Visually hiding content while hiding
-         * it from assistive technology is a cloaking risk. sr-only makes it
-         * visible to screen readers (and thus to Google) without affecting layout.
-         * This is the correct approach for SEO-critical content.
-         */}
-        <div
-          className="sr-only"
-        >
-          <h2>Kyrell Santillan (Hazy019) — Software Engineer &amp; Systems Architect</h2>
-          <p>
-            Kyrell Santillan, known online as Hazy019. Software Engineer and Systems Architect
-            based in Bacolod City, Negros Occidental, Philippines. Computer Science graduate from
-            STI West Negros University. Specializing in mission-critical government infrastructure,
-            autonomous cloud AI pipelines, high-uptime keep-alive services, and cybersecurity systems.
-          </p>
-          <h2>Featured Systems &amp; Software by Kyrell Santillan</h2>
-          <ul>
-            <li>
-              Pyra Keep-Alive Web — Automated cloud keep-alive and uptime monitoring infrastructure service
-              preventing serverless APIs, free-tier cloud containers (Render, Supabase, Neon), and backend
-              endpoints from sleeping, with AES-256-GCM auth encryption and latency telemetry.
-            </li>
-            <li>
-              DTI Local Queue &amp; Ticket Management System — Government infrastructure
-              real-time WebSocket queue ticketing system built for the Department of Trade
-              and Industry of the Philippines with 80mm thermal receipt auto-printing and SQLite concurrency.
-            </li>
-            <li>
-              YouTube Shorts Automated Video Pipeline — Fully automated programmatic video generation pipeline
-              leveraging Google Gemini 3, Microsoft Edge-TTS, AWS Lambda parallel rendering, Remotion React, and S3 syndication.
-            </li>
-            <li>
-              IDEE-CLI — Developer Architecture Tool — High-performance Node.js CLI tool for opinionated
-              project scaffolding, boilerplate generation, and security configuration setup (npx idee-cli apply).
-            </li>
-            <li>
-              SpellGate — Screen-Time Access Control Kiosk — Walk-up hardware kiosk system locking the
-              Windows shell environment behind real-time adaptive AI spelling challenges with live Firebase parent monitoring.
-            </li>
-            <li>
-              Polycon — Consultation &amp; Learning Management System — Full-stack LMS
-              with real-time consultation scheduling and AI-powered session transcription via AssemblyAI.
-            </li>
-            <li>
-              SentinelView — Cyber Threat Visualiser — Real-time cybersecurity threat
-              visualizer simulating network log ingestion and threat pattern rule matching on a 3D attack globe.
-            </li>
-          </ul>
-          <p>
-            Contact Kyrell Santillan at santillankyrell@gmail.com. GitHub: github.com/Hazy019.
-            LinkedIn: linkedin.com/in/kyrell-santillan. Facebook: facebook.com/profile.php?id=61592218332539.
-            Portfolio: hazy.cosedevs.com. Available for full-time engineering roles, contract projects,
-            and systems architecture consulting.
-          </p>
-        </div>
         <ThemeProvider>
           <LenisProvider>
             {children}
@@ -374,3 +405,4 @@ export default function RootLayout({
     </html>
   );
 }
+
